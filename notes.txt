@@ -1,0 +1,195 @@
+# -*- coding: utf-8 -*-
+
+
+# db actioncomm format
+
+{"datea":null,"datea2":null,"datec":"2010-06-03T10:37:42+02:00","datep":"2010-06-03T10:37:42+02:00","datep2":"2010-06-03T10:37:42+02:00","durationa":null,"durationp":null,"elementtype":null,"entity":1,"fk_action":50,"fk_contact":null,"fk_element":null,"fk_parent":0,"fk_project":null,"fk_soc":1,"fk_user_action":null,"fk_user_author":1,"fk_user_done":1,"fk_user_mod":null,"fulldayevent":0,"id":1,"label":"Soci\u00e9t\u00e9 PEOPLE AND BABY ajout\u00e9e dans Dolibarr","location":"","note":"Soci\u00e9t\u00e9 PEOPLE AND BABY ajout\u00e9e dans Dolibarr\nAuteur: Maud","percent":100,"priority":0,"punctual":1,"ref_ext":null,"tms":"2010-06-03T10:37:42+02:00"}
+
+==== Calendar settings ====
+
+{
+  "cs": [
+    {
+      "createByDblclick": false,
+      "monthFormat": "m/d",
+      "weekFormat": "m/d(D)",
+      "class": "CalendarSettingUIModel",
+      "hideInactiveRow": false,
+      "dayFormat": "l M d Y",
+      "fromtoFormat": "m/d/Y",
+      "id": "1",
+      "intervalSlot": "30",
+      "readOnly": false,
+      "hourFormat": "24",
+      "singleDay": false,
+      "startDay": "1",
+      "activeEndTime": "19:00",
+      "activeStartTime": "09:00",
+      "language": "fr"
+    }
+  ],
+  "owned": [
+    {
+      "shares": [
+
+      ],
+      "id": "1",
+      "hide": false,
+      "color": "blue",
+      "description": null,
+      "permit": "all",
+      "name": "demo",
+      "class": "CalendarTypeUIModel",
+      "isShared": false
+    }
+  ],
+  "shared": [
+
+  ],
+  "re": [
+
+  ]
+}
+
+==== Doli JSON FORMAT ====
+{
+  "datea": null,
+  "datea2": null,
+  "datec": "2010-06-03T10:37:42+02:00",
+  "datep": "2010-06-03T10:37:42+02:00",
+  "datep2": "2010-06-03T10:37:42+02:00",
+  "durationa": null,
+  "durationp": null,
+  "elementtype": null,
+  "entity": 1,
+  "fk_action": 50,
+  "fk_contact": null,
+  "fk_element": null,
+  "fk_parent": 0,
+  "fk_project": null,
+  "fk_soc": 1,
+  "fk_user_action": null,
+  "fk_user_author": 1,
+  "fk_user_done": 1,
+  "fk_user_mod": null,
+  "fulldayevent": 0,
+  "id": 1,
+  "label": "Societe PEOPLE AND BABY ajoutee dans Dolibarr",
+  "location": "",
+  "note": "Societe PEOPLE AND BABY ajoutee dans Dolibarr\nAuteur: Maud",
+  "percent": 100,
+  "priority": 0,
+  "punctual": 1,
+  "ref_ext": null,
+  "tms": "2010-06-03T10:37:42+02:00"
+}
+
+
+==== Doli posted data: filter by calendar type ==== 
+token:5678f9d118b1e446947bf1df2b39db48
+status:
+year:2013
+month:01
+day:
+showbirthday:1
+userasked:-1
+usertodo:-1
+userdone:-1
+actioncode:AC_RJE
+viewcal:Vue mois
+
+==== Doli Posted data create event ==== 
+token:b091e851e85104fba6df8143c624c0a4
+action:add_action
+backtopage:/comm/action/index.php/comm/action/index.php?&showbirthday=1&maxprint=3&
+actioncode:AC_OTH
+label:evnet 1
+ap:01/01/2013
+apday:01
+apmonth:01
+apyear:2013
+aphour:10
+apmin:00
+p2:
+p2day:
+p2month:
+p2year:
+p2hour:-1
+p2min:-1
+status:-1
+location:
+affectedto:1
+doneby:-1
+socid:-1
+projectid:0
+priority:
+note:
+
+
+==== My JSON FOMAT update event (drag/drop) ====
+id:848
+calendarId:1
+startDay:2013-01-21
+endDay:2013-01-21
+startHMTime:10:30
+endHMTime:11:30
+repeatType:no
+alertFlag:true
+locked:false
+subject:ca marche
+description:ouép ca marche
+
+==== My JSON FORMAT create event ====
+{
+  "calendarId"=>"1", 
+  "startDay"=>"2013-01-23", 
+  "endDay"=>"2013-01-23",
+  "startHMTime"=>"10:00", 
+  "endHMTime"=>"11:00", 
+  "repeatType"=>"no", 
+  "alertFlag"=>nil, 
+  "locked"=>"false", 
+  "subject"=>"kdjlksjl", 
+  "description"=>"jkldslkj", 
+  "userId"=>"1"
+}
+
+==== My JSON FORMAT list event ====
+{
+  "total": 1,
+  "results": [
+    {
+      "calendarId": "1",
+      "subject": "Eric Camp",
+      "repeatType": "no",
+      "class": "CalendarEventUIModel",
+      "endTime": "23:59",
+      "id": "4499",
+      "startTime": "00:00",
+      "alertFlag": false,
+      "color": "orange",
+      "ymd": "2013-01-19",
+      "description": null,
+      "eymd": "2013-01-20",
+      "locked": false
+    }
+  ]
+}
+
+
+=== Creation evenement ==== 
+URL:  http://localhost/mycalendar_demo/calendarEvent/createUpdateRepeatEvent
+
+PARAMS:
+
+calendarId:1
+startDay:2013-01-29
+endDay:2013-02-18
+startHMTime:12:00
+endHMTime:13:00
+repeatType:{"rtype":"day","intervalSlot":2,"dspan":20,"beginDay":"2013-01-29","endDay":"2014-01-23"}
+alertFlag:[{"type":"email","early":30,"unit":"minute"}]
+locked:true
+subject:Test Création évènement
+description:ça c'est la description du de l'évènement
+userId:1
