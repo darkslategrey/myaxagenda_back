@@ -1,12 +1,25 @@
-
+require 'logger'
 
 class Event < ActiveRecord::Base
+  @@db_config = YAML.load_file(File.join(File.dirname(__FILE__), '../config/databases.yml'))
+  establish_connection @@db_config['jobenfance']
+
+  logger    = Logger.new(STDOUT)
+  ActiveRecord::Base.logger = logger
+
+  self.inheritance_column = "not_sti"
   self.table_name = 'llx_actioncomm'
-  # def initialize(*args)
-  #   ret_val = system('php path/to/createUpdateEvent.php' + params.to_s)
-  # end
-    
-  # public  
+  self.primary_key = 'id'
+
+  belongs_to :event_type, :foreign_key => 'fk_action', :class_name => 'EventType'
+
+  @@cal_ids = {
+    'EventJe' => Calendar::ACTIONS_JOBENFANCE,
+    'EventJd' => Calendar::ACTIONS_JOBDEPENDANCE,
+    'RegieJe' => Calendar::REGIE_JOBENFANCE,
+    'RegieJd' => Calendar::REGIE_JOBDEPENDANCE }
+  
+  # has_one :event_type, :foreign_key => 'fk_action'
 
   def end_hour
     hour = DateTime.parse(self.datep.to_s).hour
@@ -112,13 +125,13 @@ class Event < ActiveRecord::Base
     self.datep
   end
 
-  def to_my(cal_id=2)
+  def to_mycalendar
     self_json = self.to_json
 
     endTime   = self.end_hour + ':' + self.end_minute
     startTime = self.start_hour + ':' + self.start_minute
 
-    my_json = { "calendarId" => cal_id,
+    my_json = { "calendarId" => @@cal_ids[self.class.to_s],
       "subject" =>  self.label.nil? ? '' : self.label.gsub(/\n/, ' '),
       "repeatType" =>  "no",
       "class" =>  "CalendarEventUIModel",
@@ -131,6 +144,7 @@ class Event < ActiveRecord::Base
       "description" =>  self.note.nil? ? '' : self.note.gsub(/\n/, ' '),
       "eymd" => Date.parse(self.end_date.to_s),
       "locked" =>  false }
+    my_json
   end
 
   def self.to_doli(json)
@@ -179,24 +193,11 @@ class Event < ActiveRecord::Base
     doli_json
   end
 
-
-  def self.find_by_month(date)
-    prev_month = date - 1.month
-    next_month = date + 1.month
-    events = Event.where("datep < '" + next_month.to_s + "' and datep > '" + prev_month.to_s + "'")
-    logger = Logger.new(STDOUT)
-    logger.debug("find_by_month: nbr of events <"+events.size.to_s+">")
-    events
-  end
-
-
   def self.create_update(params)
     e = Event.new(params)
     res = e.save!
     res
   end
-
-
 
 end
 

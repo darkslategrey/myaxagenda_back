@@ -1,41 +1,29 @@
+# -*- coding: utf-8 -*-
 require 'active_record'
 require 'rubygems'
 require 'sinatra'
 require 'haml'
 require 'logger'
-require 'soap/rpc/driver'
-require 'sinatra/reloader'
 
-# require './models/event_type.rb'
-require './models/event.rb'
 require './models/calendar.rb'
+require './models/event.rb'
 require './controllers/events.rb'
 
+require './models/event_type.rb'
+require './models/event_type_je.rb'
+require './models/event_type_jd.rb'
+
+require './models/event_je.rb'
+require './models/event_jd.rb'
+
+require './models/regie_je.rb'
+require './models/regie_jd.rb'
 
 enable :logging
 logger = Logger.new(STDOUT)
 
 set :port, 6789
 
-
-ActiveRecord::Base.clear_active_connections!
-ActiveRecord::Base.establish_connection(:adapter  => 'mysql2',
-                                        :host     => 'localhost',
-                                        :username => 'root',
-                                        :password => 'admin',
-                                        :pool => 100,
-                                        :database => 'dolibarr-integ')
-
-# before do 
-#   ActiveRecord::Base.establish_connection(:adapter  => 'mysql2',
-#                                           :host     => 'localhost',
-#                                           :username => 'root',
-#                                           :password => 'admin',
-#                                           :database => 'dolibarr-integ')
-# end
-# after do
-#   ActiveRecord::Base.clear_active_connections!
-# end
 
 post '/search.json' do 
   'search'
@@ -46,7 +34,7 @@ end
 post '/showOnly.json' do 
   logger.debug(params)
   events = Calendar.show_only(params['id'])
-  my_events = events.map { |e| e.to_my(params['id']) }
+  my_events = events.map { |e| e.to_mycalendar }
   data = {'total' =>  my_events.size, 'results' => my_events }
   logger.debug("showOnly.events size <#{data}>")
   haml data.to_json, :layout => false
@@ -75,22 +63,8 @@ post '/createEditEvent.json' do
   logger.debug(params)
   res = Event.create_update(Event.to_doli(params.to_json))
   data = { 'success' => res, 'errorInfo' => '' }
-  # data = "{ 'success': 'false', 'errorInfo': 'c debile vraiment' }"
   logger.debug(data)
   haml data.to_json, :layout => false
-  # require 'net/http
-  # actioncomm = Event.to_doli(params.to_json)
-  # driver = SOAP::RPC::Driver.new('http://dolibarr-integ.local:88/webservices/server_actioncomm.php/webservices/server_actioncomm.php',
-  #                                'urn:http://www.dolibarr.org/ns/')
-  # driver.add_method('createActionComm', 'authentication', 'actioncomm')
-  # creation_msg = driver.createActionComm({ "login" => "Maud", "pass" => "Minnie75" }, actioncomm) # params
-  # logger.debug("CREATION_MSG <"+creation_msg+">")
-
-  # events = Event.new(params)
-  # my_events = events.map { |e| e.to_my }
-  # data = {'total' =>  my_events.size, 'results' => my_events }
-  # haml data.to_json, :layout => false
-
 end
 
 post '/createEvent.json' do 
@@ -128,8 +102,9 @@ end
 
 
 get '/fakeData/listEvent.json' do
-  events = Event.find_by_month(DateTime.current)
-  my_events = events.map { |e| e.to_my }
+  events = EventsController.find_by_month(DateTime.current)
+  logger.debug("total events #{events.size}")
+  my_events = events.map { |e| e.to_mycalendar }
   data = {'total' =>  my_events.size, 'results' => my_events }
   haml data.to_json, :layout => false
 end

@@ -1,14 +1,9 @@
-
-
-
 class Calendar
 
   REGIE_JOBENFANCE      = 2
   REGIE_JOBDEPENDANCE   = 3
   ACTIONS_JOBENFANCE    = 4
   ACTIONS_JOBDEPENDANCE = 5
-
-
 
   def self.show_only(id)
     events = []
@@ -28,6 +23,5 @@ class Calendar
     end
     events
   end
-
 
 end

@@ -1,0 +1,2 @@
+class RegieJd < EventJd
+end

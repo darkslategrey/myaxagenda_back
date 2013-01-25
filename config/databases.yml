@@ -1,0 +1,19 @@
+jobenfance:
+  adapter: mysql2
+  host: localhost
+  username: root
+  password: admin
+  pool: 10
+  reconnect: false
+  database: dolibarr-integ
+  socket: /var/run/mysqld/mysqld.sock
+
+jobdependance:
+  adapter: mysql2
+  host: localhost
+  username: root
+  password: admin
+  pool: 10
+  reconnect: false
+  database: dolibarr-new
+  socket: /var/run/mysqld/mysqld.sock

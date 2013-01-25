@@ -3,25 +3,28 @@ require 'logger'
 require 'fileutils'
 require 'active_support/all'
 
-
 class EventsController
 
+  @@logger = Logger.new(STDOUT)
 
-
-
-  def get(params)
-    @logger = Logger.new(STDOUT)
-    events = []
-    if params.size == 0 # default current month
-      events.push(Event.find_by_month(Date.current))
-      # events.push(Event.find_by_datep("2010-06-03T10:37:42+02:00"))
-      # events.push(Event.find_by_datep(Date.parse("2010-06-03T10:37:42+02:00")))
-    else
-      events.push(Event.first)
-    end
-    # @logger.debug(events)
-    # JSON.pretty_generate(json_ob))
-
+  def initialize(params={})
   end
 
+  def self.find_by_month(date)
+    prev_month = date - 1.month
+    next_month = date + 1.month
+
+
+    events_je = EventJe.where("datep < '" + next_month.to_s + "' and datep > '" + prev_month.to_s + "'")
+    events_jd = EventJd.where("datep < '" + next_month.to_s + "' and datep > '" + prev_month.to_s + "'")
+    
+    @@logger.debug("nbr of jd events <#{events_jd.size}>")
+    @@logger.debug("jd class <#{events_jd[0].class}>")
+    @@logger.debug("nbr of je events <#{events_je.size}>")
+    @@logger.debug("je class <#{events_je[0].class}>")
+    
+    all_events = events_je + events_jd
+    @@logger.debug("total : #{all_events.size}")
+    all_events
+  end
 end
