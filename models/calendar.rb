@@ -1,9 +1,9 @@
-class Calendar
+class Calendar < ActiveRecord::Base
 
-  REGIE_JOBENFANCE      = 2
-  REGIE_JOBDEPENDANCE   = 3
-  ACTIONS_JOBENFANCE    = 4
-  ACTIONS_JOBDEPENDANCE = 5
+  REGIE_JOBENFANCE      = 1
+  REGIE_JOBDEPENDANCE   = 2
+  ACTIONS_JOBENFANCE    = 3
+  ACTIONS_JOBDEPENDANCE = 4
 
   @@logger = Logger.new(STDOUT)
 

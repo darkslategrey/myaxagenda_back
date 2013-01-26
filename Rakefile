@@ -1,7 +1,5 @@
 require 'sinatra/activerecord/rake'
 require './back_srv.rb'
- 
-
 
 desc "run irb console"
 task :console, :environment do |t, args|
@@ -12,6 +10,8 @@ end
 
 desc "start the app"
 task :start, :environment do |t, args|
+  puts args
   ENV['RACK_ENV'] = args[:environment] || 'development'
   exec "ruby back_srv.rb"
 end
+
