@@ -18,13 +18,13 @@ class EventsController
     events_je = EventJe.where("datep < '" + next_month.to_s + "' and datep > '" + prev_month.to_s + "'")
     events_jd = EventJd.where("datep < '" + next_month.to_s + "' and datep > '" + prev_month.to_s + "'")
     
-    @@logger.debug("nbr of jd events <#{events_jd.size}>")
-    @@logger.debug("jd class <#{events_jd[0].class}>")
-    @@logger.debug("nbr of je events <#{events_je.size}>")
-    @@logger.debug("je class <#{events_je[0].class}>")
+    @@logger.debug(": nbr of jd events <#{events_jd.size}>")
+    @@logger.debug(": jd class <#{events_jd[0].class}>")
+    @@logger.debug(": nbr of je events <#{events_je.size}>")
+    @@logger.debug(": je class <#{events_je[0].class}>")
     
     all_events = events_je + events_jd
-    @@logger.debug("total : #{all_events.size}")
+    @@logger.debug(": total : #{all_events.size}")
     all_events
   end
 end

@@ -5,21 +5,26 @@ class Calendar
   ACTIONS_JOBENFANCE    = 4
   ACTIONS_JOBDEPENDANCE = 5
 
+  @@logger = Logger.new(STDOUT)
+
   def self.show_only(id)
     events = []
-    logger = Logger.new(STDOUT)
+
     case id.to_i
     when Calendar::REGIE_JOBDEPENDANCE
-      logger.debug("regie_jobdependance")
-      events = Event.where('fk_action = 51')
+      @@logger.debug("regie_jobdependance")
+      events = EventTypeJd.regie_jobdependance
     when Calendar::REGIE_JOBENFANCE
-      logger.debug("regie_jobenfance")
-      events = Event.where('fk_action = 52')
-    when Calendar::ACTIONS_JOBDEPENDANCE, Calendar::ACTIONS_JOBENFANCE
-      logger.debug("actions")
-      events = Event.where('fk_action < 51')
+      @@logger.debug("regie_jobenfance")
+      events = EventTypeJe.regie_jobenfance
+    when Calendar::ACTIONS_JOBDEPENDANCE
+      @@logger.debug("actions jobdependance")
+      events = EventTypeJd.get_actions
+    when Calendar::ACTIONS_JOBENFANCE
+      @@logger.debug("actions jobenfance")
+      events = EventTypeJe.get_actions
     else
-      logger.debug("Calendar type not found <#{id}>")
+      @@logger.debug("Calendar type not found <#{id}>")
     end
     events
   end

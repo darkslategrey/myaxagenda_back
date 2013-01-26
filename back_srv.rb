@@ -2,6 +2,7 @@
 require 'active_record'
 require 'rubygems'
 require 'sinatra'
+require 'sinatra/activerecord'
 require 'haml'
 require 'logger'
 
@@ -31,16 +32,18 @@ end
 post '/showAllCalendar.json' do 
   'showAllCalendar'
 end
+
 post '/showOnly.json' do 
   logger.debug(params)
   events = Calendar.show_only(params['id'])
-  my_events = events.map { |e| e.to_mycalendar }
+  my_events = events.flatten.map { |e| e.to_mycalendar }
+  logger.debug("showOnly.events size <#{my_events.size}>")
   data = {'total' =>  my_events.size, 'results' => my_events }
-  logger.debug("showOnly.events size <#{data}>")
+
   haml data.to_json, :layout => false
 end
 
-post '/createUpdateCalendar.json' do 
+post '/createUpdate.json' do 
   'createUpdateCalendar'
 end
 post '/deleteEventsByCalendar.json' do 

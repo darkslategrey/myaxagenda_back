@@ -22,23 +22,31 @@ class Event < ActiveRecord::Base
   # has_one :event_type, :foreign_key => 'fk_action'
 
   def end_hour
-    hour = DateTime.parse(self.datep.to_s).hour
     hour_s = ''
-    if(hour < 10)
-      hour_s = '0'+hour.to_s
-    else
-      hour_s = hour.to_s
+    begin
+      hour = DateTime.parse(self.datep.to_s).hour
+      if(hour < 10)
+        hour_s = '0'+hour.to_s
+      else
+        hour_s = hour.to_s
+      end
+    rescue ArgumentError
+      hour_s = '00'
     end
     hour_s
   end
 
   def end_minute
-    minute = DateTime.parse(self.datep.to_s).minute
     minute_s = ''
-    if(minute < 10)
-      minute_s = '0'+minute.to_s
-    else
-      minute_s = minute.to_s
+    begin
+      minute = DateTime.parse(self.datep.to_s).minute
+      if(minute < 10)
+        minute_s = '0'+minute.to_s
+      else
+        minute_s = minute.to_s
+      end
+    rescue ArgumentError
+      minute_s = '00'
     end
     minute_s
   end
@@ -142,7 +150,7 @@ class Event < ActiveRecord::Base
       "color" =>  "orange",
       "ymd" =>  Date.parse(self.start_date.to_s),
       "description" =>  self.note.nil? ? '' : self.note.gsub(/\n/, ' '),
-      "eymd" => Date.parse(self.end_date.to_s),
+      "eymd" => self.end_date.nil? ? '' : Date.parse(self.end_date.to_s),
       "locked" =>  false }
     my_json
   end

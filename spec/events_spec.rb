@@ -1,4 +1,6 @@
 require 'active_record'
+require 'logger'
+
 require File.join(File.dirname(__FILE__), "/../models/calendar.rb")
 require File.join(File.dirname(__FILE__), "/../models/event.rb")
 
@@ -22,19 +24,19 @@ describe "Event" do
   #   res['success'].should == true
   # end
 
-  it "show all the events" do
-    require 'net/http'
-    uri = URI('http://localhost:6789/fakeData/listEvent.json')
-    res = JSON.parse(Net::HTTP.get(uri))
-    puts res
-  end
-
-  # it 'Show only Jobenfance regie' do
+  # it "show all the events" do
   #   require 'net/http'
-  #   uri = URI('http://localhost:6789/showOnly.json')
-  #   params = {'id' => 2, 'userId' => 1 }
-  #   res = JSON.parse(Net::HTTP.post_form(uri, params).body)
-  #   res['total'].should > 0
+  #   uri = URI('http://localhost:6789/fakeData/listEvent.json')
+  #   res = JSON.parse(Net::HTTP.get(uri))
+  #   puts res
   # end
+
+  it 'Show only Jobenfance regie' do
+    require 'net/http'
+    uri = URI('http://localhost:6789/showOnly.json')
+    params = {'id' => 5, 'userId' => 1 }
+    res = JSON.parse(Net::HTTP.post_form(uri, params).body)
+    puts res # res['total'].should > 0
+  end
 
 end
