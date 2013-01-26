@@ -24,7 +24,7 @@ enable :logging
 logger = Logger.new(STDOUT)
 
 set :port, 6789
-set :database_file, './config/databases.yml'
+
 # ActiveRecord::Base.timestamped_migrations = false
 
 post '/search.json' do 

@@ -1,5 +1,10 @@
+ENV['RACK_ENV'] = 'jobenfance'
 require 'sinatra/activerecord/rake'
 require './back_srv.rb'
+
+# to run tasks: $ RACK_ENV=jobenfance rake taks
+
+set :database_file, './config/databases.yml'
 
 desc "run irb console"
 task :console, :environment do |t, args|
