@@ -17,3 +17,10 @@ jobdependance:
   reconnect: false
   database: dolibarr-new
   socket: /var/run/mysqld/mysqld.sock
+
+calendars:
+  adapter: sqlite3
+  database: db/calendars.sqlite3
+  pool: 5
+  timeout: 5000
+

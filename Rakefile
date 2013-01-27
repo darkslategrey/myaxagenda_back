@@ -1,4 +1,4 @@
-ENV['RACK_ENV'] = 'jobenfance'
+ENV['RACK_ENV'] = 'calendars' # 'jobenfance'
 require 'sinatra/activerecord/rake'
 require './back_srv.rb'
 

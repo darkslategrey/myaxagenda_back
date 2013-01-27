@@ -21,7 +21,7 @@ require './models/regie_je.rb'
 require './models/regie_jd.rb'
 
 enable :logging
-logger = Logger.new(STDOUT)
+# logger = Logger.new(STDOUT)
 
 set :port, 6789
 
@@ -45,8 +45,10 @@ post '/showOnly.json' do
 end
 
 post '/createUpdate.json' do 
+  logger.deubg("CreateUpdateCalendar")
   'createUpdateCalendar'
 end
+
 post '/deleteEventsByCalendar.json' do 
   'deleteEventsByCalendar'
 end

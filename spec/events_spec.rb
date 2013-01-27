@@ -31,10 +31,23 @@ describe "Event" do
   #   puts res
   # end
 
-  it 'Show only Jobenfance regie' do
+  # it 'Show only Jobenfance regie' do
+  #   require 'net/http'
+  #   uri = URI('http://localhost:6789/showOnly.json')
+  #   params = {'id' => 5, 'userId' => 1 }
+  #   res = JSON.parse(Net::HTTP.post_form(uri, params).body)
+  #   puts res # res['total'].should > 0
+  # end
+
+  it 'Create update calendar' do
     require 'net/http'
-    uri = URI('http://localhost:6789/showOnly.json')
-    params = {'id' => 5, 'userId' => 1 }
+    uri = URI('http://localhost:6789/createUpdate.json')
+    params = { 'id'=>4,
+      'name'=>'Actions Job Enfance',
+      'description'=>'Actions Job Enfance',
+      'color'=>'green',
+      'hide'=>'true',
+      'userId'=>1 }
     res = JSON.parse(Net::HTTP.post_form(uri, params).body)
     puts res # res['total'].should > 0
   end

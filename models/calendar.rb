@@ -1,5 +1,8 @@
 class Calendar < ActiveRecord::Base
 
+  @@db_config = YAML.load_file(File.join(File.dirname(__FILE__), '../config/databases.yml'))
+  establish_connection @@db_config['calendars']
+
   REGIE_JOBENFANCE      = 1
   REGIE_JOBDEPENDANCE   = 2
   ACTIONS_JOBENFANCE    = 3
