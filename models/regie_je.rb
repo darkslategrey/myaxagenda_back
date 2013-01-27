@@ -1,2 +1,0 @@
-class RegieJe < EventJe
-end

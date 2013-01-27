@@ -6,22 +6,25 @@ require 'sinatra/activerecord'
 require 'haml'
 require 'logger'
 
+require './helpers/utils.rb'
+
 require './models/calendar.rb'
 require './models/event.rb'
 require './controllers/events.rb'
 
-require './models/event_type.rb'
-require './models/event_type_je.rb'
-require './models/event_type_jd.rb'
+require './models/event_types.rb'
+# require './models/event_type_je.rb'
+# require './models/event_type_jd.rb'
 
 require './models/event_je.rb'
 require './models/event_jd.rb'
 
-require './models/regie_je.rb'
-require './models/regie_jd.rb'
+# require './models/regie_je.rb'
+# require './models/regie_jd.rb'
 
-enable :logging
-# logger = Logger.new(STDOUT)
+disable :logging
+
+logger = Logger.new(STDOUT)
 
 set :port, 6789
 
@@ -37,16 +40,21 @@ end
 post '/showOnly.json' do 
   logger.debug(params)
   events = Calendar.show_only(params['id'])
-  my_events = events.flatten.map { |e| e.to_mycalendar }
+  my_events = events.map { |e| e.to_mycalendar }
   logger.debug("showOnly.events size <#{my_events.size}>")
-  data = {'total' =>  my_events.size, 'results' => my_events }
+  data = {'total' =>  my_events.size, 'results' => my_events, 'success' => true }
 
   haml data.to_json, :layout => false
 end
 
 post '/createUpdate.json' do 
-  logger.deubg("CreateUpdateCalendar")
-  'createUpdateCalendar'
+  logger.debug("CreateUpdateCalendar")
+  Calendar.updateCreate(params)
+  events = Calendar.get_events
+  my_events = events.map { |e| e.to_mycalendar }
+  logger.debug("createUpdateCalendar events size <#{my_events.size}>")
+  data = {'total' =>  my_events.size, 'results' => my_events, 'success' => true }
+  haml data.to_json, :layout => false
 end
 
 post '/deleteEventsByCalendar.json' do 
@@ -108,7 +116,9 @@ end
 
 
 get '/fakeData/listEvent.json' do
-  events = EventsController.find_by_month(DateTime.current)
+  Calendar.set_all_visible
+  events = Calendar.get_events
+  # events = EventsController.find_by_month(DateTime.current)
   logger.debug("total events #{events.size}")
   my_events = events.map { |e| e.to_mycalendar }
   data = {'total' =>  my_events.size, 'results' => my_events }

@@ -27,4 +27,10 @@ class EventsController
     @@logger.debug(": total : #{all_events.size}")
     all_events
   end
+
+  def self.find_by_calendar(id)
+
+  end
+
+
 end
