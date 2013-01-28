@@ -55,20 +55,21 @@ class Calendar < ActiveRecord::Base
 
   def self.show_only(id)
     events = []
+    params = {}
     Calendar.find(id.to_i).update_attributes!({ :hide => false })
     case id.to_i
     when Calendar::REGIE_JOBDEPENDANCE
       @@mylogger.debug("regie_jobdependance")
-      events = EventTypeJd.get_regies
+      events = EventTypeJd.get_regies(params)
     when Calendar::REGIE_JOBENFANCE
       @@mylogger.debug("regie_jobenfance")
-      events = EventTypeJe.get_regies
+      events = EventTypeJe.get_regies(params)
     when Calendar::ACTIONS_JOBDEPENDANCE
       @@mylogger.debug("actions jobdependance")
-      events = EventTypeJd.get_actions
+      events = EventTypeJd.get_actions(params)
     when Calendar::ACTIONS_JOBENFANCE
       @@mylogger.debug("actions jobenfance")
-      events = EventTypeJe.get_actions
+      events = EventTypeJe.get_actions(params)
     else
       @@mylogger.debug("Calendar type not found <#{id}>")
     end

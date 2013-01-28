@@ -20,7 +20,7 @@ class EventTypeJe < EventType
   has_many :events, :foreign_key => 'fk_action', :class_name => 'EventJe'
   # has_many :regies, :foreign_key => 'fk_action', :class_name => 'EventJe', :conditions => 'code = "AC_RJE"'
 
-  def self.get_actions
+  def self.get_actions(params={})
     return [] if Calendar.find(Calendar::ACTIONS_JOBENFANCE).hide
     date = DateTime.current
     prev_month = date - 1.month
@@ -38,7 +38,7 @@ class EventTypeJe < EventType
     actions.to_a.flatten
   end
 
-  def self.get_regies
+  def self.get_regies(params={})
     return [] if Calendar.find(Calendar::REGIE_JOBENFANCE).hide
     date = DateTime.current
     prev_month = date - 1.month
@@ -56,7 +56,7 @@ class EventTypeJd < EventType
   has_many :events, :foreign_key => 'fk_action', :class_name => 'EventJd'
 
 
-  def self.get_actions
+  def self.get_actions(params={})
     return [] if Calendar.find(Calendar::ACTIONS_JOBDEPENDANCE).hide
     date = DateTime.current
     prev_month = date - 1.month
@@ -89,12 +89,12 @@ class EventTypeJd < EventType
   #   actions.to_a.flatten
   # end
 
-  def self.get_regies
+  def self.get_regies(params={})
     return [] if Calendar.find(Calendar::REGIE_JOBDEPENDANCE).hide
     date = DateTime.current
     prev_month = date - 1.month
     next_month = date + 1.month
-
+    
     ev_type = where('code = "AC_REGIE"').first
     if not ev_type.nil?
       events = ev_type.events
