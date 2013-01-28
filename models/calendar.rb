@@ -9,7 +9,7 @@ class Calendar < ActiveRecord::Base
   ACTIONS_JOBENFANCE    = 3
   ACTIONS_JOBDEPENDANCE = 4
 
-  @@logger = Logger.new(STDOUT)
+  @@mylogger = Logger.new(STDOUT)
 
 
   def self.updateCreate(params)
@@ -39,19 +39,19 @@ class Calendar < ActiveRecord::Base
     Calendar.find(id.to_i).update_attributes!({ :hide => false })
     case id.to_i
     when Calendar::REGIE_JOBDEPENDANCE
-      @@logger.debug("regie_jobdependance")
+      @@mylogger.debug("regie_jobdependance")
       events = EventTypeJd.get_regies
     when Calendar::REGIE_JOBENFANCE
-      @@logger.debug("regie_jobenfance")
+      @@mylogger.debug("regie_jobenfance")
       events = EventTypeJe.get_regies
     when Calendar::ACTIONS_JOBDEPENDANCE
-      @@logger.debug("actions jobdependance")
+      @@mylogger.debug("actions jobdependance")
       events = EventTypeJd.get_actions
     when Calendar::ACTIONS_JOBENFANCE
-      @@logger.debug("actions jobenfance")
+      @@mylogger.debug("actions jobenfance")
       events = EventTypeJe.get_actions
     else
-      @@logger.debug("Calendar type not found <#{id}>")
+      @@mylogger.debug("Calendar type not found <#{id}>")
     end
     events
   end

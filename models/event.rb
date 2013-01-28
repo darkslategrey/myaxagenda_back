@@ -4,7 +4,7 @@ class Event < ActiveRecord::Base
   @@db_config = YAML.load_file(File.join(File.dirname(__FILE__), '../config/databases.yml'))
   establish_connection @@db_config['jobenfance']
 
-  logger    = Logger.new(STDOUT)
+  @@mylogger    = Logger.new(STDOUT)
   # ActiveRecord::Base.logger = logger
   attr_accessor :cal_id
   # @cal_id = nil

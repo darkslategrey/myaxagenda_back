@@ -24,7 +24,7 @@ require './models/event_jd.rb'
 
 disable :logging
 
-logger = Logger.new(STDOUT)
+mylogger = Logger.new(STDOUT)
 
 set :port, 6789
 
@@ -38,21 +38,21 @@ post '/showAllCalendar.json' do
 end
 
 post '/showOnly.json' do 
-  logger.debug(params)
+  mylogger.debug(params)
   events = Calendar.show_only(params['id'])
   my_events = events.map { |e| e.to_mycalendar }
-  logger.debug("showOnly.events size <#{my_events.size}>")
+  mylogger.debug("showOnly.events size <#{my_events.size}>")
   data = {'total' =>  my_events.size, 'results' => my_events, 'success' => true }
 
   haml data.to_json, :layout => false
 end
 
 post '/createUpdate.json' do 
-  logger.debug("CreateUpdateCalendar")
+  mylogger.debug("CreateUpdateCalendar")
   Calendar.updateCreate(params)
   events = Calendar.get_events
   my_events = events.map { |e| e.to_mycalendar }
-  logger.debug("createUpdateCalendar events size <#{my_events.size}>")
+  mylogger.debug("createUpdateCalendar events size <#{my_events.size}>")
   data = {'total' =>  my_events.size, 'results' => my_events, 'success' => true }
   haml data.to_json, :layout => false
 end
@@ -74,10 +74,10 @@ post '/loadRepeatEvent.json' do
 end
 
 post '/createEditEvent.json' do 
-  logger.debug(params)
+  mylogger.debug(params)
   res = Event.create_update(Event.to_doli(params.to_json))
   data = { 'success' => res, 'errorInfo' => '' }
-  logger.debug(data)
+  mylogger.debug(data)
   haml data.to_json, :layout => false
 end
 
@@ -107,7 +107,7 @@ post '/updateSetting.json' do
 end
 
 post '/createUpdateRepeatEvent.json' do 
-  logger.debug(params)
+  mylogger.debug(params)
 end
 
 post '/listUser.json' do 
@@ -119,9 +119,9 @@ get '/fakeData/listEvent.json' do
   Calendar.set_all_visible
   events = Calendar.get_events
   # events = EventsController.find_by_month(DateTime.current)
-  logger.debug("total events #{events.size}")
+  mylogger.debug("total events #{events.size}")
   my_events = events.map { |e| e.to_mycalendar }
-  data = {'total' =>  my_events.size, 'results' => my_events }
+  data = {'total' =>  my_events.size, 'results' => my_events, 'success' => true }
   haml data.to_json, :layout => false
 end
 

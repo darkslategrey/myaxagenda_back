@@ -7,6 +7,9 @@ def json_pp(json_data)
 end
 
 
+json_pp(ARGV[0])
+
+
 
 
 
