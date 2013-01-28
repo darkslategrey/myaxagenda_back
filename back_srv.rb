@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-require 'active_record'
+
 require 'rubygems'
 require 'sinatra'
 require 'sinatra/activerecord'
@@ -7,7 +7,7 @@ require 'haml'
 require 'logger'
 
 require './helpers/utils.rb'
-
+require 'active_record'
 require './models/calendar.rb'
 require './models/event.rb'
 require './controllers/events.rb'

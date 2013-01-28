@@ -14,3 +14,7 @@ capybara-*.html
 **.orig
 rerun.txt
 pickle-email-*.html
+**~
+.add_env_done
+config/databases.yml
+

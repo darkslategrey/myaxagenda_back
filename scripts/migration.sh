@@ -15,6 +15,6 @@ then
     touch .add_env_done
 fi
 
-action=$1 # migrate or rollback
+# action=$1 # migrate or rollback
 
-for i in jobenfance jobdependance; do echo $i; RACK_ENV=$i rake db:my_${action};done
+# for i in jobenfance jobdependance; do echo $i; RACK_ENV=$i rake db:my_${action};done
