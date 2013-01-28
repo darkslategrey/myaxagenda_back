@@ -108,6 +108,7 @@ end
 
 post '/createUpdateRepeatEvent.json' do 
   mylogger.debug(params)
+  Calendar.createUpdateRepeatEvent(params)
 end
 
 post '/listUser.json' do 
@@ -117,7 +118,7 @@ end
 
 get '/fakeData/listEvent.json' do
   Calendar.set_all_visible
-  events = Calendar.get_events
+  events = Calendar.get_events(params)
   # events = EventsController.find_by_month(DateTime.current)
   mylogger.debug("total events #{events.size}")
   my_events = events.map { |e| e.to_mycalendar }

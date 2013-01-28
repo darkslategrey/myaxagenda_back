@@ -194,6 +194,20 @@ subject:Test Création évènement
 description:ça c'est la description du de l'évènement
 userId:1
 
+=== CreateUpdateRepeatEvent === 
+calendarId:3
+startDay:2012-11-15
+endDay:2013-01-10
+startHMTime:11:00
+endHMTime:24:00
+repeatType:{"rtype":"week","intervalSlot":1,"dspan":56,"beginDay":"2012-11-15","endDay":"no","rday":{"2":true,"3":true,"4":true}}
+alertFlag:[{"type":"popup","early":30,"unit":"minute"}]
+locked:false
+subject:Appel tel et/ relance
+description:
+userId:1
+id:661
+oldRepeatType:no
 
 
 === Mise à jour evenement ===

@@ -12,6 +12,25 @@ class Calendar < ActiveRecord::Base
   @@mylogger = Logger.new(STDOUT)
 
 
+  def self.createUpdateRepeatEvent(params={})
+
+    klass = Utils.cal_to_class(params['calendarId'])
+    # calendarId:3
+    # startDay:2012-11-15
+    # endDay:2013-01-10
+    # startHMTime:11:00
+    # endHMTime:24:00
+    # repeatType:{"rtype":"week","intervalSlot":1,"dspan":56,"beginDay":"2012-11-15","endDay":"no","rday":{"2":true,"3":true,"4":true}}
+    # alertFlag:[{"type":"popup","early":30,"unit":"minute"}]
+    # locked:false
+    # subject:Appel tel et/ relance
+    # description:
+    #   userId:1
+    # id:661
+    # oldRepeatType:no
+
+  end
+
   def self.updateCreate(params)
     params.delete('userId')
     calendar = Calendar.find(params['id'])
@@ -24,13 +43,13 @@ class Calendar < ActiveRecord::Base
     }
   end
 
-  def self.get_events
+  def self.get_events(params={})
     events = []
-    events += EventTypeJd.get_regies
-    events += EventTypeJd.get_actions
+    events += EventTypeJd.get_regies(params)
+    events += EventTypeJd.get_actions(params)
 
-    events += EventTypeJe.get_regies
-    events += EventTypeJe.get_actions
+    events += EventTypeJe.get_regies(params)
+    events += EventTypeJe.get_actions(params)
     events.flatten
   end
 
