@@ -5,8 +5,8 @@ jobenfance:
   password: admin
   pool: 10
   reconnect: false
-  database: dolibarr-integ
-  socket: /var/run/mysqld/mysqld.sock
+  database: axagenda-jobenfance
+  # socket: /var/run/mysqld/mysqld.sock
 
 jobdependance:
   adapter: mysql2
@@ -15,8 +15,8 @@ jobdependance:
   password: admin
   pool: 10
   reconnect: false
-  database: dolibarr-new
-  socket: /var/run/mysqld/mysqld.sock
+  database: axagenda-jobdependance
+  #   socket: /var/run/mysqld/mysqld.sock
 
 calendars:
   adapter: sqlite3

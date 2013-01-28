@@ -1,4 +1,5 @@
 class EventType < ActiveRecord::Base
+
   @@db_config = YAML.load_file(File.join(File.dirname(__FILE__), '../config/databases.yml'))
   establish_connection @@db_config['jobenfance']
 
@@ -8,6 +9,10 @@ class EventType < ActiveRecord::Base
   self.inheritance_column = "not_sti"
   self.table_name = 'llx_c_actioncomm'
   self.primary_key = 'id'
+
+  # to be able to set ids
+  attr_accessible :id, :code, :type, :libelle, :module, :active, :todo, :position
+
 end
 
 
