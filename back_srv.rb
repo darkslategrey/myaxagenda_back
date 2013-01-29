@@ -30,6 +30,14 @@ set :port, 6789
 
 # ActiveRecord::Base.timestamped_migrations = false
 
+after do
+  EventJe.clear_active_connections!
+  EventJd.clear_active_connections!
+  EventTypeJe.clear_active_connections!
+  EventTypeJd.clear_active_connections!
+end
+
+
 post '/search.json' do 
   'search'
 end
