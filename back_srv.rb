@@ -18,6 +18,7 @@ require './models/event_type.rb'
 require './models/event_type_je.rb'
 require './models/event_type_jd.rb'
 
+require './models/event.rb'
 require './models/event_je.rb'
 require './models/event_jd.rb'
 
@@ -37,7 +38,10 @@ set :port, 6789
 # ActiveRecord::Base.timestamped_migrations = false
 
 before do
-  mylogger.debug("IN THE BEFORE")
+  mylogger.debug("IN THE BEFORE <"+request.url.to_s)
+  JdDB.clear_active_connections!
+  JeDB.clear_active_connections!
+
   # EventJe.clear_active_connections!
   # EventJd.clear_active_connections!
   # EventTypeJe.clear_active_connections!
@@ -48,6 +52,8 @@ end
 
 after do
   mylogger.debug("IN THE AFTER")
+  JdDB.clear_active_connections!
+  JeDB.clear_active_connections!
   # EventJe.clear_active_connections!
   # EventJd.clear_active_connections!
   # EventTypeJe.clear_active_connections!

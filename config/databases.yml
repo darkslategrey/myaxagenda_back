@@ -3,7 +3,7 @@ jobenfance:
   host: localhost
   username: root
   password: admin
-  pool: 10
+  pool: 100
   # reconnect: false
   database: dolibarr-integ
   # socket: /var/run/mysqld/mysqld.sock
@@ -13,7 +13,7 @@ jobdependance:
   host: localhost
   username: root
   password: admin
-  pool: 10
+  pool: 100
   # reconnect: false
   database: dolibarr-new
   #   socket: /var/run/mysqld/mysqld.sock

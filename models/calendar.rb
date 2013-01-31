@@ -44,11 +44,11 @@ class Calendar < ActiveRecord::Base
 
   def self.get_events(params={})
     events = []
-    events += EventTypeJd.get_regies(params)
-    events += EventTypeJd.get_actions(params)
+    events += EventTypeJd.first.get_regies(Calendar::REGIE_JOBDEPENDANCE)
+    events += EventTypeJd.first.get_actions(Calendar::ACTIONS_JOBDEPENDANCE)
 
-    events += EventTypeJe.get_regies(params)
-    events += EventTypeJe.get_actions(params)
+    events += EventTypeJe.first.get_regies(Calendar::REGIE_JOBENFANCE)
+    events += EventTypeJe.first.get_actions(Calendar::ACTIONS_JOBENFANCE)
     events.flatten
   end
 
@@ -59,16 +59,16 @@ class Calendar < ActiveRecord::Base
     case id.to_i
     when Calendar::REGIE_JOBDEPENDANCE
       @@mylogger.debug("regie_jobdependance")
-      events = EventTypeJd.get_regies(params)
+      events = EventTypeJd.first.get_regies(Calendar::REGIE_JOBDEPENDANCE)
     when Calendar::REGIE_JOBENFANCE
       @@mylogger.debug("regie_jobenfance")
-      events = EventTypeJe.get_regies(params)
+      events = EventTypeJe.first.get_regies(Calendar::REGIE_JOBENFANCE)
     when Calendar::ACTIONS_JOBDEPENDANCE
       @@mylogger.debug("actions jobdependance")
-      events = EventTypeJd.get_actions(params)
+      events = EventTypeJd.first.get_actions(Calendar::ACTIONS_JOBDEPENDANCE)
     when Calendar::ACTIONS_JOBENFANCE
       @@mylogger.debug("actions jobenfance")
-      events = EventTypeJe.get_actions(params)
+      events = EventTypeJe.first.get_actions(Calendar::ACTIONS_JOBENFANCE)
     else
       @@mylogger.debug("Calendar type not found <#{id}>")
     end

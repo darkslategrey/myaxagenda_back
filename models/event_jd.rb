@@ -1,4 +1,5 @@
 class EventJd < JdDB
+  include Event
   attr_accessor :cal_id
   # @cal_id = nil
 
