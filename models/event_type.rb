@@ -7,15 +7,15 @@ module EventType
     prev_month = date - 1.month
     next_month = date + 1.month
     actions = []
-    ev_types = EventTypeJd.where('code != "AC_REGIE"')
-    @@mylogger.debug("JD get action EVENT TYOE <#{ev_types}>")
+    ev_types = eval(self.class.name).where('code != "AC_REGIE"')
+    @@mylogger.debug("#{self.class.name}: get actions EVENT TYPE <#{ev_types.to_s}>")
     if not ev_types.nil?
       actions = ev_types.to_a.map { |et|
         events = et.events.where("datep < '" + next_month.to_s + "' and datep > '" + prev_month.to_s + "'") || []
         events 
       }.compact
     end
-    @@mylogger.debug("#{actions.size} actions found, class #{actions.class}")
+    @@mylogger.debug("#{self.class.name}: nbr d'actions : #{actions.size}")
     actions.to_a.flatten.map { |e| e.cal_id = cal_id }
     actions.to_a.flatten
   end
@@ -28,8 +28,8 @@ module EventType
     prev_month = date - 1.month
     next_month = date + 1.month
     
-    ev_type = EventTypeJd.where('code = "AC_REGIE"').first
-    @@mylogger.debug("JD get regie EVENT TYOE <#{ev_type}>")
+    ev_type = eval(self.class.name).where('code = "AC_REGIE"').first
+    @@mylogger.debug("#{self.class.name}: get regies EVENT TYPE <#{ev_type.to_s}>")
     if not ev_type.nil?
       events = ev_type.events
     end
