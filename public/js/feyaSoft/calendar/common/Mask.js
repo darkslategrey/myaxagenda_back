@@ -276,9 +276,9 @@ Ext.ux.calendar.Mask = {
         ['year', 'Annuel']
     ],
 
-    colors:['668CD9', 'D96666', '59BFB3', 'F2A442', '4CB052', 'B373B3'],
+    colors:['668CD9', 'D96666', '59BFB3', 'F2A442', '4CB052', 'B373B3', 'E01B1B', '040480'],
 
-    colorIndex:["bleu", "rouge", "cyan", "orange", "vert", "parme"],
+    colorIndex:["bleu", "rouge", "cyan", "orange", "vert", "parme", "rougevif", "bleumarine"],
 
     getMinute:function(t, u){
         t = parseInt(t);
