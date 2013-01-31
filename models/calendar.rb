@@ -76,4 +76,38 @@ class Calendar < ActiveRecord::Base
     events
   end
 
+  def self.get_all_users
+    all_users = []
+    JeUser.all.each { |u| 
+      all_users.push({ 'completename' => u.firstname + ' ' + u.name, 'firstname' => u.firstname, 'name' => u.name, 'rowid' => u.rowid.to_s + '#je'})
+    }
+    JdUser.all.each { |u|
+      all_users.push({ 'completename' => u.firstname + ' ' + u.name, 'firstname' => u.firstname, 'name' => u.name, 'rowid' => u.rowid.to_s + '#jd'})
+    }
+    all_users
+  end
+
+
+  def self.get_events_by_user(params)
+    user_id, db = params['user_id'].split('#')
+    user_id = user_id.to_i
+    filtername = params['combo_name']
+    klass = ''
+    if db == 'je'
+      klass = eval('JeUser')
+    else
+      klass = eval('JdUser')
+    end
+    
+    case filtername
+    when 'userasked'
+      events = klass.find(user_id).events_author
+    when 'userdone'
+      events = klass.find(user_id).events_done
+    when 'usertodo'
+      events = klass.find(user_id).events_todo
+    end
+    events
+  end
+  
 end

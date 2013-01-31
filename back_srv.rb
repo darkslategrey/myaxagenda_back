@@ -8,6 +8,7 @@ require 'logger'
 
 require './helpers/utils.rb'
 require 'active_record'
+require './models/users.rb'
 require './models/calendar.rb'
 require './models/event.rb'
 require './controllers/events.rb'
@@ -15,6 +16,8 @@ require './controllers/events.rb'
 require './models/event_types.rb'
 # require './models/event_type_je.rb'
 # require './models/event_type_jd.rb'
+
+
 
 require './models/event_je.rb'
 require './models/event_jd.rb'
@@ -28,13 +31,46 @@ mylogger = Logger.new(STDOUT)
 
 set :port, 6789
 
+# EM::threadpool_size = 10
+
 # ActiveRecord::Base.timestamped_migrations = false
 
-after do
+before do
+  mylogger.debug("IN THE BEFORE")
   EventJe.clear_active_connections!
   EventJd.clear_active_connections!
   EventTypeJe.clear_active_connections!
   EventTypeJd.clear_active_connections!
+  JeUser.clear_active_connections!
+  JdUser.clear_active_connections!
+end
+
+after do
+  mylogger.debug("IN THE AFTER")
+  EventJe.clear_active_connections!
+  EventJd.clear_active_connections!
+  EventTypeJe.clear_active_connections!
+  EventTypeJd.clear_active_connections!
+  JeUser.clear_active_connections!
+  JdUser.clear_active_connections!
+end
+
+
+# params : user_id : id#[je|jd]
+#          combo_name: [userasked|usertodo|userdone]
+post '/showOnlyUserEvent.json' do
+  events = Calendar.get_events_by_user(params)
+  my_events = events.map { |e| e.to_mycalendar }
+  mylogger.debug("showOnlyUserEvent: size <#{my_events.size}>")
+  data = {'total' =>  my_events.size, 'results' => my_events, 'success' => true }
+  haml data.to_json, :layout => false
+end
+
+post '/users.json' do
+  mylogger.debug("get users")
+  all_users = Calendar.get_all_users
+  data = { 'success' => true, 'users' => all_users }
+  haml data.to_json, :layout => false
 end
 
 
