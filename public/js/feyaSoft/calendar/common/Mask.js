@@ -269,7 +269,7 @@ Ext.ux.calendar.Mask = {
     },
 
     repeatType:[
-        ['no', 'Non répeété'],
+        ['no', 'Non'],
         ['day', 'Quotitien'],
         ['week', 'Hebdomadaire'],
         ['month', 'Mensuel'],

@@ -88055,7 +88055,7 @@ Ext.define('Ext.picker.Date', {
 
     
     
-    todayText : 'Today',
+    todayText : 'Aujourd\'hui',
     
     
     

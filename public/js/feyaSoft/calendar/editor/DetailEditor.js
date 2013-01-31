@@ -19,6 +19,30 @@
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+Ext.define('User', {
+    extend: 'Ext.data.Model',
+    fields: [
+	{ name: 'completename', type: 'string' },
+	{ name: 'firstname', type: 'string' },
+	{ name: 'name',      type: 'string' },
+	{ name: 'rowid',     type: 'string' }
+    ]
+});
+
+var calUsers = Ext.create('Ext.data.Store', {
+    model: 'User',
+    proxy: {
+	type: 'ajax',
+	url: document.URL + '/users',
+	reader: {
+	    type: 'json',
+	    root: 'users',
+	    successProperty: 'success'
+	}
+    },
+    autoLoad: true
+});
+
 Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 	
 	extend : 'Ext.ux.calendar.view.BasicView',
@@ -26,6 +50,27 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 	initComponent : function() {
 		this.ehandler.applyCalendarSetting(this);
 		var lan = Ext.ux.calendar.Mask.Editor;
+
+	    this.usertodoLabel = this.usertodoLabel || Ext.create('Ext.form.Label', {text: 'Affectés à' });
+	    this.usertodoCombo = this.usertodoCombo || Ext.create('Ext.form.ComboBox', {
+		hiddenName: 'usertodo',
+		fieldLabel: '',
+		store: calUsers,
+		queryMode: 'local',
+		displayField: 'completename',
+		valueField: 'rowid',
+		renderTo: Ext.getBody()
+	    });
+	    this.userdoneLabel = this.userdoneLabel || Ext.create('Ext.form.Label', {text: 'Réalisés par' });
+	    this.userdoneCombo = this.userdoneCombo || Ext.create('Ext.form.ComboBox', {
+		hiddenName: 'userdone',
+		fieldLabel: '',
+		store: calUsers,
+		queryMode: 'local',
+		displayField: 'completename',
+		valueField: 'rowid',
+		renderTo: Ext.getBody()
+	    });
 
 		this.startDayField = this.startDayField
 				|| Ext.create('Ext.form.DateField', {
@@ -367,6 +412,10 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 							labelWidth : 80,
 							items : [this.timepanel, this.subjectField,
 									this.contentField, 
+								 this.usertodoLabel,
+								 this.usertodoCombo,
+								 this.userdoneLabel,
+								 this.userdoneCombo,
 								 this.fileUploadBasic,
 								 this.calendarField,
 									this.alertCB, this.alertContainer,
