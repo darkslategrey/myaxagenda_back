@@ -8,22 +8,23 @@ require 'logger'
 
 require './helpers/utils.rb'
 require 'active_record'
-require './models/users.rb'
+
+require './models/jd_db.rb'
+require './models/je_db.rb'
+
 require './models/calendar.rb'
-require './models/event.rb'
-require './controllers/events.rb'
 
-require './models/event_types.rb'
-# require './models/event_type_je.rb'
-# require './models/event_type_jd.rb'
-
-
+require './models/event_type.rb'
+require './models/event_type_je.rb'
+require './models/event_type_jd.rb'
 
 require './models/event_je.rb'
 require './models/event_jd.rb'
 
-# require './models/regie_je.rb'
-# require './models/regie_jd.rb'
+require './models/jd_user.rb'
+require './models/je_user.rb'
+
+require './controllers/events.rb'
 
 disable :logging
 
@@ -37,22 +38,22 @@ set :port, 6789
 
 before do
   mylogger.debug("IN THE BEFORE")
-  EventJe.clear_active_connections!
-  EventJd.clear_active_connections!
-  EventTypeJe.clear_active_connections!
-  EventTypeJd.clear_active_connections!
-  JeUser.clear_active_connections!
-  JdUser.clear_active_connections!
+  # EventJe.clear_active_connections!
+  # EventJd.clear_active_connections!
+  # EventTypeJe.clear_active_connections!
+  # EventTypeJd.clear_active_connections!
+  # JeUser.clear_active_connections!
+  # JdUser.clear_active_connections!
 end
 
 after do
   mylogger.debug("IN THE AFTER")
-  EventJe.clear_active_connections!
-  EventJd.clear_active_connections!
-  EventTypeJe.clear_active_connections!
-  EventTypeJd.clear_active_connections!
-  JeUser.clear_active_connections!
-  JdUser.clear_active_connections!
+  # EventJe.clear_active_connections!
+  # EventJd.clear_active_connections!
+  # EventTypeJe.clear_active_connections!
+  # EventTypeJd.clear_active_connections!
+  # JeUser.clear_active_connections!
+  # JdUser.clear_active_connections!
 end
 
 

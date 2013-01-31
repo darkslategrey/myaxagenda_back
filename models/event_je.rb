@@ -1,4 +1,11 @@
-class EventJe < Event
+class EventJe < JeDB
+  attr_accessor :cal_id
+  # @cal_id = nil
+
+  self.inheritance_column = "not_sti"
+  self.table_name = 'llx_actioncomm'
+  self.primary_key = 'id'
+
   @@cal_id = Calendar::ACTIONS_JOBENFANCE
 
   belongs_to :event_type, :foreign_key => 'fk_action', :class_name => 'EventTypeJe', :inverse_of => :events

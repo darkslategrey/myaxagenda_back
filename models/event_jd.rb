@@ -1,5 +1,11 @@
-class EventJd < Event
-  establish_connection @@db_config['jobdependance']
+class EventJd < JdDB
+  attr_accessor :cal_id
+  # @cal_id = nil
+
+  self.inheritance_column = "not_sti"
+  self.table_name = 'llx_actioncomm'
+  self.primary_key = 'id'
+
   # belongs_to :EventTypeJd, :class_name => "EventTypeJd", :inverse_of => :events
   belongs_to :event_type, :foreign_key => 'fk_action', :class_name => 'EventTypeJd', :inverse_of => :events
 
