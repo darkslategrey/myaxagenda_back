@@ -1,8 +1,52 @@
 %html
   %head
     %title Ax Agenda
+    %meta{'http-equiv' => "Content-Type", :content=>"text/html; iso-8859-1"}/
+    %meta{'http-equiv'=>"Cache-Control", :content=>"no-store"}/
+    %meta{'http-equiv'=>"Cache-Control", :content=>"no-cache"}/
+    %meta{'http-equiv'=>"Pragma", :content=>"no-cache, must-revalidate, no-store"}/
+    %link{:rel=>"shortcut icon", :href=>url("images/cubedriveIcon.png"), :type=>"image/x-icon"}
+    %link{:rel=>"stylesheet", :type=>"text/css", :href=>url("js/extjs/resources/css/ext-all.css")}
 
 
+    %script{:type=>"text/javascript", :src=>url("js/extjs/ext-all.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/common/CONST_RUBY.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/store/DataSource.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/util/SearchField.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/util/LabelField.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/util/DatePicker.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/multi-language/fr.js")}
+    -# %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/multi-language/en.js")} 
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/control/EventHandler.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/view/CalendarContainer.js")}
+    -# %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/view/Viewer-tabpanel.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/view/BasicView.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/view/MainPanel.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/view/CalendarWin.js")}
+    -# %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/view/Viewer-win.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/view/MonthView.js")}
+    -# %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/view/Viewer-DIV.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/view/Viewer.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/view/DayView.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/view/ResultView.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/view/layout/CalendarLayout.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/view/layout/Block.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/view/layout/LayoutGrid.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/view/layout/BlockMap.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/view/layout/Line.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/view/popup/SettingPopup.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/view/popup/ExpirePopup.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/view/WestPanel.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/common/RepeatType.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/common/LanManager.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/common/CommentTip.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/common/Mask.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/common/BackThread.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/editor/DetailEditor.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/editor/CalendarEditor.js")}
+    %script{:type=>"text/javascript", :src=>url("js/feyaSoft/calendar/editor/EventEditor.js")}
+    %script{:type=>"text/javascript", :src=>url("js/application.js")}
+    %link{:rel=>"stylesheet", :type=>"text/css", :href=>url("js/feyaSoft/calendar/css/calendar.css")}
+    
   %body
-    =yield
-
+    = yield

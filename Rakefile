@@ -12,7 +12,7 @@ require 'logger'
 # require './models/event_types.rb'
 # require './models/event_je.rb'
 # require './models/event_jd.rb'
-require './back_srv.rb'
+require './axagenda'
 require 'sinatra/activerecord/rake'
 
 # to run tasks: $ RACK_ENV=jobenfance rake taks

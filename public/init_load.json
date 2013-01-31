@@ -1,0 +1,132 @@
+{
+  "cs": [
+    {
+      "createByDblclick": false,
+      "monthFormat": "d/m",
+      "weekFormat": "d/m(D)",
+      "class": "CalendarSettingUIModel",
+      "hideInactiveRow": false,
+      "dayFormat": "l d M Y",
+      "fromtoFormat": "d/m/Y",
+      "id": "2",
+      "intervalSlot": "30",
+      "readOnly": false,
+      "hourFormat": "24",
+      "singleDay": false,
+      "startDay": "1",
+      "activeEndTime": "19:00",
+      "activeStartTime": "09:00",
+      "language": "fr"
+    },
+    {
+      "createByDblclick": false,
+      "monthFormat": "d/m",
+      "weekFormat": "d/m(D)",
+      "class": "CalendarSettingUIModel",
+      "hideInactiveRow": false,
+      "dayFormat": "l d M Y",
+      "fromtoFormat": "d/m/Y",
+      "id": "3",
+      "intervalSlot": "30",
+      "readOnly": false,
+      "hourFormat": "24",
+      "singleDay": false,
+      "startDay": "1",
+      "activeEndTime": "19:00",
+      "activeStartTime": "09:00",
+      "language": "fr"
+    },
+    {
+      "createByDblclick": false,
+      "monthFormat": "d/m",
+      "weekFormat": "d/m(D)",
+      "class": "CalendarSettingUIModel",
+      "hideInactiveRow": false,
+      "dayFormat": "l d M Y",
+      "fromtoFormat": "d/m/Y",
+      "id": "4",
+      "intervalSlot": "30",
+      "readOnly": false,
+      "hourFormat": "24",
+      "singleDay": false,
+      "startDay": "1",
+      "activeEndTime": "19:00",
+      "activeStartTime": "09:00",
+      "language": "fr"
+    },
+    {
+      "createByDblclick": false,
+      "monthFormat": "d/m",
+      "weekFormat": "d/m(D)",
+      "class": "CalendarSettingUIModel",
+      "hideInactiveRow": false,
+      "dayFormat": "l d M Y",
+      "fromtoFormat": "d/m/Y",
+      "id": "5",
+      "intervalSlot": "30",
+      "readOnly": false,
+      "hourFormat": "24",
+      "singleDay": false,
+      "startDay": "1",
+      "activeEndTime": "19:00",
+      "activeStartTime": "09:00",
+      "language": "fr"
+    }
+  ],
+  "owned": [
+    {
+      "shares": [
+      ],
+      "id": "1",
+      "hide": false,
+      "color": "red",
+      "description": 'Regie Job Enfance',
+      "permit": "all",
+      "name": "Regie Job Enfance",
+      "class": "CalendarTypeUIModel",
+      "isShared": false
+    },
+    {
+      "shares": [
+      ],
+      "id": "2",
+      "hide": false,
+      "color": "orange",
+      "description": 'Regie Job Dependance',
+      "permit": "all",
+      "name": "Regie Job Dependance",
+      "class": "CalendarTypeUIModel",
+      "isShared": false
+    },
+    {
+      "shares": [
+      ],
+      "id": "3",
+      "hide": false,
+      "color": "green",
+      "description": 'Actions Job Enfance',
+      "permit": "all",
+      "name": "Actions Job Enfance",
+      "class": "CalendarTypeUIModel",
+      "isShared": false
+    },
+    {
+      "shares": [
+      ],
+      "id": "4",
+      "hide": false,
+      "color": "purple",
+      "description": 'Actions Job Dependance',
+      "permit": "all",
+      "name": "Actions Job Dependance",
+      "class": "CalendarTypeUIModel",
+      "isShared": false
+    }
+  ],
+  "shared": [
+
+  ],
+  "re": [
+
+  ]
+}
