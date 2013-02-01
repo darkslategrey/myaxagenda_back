@@ -77,36 +77,12 @@
     {
       "shares": [
       ],
-      "id": "1",
-      "hide": false,
-      "color": "red",
-      "description": 'Regie Job Enfance',
-      "permit": "all",
-      "name": "Regie Job Enfance",
-      "class": "CalendarTypeUIModel",
-      "isShared": false
-    },
-    {
-      "shares": [
-      ],
-      "id": "2",
-      "hide": false,
-      "color": "orange",
-      "description": 'Regie Job Dependance',
-      "permit": "all",
-      "name": "Regie Job Dependance",
-      "class": "CalendarTypeUIModel",
-      "isShared": false
-    },
-    {
-      "shares": [
-      ],
       "id": "3",
       "hide": false,
-      "color": "green",
-      "description": 'Actions Job Enfance',
+      "color": "red",
+      "description": 'Bannières Jobenfance',
       "permit": "all",
-      "name": "Actions Job Enfance",
+      "name": "Bannières Jobenfance",
       "class": "CalendarTypeUIModel",
       "isShared": false
     },
@@ -115,10 +91,34 @@
       ],
       "id": "4",
       "hide": false,
-      "color": "purple",
-      "description": 'Actions Job Dependance',
+      "color": "orange",
+      "description": 'Bannières Jobdépendance',
       "permit": "all",
-      "name": "Actions Job Dependance",
+      "name": "Bannières Jobdépendance",
+      "class": "CalendarTypeUIModel",
+      "isShared": false
+    },
+    {
+      "shares": [
+      ],
+      "id": "1",
+      "hide": false,
+      "color": "green",
+      "description": 'Actions Jobenfance',
+      "permit": "all",
+      "name": "Actions Jobenfance",
+      "class": "CalendarTypeUIModel",
+      "isShared": false
+    },
+    {
+      "shares": [
+      ],
+      "id": "2",
+      "hide": false,
+      "color": "purple",
+      "description": 'Actions Jobdépendance',
+      "permit": "all",
+      "name": "Actions Jobdépendance",
       "class": "CalendarTypeUIModel",
       "isShared": false
     }
