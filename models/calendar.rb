@@ -1,7 +1,9 @@
-
+# -*- coding: utf-8 -*-
 class Calendar < ActiveRecord::Base
   db_config = YAML.load_file(File.join(File.dirname(__FILE__), '../config/databases.yml'))
   establish_connection db_config['calendars']
+
+  attr_accessible :id, :name, :code, :description, :color, :hide
 
   ACTIONS_JOBENFANCE    = 1
   ACTIONS_JOBDEPENDANCE = 2
@@ -9,12 +11,35 @@ class Calendar < ActiveRecord::Base
   REGIE_JOBENFANCE      = 3
   REGIE_JOBDEPENDANCE   = 4
 
-  @@mylogger = Logger.new(STDOUT)
+  # @@mylogger = Logger.new(STDOUT)
+
+
+  # calendarId:1
+  # startDay:2013-01-29
+  # endDay:2013-01-29
+  # startHMTime:12:00
+  # endHMTime:13:00
+  # repeatType:no
+  # alertFlag:null
+  # locked:false
+  # subject:test greg 1
+  # description:encore un test  
+  # usertodo:2#je
+  # userdone:3#je
+  # alertFlag: [{"type":"email","early":30,"unit":"minute","emails":"a@b.c, d@e.fr"}]
+  # uploadfile:C:\fakepath\grego-calibre-gui.socket
+  # userId:1
+  def self.createEvent(params={})
+    # logger.info("Calendar.createEvent")
+    klass = Utils.cal_to_class(params['calendarId'])
+    klass.new(klass.first.to_doli(params)).save!
+  end
 
 
   def self.createUpdateRepeatEvent(params={})
 
     klass = Utils.cal_to_class(params['calendarId'])
+    klass.new(klass.first(to_doli(params))).save!
     # calendarId:3
     # startDay:2012-11-15
     # endDay:2013-01-10
@@ -23,9 +48,11 @@ class Calendar < ActiveRecord::Base
     # repeatType:{"rtype":"week","intervalSlot":1,"dspan":56,"beginDay":"2012-11-15","endDay":"no","rday":{"2":true,"3":true,"4":true}}
     # alertFlag:[{"type":"popup","early":30,"unit":"minute"}]
     # locked:false
+    # usertodo: id#[je|jd]
+    # userdone: id#[je|jd]
     # subject:Appel tel et/ relance
     # description:
-    #   userId:1
+    #   userId:1 (userauthor)
     # id:661
     # oldRepeatType:no
 
@@ -53,25 +80,30 @@ class Calendar < ActiveRecord::Base
     events.flatten
   end
 
-  def self.show_only(id)
+  def self.show_only_calendar(params)
+
     events = []
-    params = {}
-    Calendar.find(id.to_i).update_attributes!({ :hide => false })
-    case id.to_i
+    cal_id    = params['id']
+    # userasked = params['userasked'] => id_user#[je|jd]
+    # usertodo  = params['usertodo']
+    # userdone  = params['userdone']
+
+    Calendar.find(cal_id.to_i).update_attributes!({ :hide => false })
+    case cal_id.to_i
     when Calendar::REGIE_JOBDEPENDANCE
-      @@mylogger.debug("regie_jobdependance")
-      events = EventTypeJd.first.get_regies(Calendar::REGIE_JOBDEPENDANCE)
+      # mylogger.debug("regie_jobdependance")
+      events = EventTypeJd.first.get_regies(Calendar::REGIE_JOBDEPENDANCE, params)
     when Calendar::REGIE_JOBENFANCE
-      @@mylogger.debug("regie_jobenfance")
-      events = EventTypeJe.first.get_regies(Calendar::REGIE_JOBENFANCE)
+      # mylogger.debug("regie_jobenfance")
+      events = EventTypeJe.first.get_regies(Calendar::REGIE_JOBENFANCE, params)
     when Calendar::ACTIONS_JOBDEPENDANCE
-      @@mylogger.debug("actions jobdependance")
-      events = EventTypeJd.first.get_actions(Calendar::ACTIONS_JOBDEPENDANCE)
+      # mylogger.debug("actions jobdependance")
+      events = EventTypeJd.first.get_actions(Calendar::ACTIONS_JOBDEPENDANCE, params)
     when Calendar::ACTIONS_JOBENFANCE
-      @@mylogger.debug("actions jobenfance")
-      events = EventTypeJe.first.get_actions(Calendar::ACTIONS_JOBENFANCE)
+      # mylogger.debug("actions jobenfance")
+      events = EventTypeJe.first.get_actions(Calendar::ACTIONS_JOBENFANCE, params)
     else
-      @@mylogger.debug("Calendar type not found <#{id}>")
+      # mylogger.debug("Calendar type not found <#{id}>")
     end
     events
   end
@@ -79,10 +111,12 @@ class Calendar < ActiveRecord::Base
   def self.get_all_users
     all_users = []
     JeUser.all.each { |u| 
-      all_users.push({ 'completename' => u.firstname + ' ' + u.name, 'firstname' => u.firstname, 'name' => u.name, 'rowid' => u.rowid.to_s + '#je'})
+      next if u.name == 'SuperAdmin' or not u.has_events?
+      all_users.push({ 'completename' => u.firstname + ' Jobenfance', 'firstname' => u.firstname, 'name' => u.name, 'rowid' => u.rowid.to_s + '#je'})
     }
     JdUser.all.each { |u|
-      all_users.push({ 'completename' => u.firstname + ' ' + u.name, 'firstname' => u.firstname, 'name' => u.name, 'rowid' => u.rowid.to_s + '#jd'})
+      next if u.name == 'SuperAdmin' or not u.has_events?
+      all_users.push({ 'completename' => u.firstname + ' Jobdépendance', 'firstname' => u.firstname, 'name' => u.name, 'rowid' => u.rowid.to_s + '#jd'})
     }
     all_users
   end
@@ -107,7 +141,6 @@ class Calendar < ActiveRecord::Base
     when 'usertodo'
       events = klass.find(user_id).events_todo
     end
-    events
   end
   
 end

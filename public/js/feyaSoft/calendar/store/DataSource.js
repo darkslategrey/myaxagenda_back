@@ -86,11 +86,21 @@ Ext.define('Ext.ux.calendar.DataSource', {
      * @param {obj} scope: the scope of sucessFn function
      */
     showOnlyCalendar:function(calendarId, sucessFn, scope){
+	var user_asked_ele = Ext.query('input[name=userasked]')[0]
+	var user_todo_ele = Ext.query('input[name=usertodo]')[0]
+	var user_done_ele = Ext.query('input[name=userdone]')[0]
+
+	var userasked = user_asked_ele == null ? '' : user_asked_ele.value
+	var usertodo = user_todo_ele == null ? '' : user_todo_ele.value
+	var userdone = user_done_ele == null ? '' : user_done_ele.value
+
         Ext.Ajax.request({
             url:Ext.ux.calendar.CONST.showOnlyCalendarURL,
             params:{
                 id:calendarId,
-                userId:this.mainPanel.userId
+		userasked: userasked,
+		usertodo: usertodo,
+		userdone: userdone
             },
             success:function(response, options){
                 /*
@@ -489,6 +499,9 @@ Ext.define('Ext.ux.calendar.DataSource', {
                 'locked':event.locked,
                 'subject':event.subject,
                 'description':event.content,
+		'usertodo': event.usertodo,
+		'userdone': event.userdone,
+		'uploadfile': event.uploadfile,
                 'userId':this.mainPanel.userId
             },
             success:function(response, options){

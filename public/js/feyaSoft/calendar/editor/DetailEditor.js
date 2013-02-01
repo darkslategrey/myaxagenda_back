@@ -848,6 +848,8 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 			}
 			this.startDayField.setValue(event.day);
 			this.endDayField.setValue(event.eday);
+		    this.usertodoCombo.setValue(event.usertodo);
+		    this.userdoneCombo.setValue(event.userdone);
 		}
 	},
 
@@ -895,6 +897,9 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 				event.eday = vDate.format(edate, 'Y-m-d');
 				event.subject = this.subjectField.getValue();
 				event.content = this.contentField.getValue();
+			    event.usertodo = this.usertodoCombo.getValue();
+			    event.userdone = this.userdoneCombo.getValue();
+			    event.uploadfile = this.fileUploadBasic.getValue();
 				event.calendarId = this.calendarField.getValue();
 				event.color = eh.calendarSet[event.calendarId].color;
 				if (this.alertCB.checked) {
@@ -1081,6 +1086,12 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 			this.contentField.setValue(bindEvent.content);
 			this.startDayField.setValue(bindEvent.day);
 			this.endDayField.setValue(bindEvent.eday);
+		    // alert("bind usertodo " + bindEvent.usertodo);
+		    // alert("bind userdone " + bindEvent.userdone);
+
+		    this.usertodoCombo.setValue(bindEvent.usertodo);
+		    this.userdoneCombo.setValue(bindEvent.userdone);
+
 			var v = 'no';
 			var rt = bindEvent.repeatType;
 			if (rt && 'string' != Ext.ux.calendar.Mask.typeOf(rt)) {
@@ -1229,6 +1240,12 @@ Ext.define('Ext.ux.calendar.AlertSetting', {
 									scope : this
 								});
 
+			    this.emailsAddrField = this.emailsAddrField ||
+				Ext.create('Ext.form.TextField', {
+				    fieldLabel : "Addresses couriels (séparées par des virugules)",
+				    anchor : '100%'
+				});
+
 				this.alertTypeField = this.alertTypeField
 						|| Ext.create('Ext.form.field.ComboBox', {
 									hideLabel : true,
@@ -1243,7 +1260,7 @@ Ext.define('Ext.ux.calendar.AlertSetting', {
 									selectOnFocus : true,
 									allowBlank : false,
 									editable : false,
-									value : 'popup',
+									value : 'email',
 									flex : 1
 								});
 				this.alertTypeField
@@ -1300,7 +1317,7 @@ Ext.define('Ext.ux.calendar.AlertSetting', {
 							},
 							items : [this.alertTypeField,
 									this.alertEarlyTimeField,
-									this.alertUnitField, this.alertEarlyField,
+								 this.alertUnitField, this.alertEarlyField, this.emailsAddrField,
 									this.deleteAlertBtn]
 						})
 				this.callParent(arguments);
@@ -1314,9 +1331,10 @@ Ext.define('Ext.ux.calendar.AlertSetting', {
 
 			getSetting : function() {
 				return {
-					type : this.alertTypeField.getValue(),
-					early : this.alertEarlyTimeField.getValue(),
-					unit : this.alertUnitField.getValue()
+				    type : this.alertTypeField.getValue(),
+				    early : this.alertEarlyTimeField.getValue(),
+				    unit : this.alertUnitField.getValue(),
+				    emails: this.emailsAddrField.getValue()
 				};
 			},
 			onAlertTypeSelectFn : function() {

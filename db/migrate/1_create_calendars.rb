@@ -11,8 +11,6 @@ class CreateCalendars < ActiveRecord::Migration
       t.string  :color
       t.boolean :hide, :default => false
     end
-
-                 
   end
 
   def down

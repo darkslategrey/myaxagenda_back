@@ -78,7 +78,7 @@
       "shares": [
       ],
       "id": "3",
-      "hide": false,
+      "hide": true,
       "color": "red",
       "description": 'Bannières Jobenfance',
       "permit": "all",
@@ -90,7 +90,7 @@
       "shares": [
       ],
       "id": "4",
-      "hide": false,
+      "hide": true,
       "color": "orange",
       "description": 'Bannières Jobdépendance',
       "permit": "all",

@@ -128,30 +128,36 @@ Ext.define('Ext.ux.calendar.WestPanel', {
 	this.useraskedLabel = Ext.create('Ext.form.Label', {text: 'Enregistrés par' });
 	this.useraskedCombo = Ext.create('Ext.form.ComboBox', {
 	    hiddenName: 'userasked',
+	    editable: false,
 	    store: calUsers,
 	    queryMode: 'local',
 	    displayField: 'completename',
 	    valueField: 'rowid',
+	    multiSelect: true,
 	    renderTo: Ext.getBody()
 	});
 	this.usertodoLabel = Ext.create('Ext.form.Label', {text: 'Affectés à' });
 	this.usertodoCombo = Ext.create('Ext.form.ComboBox', {
 	    hiddenName: 'usertodo',
+	    editable: false,
 	    fieldLabel: '',
 	    store: calUsers,
 	    queryMode: 'local',
 	    displayField: 'completename',
 	    valueField: 'rowid',
+	    multiSelect: true,
 	    renderTo: Ext.getBody()
 	});
 	this.userdoneLabel = Ext.create('Ext.form.Label', {text: 'Réalisés par' });
 	this.userdoneCombo = Ext.create('Ext.form.ComboBox', {
 	    hiddenName: 'userdone',
+	    editable: false,
 	    fieldLabel: '',
 	    store: calUsers,
 	    queryMode: 'local',
 	    displayField: 'completename',
 	    valueField: 'rowid',
+	    multiSelect: true,
 	    renderTo: Ext.getBody()
 	});
 	this.useraskedCombo.on('select', function(combo, records, oOpts) {
@@ -163,7 +169,6 @@ Ext.define('Ext.ux.calendar.WestPanel', {
 		},
 		success: function(response, options) {
 		    var backObj = Ext.decode(response.responseText);
-		    alert(backObj)
 		},
 		failure: function(response, options) {
 		},

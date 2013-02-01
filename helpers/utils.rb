@@ -4,7 +4,7 @@ class Utils
   
   @@mylogger = Logger.new(STDOUT)
 
-  def cal_to_class(cal_nbr)
+  def self.cal_to_class(cal_nbr)
     class_name = nil
     case cal_nbr.to_i
     when Calendar::REGIE_JOBDEPENDANCE, Calendar::ACTIONS_JOBDEPENDANCE
@@ -17,7 +17,7 @@ class Utils
       @@mylogger.debug("Calendar type not found <#{id}>")
     end
 
-    eval(class_name) if not class_name.nil?
+    return eval(class_name) if not class_name.nil?
     nil
   end
 

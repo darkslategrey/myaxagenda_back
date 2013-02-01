@@ -7,9 +7,19 @@ require 'active_record'
 require 'logger'
 # require './helpers/utils.rb'
 
+# require './models/calendar'
+
+require './models/jd_db'
+require './models/je_db'
+
+
+require './models/event_type'
+require './models/event_type_je'
+require './models/event_type_jd'
+
 # require './models/event.rb'
 # require './controllers/events.rb'
-# require './models/event_types.rb'
+# require './models/event_types'
 # require './models/event_je.rb'
 # require './models/event_jd.rb'
 require './axagenda'

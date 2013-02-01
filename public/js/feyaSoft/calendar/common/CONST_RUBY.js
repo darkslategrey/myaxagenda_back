@@ -51,7 +51,7 @@ Ext.ux.calendar.CONST = {
      */
     searchURL:document.URL + '/' + 'search',
 
-    showAllCalendarURL:document.URL + '/' + 'showAllCalendar',
+    showAllCalendarURL:document.URL + '/' + 'loadEvent',
 
     showOnlyUserEventURL:document.URL + '/' +  'showOnlyUserEvent',
 

@@ -1,7 +1,7 @@
 module EventType 
   @@mylogger    = Logger.new(STDOUT)
 
-  def get_actions(cal_id)
+  def get_actions(cal_id, params={})
     return [] if Calendar.find(cal_id).hide
     date = DateTime.current
     prev_month = date - 1.month
@@ -21,7 +21,7 @@ module EventType
   end
 
 
-  def get_regies(cal_id)
+  def get_regies(cal_id, params={})
     return [] if Calendar.find(cal_id).hide
     regies = []
     date = DateTime.current

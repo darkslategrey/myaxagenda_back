@@ -1,29 +1,39 @@
 # -*- coding: utf-8 -*-
 require 'active_record'
 require 'logger'
-require './models/calendar.rb'
-require './models/event_types.rb'
-
-Calendar.find_by_code('ACTIONS_JOBENFANCE') || Calendar.create(:name => 'Actions Jobenfance',
-                                                               :code => 'ACTIONS_JOBENFANCE',
-                                                               :description => 'Actions Jobenfance',
-                                                               :color => '')
-Calendar.find_by_code('ACTIONS_JOBDEPENDANCE') || Calendar.create(:name => 'Actions Jobdependance',
-                                                                  :code => 'ACTIONS_JOBDEPENDANCE',
-                                                                  :description => 'Actions Jobdependance',
-                                                                  :color => '')
-Calendar.find_by_code('REGIE_JOBENFANCE') || Calendar.create(:name => 'Bannières Jobenfance',
-                                                             :code => 'REGIE_JOBENFANCE',
-                                                             :description => 'Bannières Jobenfance',
-                                                             :color => '')
-Calendar.find_by_code('REGIE_JOBDEPENDANCE') || Calendar.create(:name => 'Bannière Jobdependance',
-                                                                :code => 'REGIE_JOBDEPENDANCE',
-                                                                :description => 'Bannières Jobdependance',
-                                                                :color => '')
+require './models/calendar'
+require './models/je_db'
+require './models/jd_db'
+require './models/event_type'
+require './models/event_type_je'
+require './models/event_type_jd'
 
 
-
-
+Calendar.create(:id => 1,
+                :name => 'Actions Jobenfance',
+                :code => 'ACTIONS_JOBENFANCE',
+                :description => 'Actions Jobenfance',
+                :color => '',
+                :hide => false)
+Calendar.create(:id => 2,
+                :name => 'Actions Jobdependance',
+                :code => 'ACTIONS_JOBDEPENDANCE',
+                :description => 'Actions Jobdependance',
+                :color => '',
+                :hide => false)
+Calendar.create(:id => 3,
+                :name => 'Bannières Jobenfance',
+                :code => 'REGIE_JOBENFANCE',
+                :description => 'Bannières Jobenfance',
+                :hide => true,
+                :color => '')
+Calendar.create(:id => 4,
+                :name => 'Bannières Jobdépendance',
+                :code => 'REGIE_JOBDEPENDANCE',
+                :description => 'Bannières Jobdépendance',
+                :hide => true,
+                :color => '')
+    
 je_id = EventTypeJe.last.id.to_i + 10
 jd_id = EventTypeJd.last.id.to_i + 10
 

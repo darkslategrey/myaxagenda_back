@@ -25,16 +25,19 @@ require './models/je_user'
 
 # require './controllers/events'
 
+
 class AxAgenda < Sinatra::Base
 
-  mylogger = Logger.new(STDOUT)
+  # enable :logging
+
+  # mylogger = Logger.new(STDOUT)
 
   get '/' do
     haml :index
   end
 
   post '/initialLoad' do
-    mylogger.debug("initialLoad post")
+    # mylogger.info("initialLoad post")
     send_file 'public/init_load.json'
   end
 
@@ -42,14 +45,14 @@ class AxAgenda < Sinatra::Base
     Calendar.set_all_visible
     events = Calendar.get_events(params)
     # events = EventsController.find_by_month(DateTime.current)
-    mylogger.debug("total events #{events.size}")
+    # mylogger.debug("total events #{events.size}")
     my_events = events.map { |e| e.to_mycalendar }
     data = {'total' =>  my_events.size, 'results' => my_events, 'success' => true }
     haml data.to_json, :layout => false
   end
 
   get '/users' do
-    mylogger.debug("get users")
+    # mylogger.debug("get users")
     all_users = Calendar.get_all_users
     data = { 'success' => true, 'users' => all_users }
     haml data.to_json, :layout => false
@@ -60,11 +63,23 @@ class AxAgenda < Sinatra::Base
   post '/showOnlyUserEvent' do
     events = Calendar.get_events_by_user(params)
     my_events = events.map { |e| e.to_mycalendar }
-    mylogger.debug("showOnlyUserEvent: size <#{my_events.size}>")
+    # mylogger.debug("showOnlyUserEvent: size <#{my_events.size}>")
     data = {'total' =>  my_events.size, 'results' => my_events, 'success' => true }
     haml data.to_json, :layout => false
   end
 
+  post '/createEvent' do
+    Calendar.createEvent(params)
+    data = { 'success' => true }
+    haml data.to_json, :layout => false
+  end
+
+  post '/showOnlyCalendar' do
+    events = Calendar.show_only_calendar(params)
+    my_events = events.map { |e| e.to_mycalendar }
+    data = {'total' =>  my_events.size, 'results' => my_events, 'success' => true }
+    haml data.to_json, :layout => false
+  end
 
 end
 

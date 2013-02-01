@@ -19,12 +19,15 @@ module Event
       "ymd"         =>  Utils.start_date(self),
       "description" =>  self.note.nil? ? '' : self.note.gsub(/\n/, ' '),
       "eymd"        => Utils.end_date(self).to_s,
+      "userasked"   => self.user_asked.nil? ? '' : self.user_asked.rowid,
+      "userdone"    => self.user_done.nil? ? '' : self.user_done.rowid,
+      "usertodo"    => self.user_todo.nil? ? '' : self.user_todo.rowid,
       "locked"      =>  false }
     my_json
   end
 
   def to_doli(json)
-    json_obj = JSON.parse(json)
+    json_obj = JSON.parse(json.to_json)
     datec = json_obj['startDay'].nil? ? json_obj['ymd'] : json_obj['startDay']
     datec += ' '
     datec += json_obj['startHMTime'].nil? ? json_obj['startTime'] : json_obj['startHMTime']
@@ -50,9 +53,9 @@ module Event
       "fk_parent" =>  0,
       "fk_project" =>  nil,
       "fk_soc" =>  1,
-      "fk_user_action" =>  nil,
-      "fk_user_author" =>  1,
-      "fk_user_done" =>  1,
+      "fk_user_action" =>  json_obj['usertodo'].nil? ? '' : json_obj['usertodo'].split('#')[0],
+      "fk_user_author" =>  json_obj['userId'],
+      "fk_user_done" =>  json_obj['userdone'].nil? ? '' : json_obj['userdone'].split('#')[0],
       "fk_user_mod" =>  nil,
       "fulldayevent" =>  0,
       "id" =>  1,

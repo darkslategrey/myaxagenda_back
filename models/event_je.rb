@@ -17,6 +17,11 @@ class EventJe < JeDB
   belongs_to :user_done, :foreign_key => 'fk_user_done', :class_name => 'JeUser', :inverse_of => :events_done
   belongs_to :user_todo, :foreign_key => 'fk_user_action', :class_name => 'JeUser', :inverse_of => :events_todo
 
+
+  def cal_id
+    event_type.code != 'AC_REGIE' ? Calendar::ACTIONS_JOBENFANCE : Calendar::REGIES_JOBENFANCE
+  end
+
 end
 
 

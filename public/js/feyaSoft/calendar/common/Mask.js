@@ -58,14 +58,14 @@ Ext.ux.calendar.Mask = {
     'WestPanel':{
         'myCalendarPanel.title':'Ax Agenda',
         'otherCalendarPanel.title':'Autre Agendas',
-        'myShowAllBtn.text':'Montrer tous',
+        'myShowAllBtn.text':'Afficher tous les agendas',
         'myAddBtn.text':'Nouveau'
     },
 
     'EventHandler':{
-        'showOnlyItem.text':'Ne montrer que cet agenda',
+        'showOnlyItem.text':'N\'afficher que cet agenda',
         'viewItem.hide.text':'Cacher l\'agenda',
-        'viewItem.show.text':'Montrer l\'agenda',
+        'viewItem.show.text':'Afficher l\'agenda',
         'editItem.text':'Editer l\'agenda',
         'deleteItem.text':'Supprimer l\'agenda',
         'clearItem.text':'Vider l\'agenda',
@@ -108,7 +108,7 @@ Ext.ux.calendar.Mask = {
         'repeatStartField.label':'Début',
         'repeatNoEndRG.label':'Pas de date de fin',
         'repeatEndTimeRG.label':'Finit après',
-        'repeatEndDateRG.label':'Finit par',
+        'repeatEndDateRG.label':'Finit le',
         'repeatEndTimeUnit':'occurrence(s)',
         'weekCheckGroup.label':'Toute les semaines',
         'monthRadioGroup.label':'Répéter par',
