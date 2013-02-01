@@ -32,7 +32,7 @@ Ext.ux.calendar.CONST = {
     /*
      *true to show the language submenu in myCalendar, or not
      */
-    SHOW_LANGUAGE_MENU:true,
+    SHOW_LANGUAGE_MENU:false,
     
     /*
      *define the main path of myCalendar

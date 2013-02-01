@@ -188,60 +188,60 @@ Ext.define('Ext.ux.calendar.CalendarContainer', {
 		/*
 		 * below code is for language submenu, you can set SHOW_LANGUAGE_MENU to false if you don't need it
 		 */
-		if (Ext.ux.calendar.CONST.SHOW_LANGUAGE_MENU) {
-			var data = Ext.ux.calendar.Mask.getLanguageConfig().data;
-			for (var i = 0, len = data.length; i < len; i++) {
-				var d = data[i];
-				items.push( {
-					group : 'language',
-					checked : d[0] == cs.language,
-					text : d[1],
-					name : d[0],
-					handler : this.onLanguageSettingFn,
-					scope : this
-				});
-			}
-			var lanMenu=Ext.create('Ext.menu.Menu',{
-	        	minWidth: 150,
-	            items:items
-             })
-            items = [];
-			items.push({
-						iconCls : 'icon_feyacalendar_world',
-						text : lan['moreMenu.language.text'],
-						menu :lanMenu,
-						scope : this
-					});
+	    if (Ext.ux.calendar.CONST.SHOW_LANGUAGE_MENU) {
+		var data = Ext.ux.calendar.Mask.getLanguageConfig().data;
+		for (var i = 0, len = data.length; i < len; i++) {
+		    var d = data[i];
+		    items.push( {
+			group : 'language',
+			checked : d[0] == cs.language,
+			text : d[1],
+			name : d[0],
+			handler : this.onLanguageSettingFn,
+			scope : this
+		    });
 		}
+		var lanMenu=Ext.create('Ext.menu.Menu',{
+	            minWidth: 150,
+	            items:items
+		})
+		items = [];
+		items.push({
+		    iconCls : 'icon_feyacalendar_world',
+		    text : lan['moreMenu.language.text'],
+		    menu :lanMenu,
+		    scope : this
+		});
+	    }
 	
-		items.push({
-					iconCls : 'icon_feyaCalendar_setting',
-					text : lan['moreMenu.setting.text'],
-					handler : this.onSettingFn,
-					scope : this
-				});
-		items.push({
-					iconCls : 'icon_feyaCalendar_clock',
-					text : lan['moreMenu.showAlert.text'],
-					handler : this.onShowAlertFn,
-					scope : this
-				});
-		items.push({
-					iconCls : 'icon-cubedrive',
-					text : lan['moreMenu.about.text'],
-					handler : this.onAboutMyCalendarFn,
-					scope : this
-				});
+		// items.push({
+		// 			iconCls : 'icon_feyaCalendar_setting',
+		// 			text : lan['moreMenu.setting.text'],
+		// 			handler : this.onSettingFn,
+		// 			scope : this
+		// 		});
+		// items.push({
+		// 			iconCls : 'icon_feyaCalendar_clock',
+		// 			text : lan['moreMenu.showAlert.text'],
+		// 			handler : this.onShowAlertFn,
+		// 			scope : this
+		// 		});
+		// items.push({
+		// 			iconCls : 'icon-cubedrive',
+		// 			text : lan['moreMenu.about.text'],
+		// 			handler : this.onAboutMyCalendarFn,
+		// 			scope : this
+		// 		});
 	  this.moreMenu =Ext.create('Ext.menu.Menu',{
 					minWidth : 200,
 					items : items
 				})
 
-		this.moreBtn =Ext.create('Ext.Button',{
-					iconCls : 'icon_feyaCalendar_setting',
-					text : lan['moreBtn.text'],
-					menu : this.moreMenu
-				})
+	    // this.moreBtn =Ext.create('Ext.Button',{
+	    // 	iconCls : 'icon_feyaCalendar_setting',
+	    // 	text : lan['moreBtn.text'],
+	    // 	menu : this.moreMenu
+	    // })
        this.searchField =Ext.create('Ext.ux.form.SearchField',{
 					width : 250,
 					onTrigger1Click : Ext.bind(this.cancelSearchFn, this),
