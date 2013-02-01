@@ -18,7 +18,7 @@ Calendar.find_by_code('REGIE_JOBENFANCE') || Calendar.create(:name => 'Bannière
                                                              :color => '')
 Calendar.find_by_code('REGIE_JOBDEPENDANCE') || Calendar.create(:name => 'Bannière Jobdependance',
                                                                 :code => 'REGIE_JOBDEPENDANCE',
-                                                                :description => 'Bannière Jobdependance',
+                                                                :description => 'Bannières Jobdependance',
                                                                 :color => '')
 
 
