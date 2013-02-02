@@ -55,6 +55,7 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 	    this.usertodoCombo = this.usertodoCombo || Ext.create('Ext.form.ComboBox', {
 		hiddenName: 'usertodo',
 		fieldLabel: '',
+		editable: false,
 		store: calUsers,
 		queryMode: 'local',
 		displayField: 'completename',
@@ -65,6 +66,7 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 	    this.userdoneCombo = this.userdoneCombo || Ext.create('Ext.form.ComboBox', {
 		hiddenName: 'userdone',
 		fieldLabel: '',
+		editable: false,
 		store: calUsers,
 		queryMode: 'local',
 		displayField: 'completename',
@@ -901,7 +903,11 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 			    event.usertodo = this.usertodoCombo.getValue();
 			    event.userdone = this.userdoneCombo.getValue();
 			    event.uploadfile = this.fileUploadBasic.getValue();
-				event.calendarId = this.calendarField.getValue();
+
+			    
+			    // event.calendarId = bindEvent.calendarId; 
+			    alert(this.calendarField.getValue());
+			    this.calendarField.getValue();
 
 				event.color = eh.calendarSet[event.calendarId].color;
 				if (this.alertCB.checked) {
@@ -1121,6 +1127,7 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 		    if(bindEvent.subject == undefined) { // new event
 			this.calendarField.setValue("");
 		    } else {
+			alert("Detail not new");
 			this.calendarField.select(eh.calendarSet[bindEvent.calendarId].name);
 			// this.calendarField.setValue(eh.calendarSet[bindEvent.calendarId].name);
 		    }

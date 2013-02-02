@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-class Calendar < ActiveRecord::Base
-  db_config = YAML.load_file(File.join(File.dirname(__FILE__), '../config/databases.yml'))
-  establish_connection db_config['calendars']
+require './models/cal_db'
+
+class Calendar < CalDB # ActiveRecord::Base
+  # db_config = YAML.load_file(File.join(File.dirname(__FILE__), '../config/databases.yml'))
+  # establish_connection db_config['calendars']
 
   attr_accessible :id, :name, :code, :description, :color, :hide
 
@@ -190,8 +192,29 @@ class Calendar < ActiveRecord::Base
   # description:
   def self.update_event(params)
     klass = Utils.cal_to_class(params['calendarId'])
-    event = klass.find(params['id'])
+    begin
+      event = klass.find(params['id'])
+    rescue ActiveRecord::RecordNotFound
+      raise
+    end
+    params['alertFlag']  && Calendar.set_alert(event, params['alertFlag'])
+    params['repeatFlag'] &&  Calendar.set_repeat(event, params['repeatType'])
     event.update_attributes!(event.to_doli(params))
+  end
+
+  # [{"type":"email","early":30,"unit":"minute","emails":"dfd, fdfds"}]
+  def self.set_alert(event, alerts)
+    alerts.each { |alert| 
+      ea = EventAlert.find_or_create_by_dol_ev_id(:dol_ev_id => event.id)
+      ea.update_attributes!(:type_alert => alert['type'],
+                            :early => alert['early'].to_i,
+                            :unit => alert['unit'],
+                            :emails => alert['emails'])
+    }
+  end
+ 
+  # {"rtype":"day","intervalSlot":2,"dspan":20,"beginDay":"2013-01-29","endDay":"2014-01-23"}
+  def self.set_repeat(event, repeatFlag)
   end
 
 end

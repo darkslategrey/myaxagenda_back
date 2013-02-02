@@ -1,27 +1,16 @@
 ENV['RACK_ENV'] = 'calendars' # 'jobenfance'
 require 'active_record'
-# require 'rubygems'
-# require 'sinatra'
-# require 'sinatra/activerecord'
-# require 'haml'
 require 'logger'
-# require './helpers/utils.rb'
-
-# require './models/calendar'
 
 require './models/jd_db'
 require './models/je_db'
+require './models/cal_db'
 
-
+require './models/event_alert'
 require './models/event_type'
 require './models/event_type_je'
 require './models/event_type_jd'
 
-# require './models/event.rb'
-# require './controllers/events.rb'
-# require './models/event_types'
-# require './models/event_je.rb'
-# require './models/event_jd.rb'
 require './axagenda'
 require 'sinatra/activerecord/rake'
 
@@ -32,7 +21,7 @@ set :database_file, './config/databases.yml'
 desc "run irb console"
 task :console, :environment do |t, args|
   ENV['RACK_ENV'] = args[:environment] || 'development'
-  exec "irb -r irb/completion -r ./back_srv.rb"
+  exec "irb -r irb/completion -r ./axagenda.rb"
 end
 
 

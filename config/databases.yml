@@ -24,3 +24,9 @@ calendars:
   pool: 5
   timeout: 5000
 
+calendars_test:
+  adapter: sqlite3
+  database: db/calendars_test.sqlite3
+  pool: 5
+  timeout: 5000
+

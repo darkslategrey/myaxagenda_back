@@ -51,7 +51,7 @@ module Event
       "datep2" =>  "#{datep}",# 2010-06-03T10:37:42+02:00",
       "entity" =>  1,
       "fk_user_action" =>  json_obj['usertodo'].nil? ? '' : json_obj['usertodo'].split('#')[0],
-      "fk_user_author" =>  json_obj['userId'],
+      "fk_user_author" =>  json_obj['userId'] || 1,
       "fk_user_done" =>  json_obj['userdone'].nil? ? '' : json_obj['userdone'].split('#')[0],
       "label" =>  json_obj['subject'], # "Societe PEOPLE AND BABY ajoutee dans Dolibarr",
       "location" =>  "", 

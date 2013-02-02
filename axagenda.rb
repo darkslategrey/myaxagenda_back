@@ -9,7 +9,9 @@ require 'active_record'
 
 require './models/jd_db'
 require './models/je_db'
+require './models/cal_db'
 
+require './models/event_alert'
 require './models/calendar'
 
 require './models/event_type'
@@ -82,8 +84,13 @@ class AxAgenda < Sinatra::Base
   end
 
   post '/updateEvent' do
-    Calendar.update_event(params)
-    data = { 'success' => true }
+    begin
+      Calendar.update_event(params)
+    rescue Exception => e
+      data = { 'success' => false, 'errorInfo' => "Oups! (appel le dev!) : " + e.message }
+    else
+      data = { 'success' => true }
+    end
     haml data.to_json, :layout => false
   end
 
