@@ -48,6 +48,7 @@ Ext.define('Ext.ux.calendar.editor.EventEditor', {
 		this.calendarField = Ext.create('Ext.form.field.ComboBox', {
 					fieldLabel : lan['calendarField.label'],
 					anchor : '99%',
+		    editable: false,
 					store : Ext.ux.calendar.Mask.getCalendarStore(),
 					displayField : 'title',
 					valueField : 'id',
@@ -431,7 +432,12 @@ Ext.define('Ext.ux.calendar.editor.EventEditor', {
 				this.alertCB.setValue(false);
 			}
 			this.reloadCalendar(eh);
-			this.calendarField.setValue(bindEvent.calendarId);
+		    if(bindEvent.subject == undefined) { // new event
+			this.calendarField.setValue("");
+		    } else {
+			this.calendarField.setValue(eh.calendarSet[bindEvent.calendarId].name);
+		    }
+		    // this.calendarField.setValue(bindEvent.calendarId);
 			this.oldColor = eh.calendarSet[bindEvent.calendarId].color;
 		} else {
 
