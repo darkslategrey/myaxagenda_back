@@ -251,6 +251,7 @@ Ext.define('Ext.ux.calendar.editor.EventEditor', {
 				event.subject = this.subjectField.getValue();
 				event.content = this.contentField.getValue();
 				event.calendarId = this.calendarField.getValue();
+			    alert(event.calendarId);
 				event.color = eh.calendarSet[event.calendarId].color;
 				if ('add' == this.action) {
 					if ('string' == Ext.ux.calendar.Mask.typeOf(event.repeatType)) {
@@ -435,7 +436,8 @@ Ext.define('Ext.ux.calendar.editor.EventEditor', {
 		    if(bindEvent.subject == undefined) { // new event
 			this.calendarField.setValue("");
 		    } else {
-			this.calendarField.setValue(eh.calendarSet[bindEvent.calendarId].name);
+			this.calendarField.select(eh.calendarSet[bindEvent.calendarId].name);
+			// this.calendarField.setValue(eh.calendarSet[bindEvent.calendarId].name);
 		    }
 		    // this.calendarField.setValue(bindEvent.calendarId);
 			this.oldColor = eh.calendarSet[bindEvent.calendarId].color;

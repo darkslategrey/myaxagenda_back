@@ -902,6 +902,7 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 			    event.userdone = this.userdoneCombo.getValue();
 			    event.uploadfile = this.fileUploadBasic.getValue();
 				event.calendarId = this.calendarField.getValue();
+
 				event.color = eh.calendarSet[event.calendarId].color;
 				if (this.alertCB.checked) {
 					event.alertFlag = this.getAlertSetting();
@@ -1120,7 +1121,8 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 		    if(bindEvent.subject == undefined) { // new event
 			this.calendarField.setValue("");
 		    } else {
-			this.calendarField.setValue(eh.calendarSet[bindEvent.calendarId].name);
+			this.calendarField.select(eh.calendarSet[bindEvent.calendarId].name);
+			// this.calendarField.setValue(eh.calendarSet[bindEvent.calendarId].name);
 		    }
 		    // this.calendarField.setValue(bindEvent.calendarId);
 			this.oldColor = eh.calendarSet[bindEvent.calendarId].color;
