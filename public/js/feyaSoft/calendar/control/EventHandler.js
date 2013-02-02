@@ -1995,10 +1995,12 @@ Ext.extend(Ext.ux.calendar.EventHandler, Ext.util.Observable, {
 
     loadCalendar:function(ownedCt, sharedCt, orgCt, groupCt){
         this.ds.loadCalendar(function(backObj){            
+	    alert("into load cal eventhandler");
             var owned = backObj.owned;
             var shared = backObj.shared;
             var orgShared = backObj.orgShared;
             var groupShared = backObj.groupShared;
+
             this.calendarSet = {};
             if(0 < owned.length || 0 < shared.length || 0 < orgShared.length || 0 < groupShared.length){
                 var calendar;
@@ -2007,6 +2009,7 @@ Ext.extend(Ext.ux.calendar.EventHandler, Ext.util.Observable, {
                     this.calendarSet[calendar.id] = calendar;
                 }
                 for(var i = 0, len = shared.length; i < len; i++){
+
                     calendar = shared[i];                    
                     this.calendarSet[calendar.id] = calendar;
                 }

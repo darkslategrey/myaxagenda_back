@@ -112,15 +112,48 @@ class Calendar < ActiveRecord::Base
     all_users = []
     JeUser.all.each { |u| 
       next if u.name == 'SuperAdmin' or not u.has_events?
-      all_users.push({ 'completename' => u.firstname + ' Jobenfance', 'firstname' => u.firstname, 'name' => u.name, 'rowid' => u.rowid.to_s + '#je'})
+      all_users.push({ 'completename' => u.firstname + ' Jobenfance', 
+                       'firstname' => u.firstname, 'name' => u.name, 
+                       'rowid' => u.rowid.to_s + '#je'})
     }
     JdUser.all.each { |u|
       next if u.name == 'SuperAdmin' or not u.has_events?
-      all_users.push({ 'completename' => u.firstname + ' Jobdépendance', 'firstname' => u.firstname, 'name' => u.name, 'rowid' => u.rowid.to_s + '#jd'})
+      all_users.push({ 'completename' => u.firstname + ' Jobdépendance', 
+                       'firstname' => u.firstname, 'name' => u.name, 
+                       'rowid' => u.rowid.to_s + '#jd'})
     }
     all_users
   end
 
+  # id:3
+  # name:Bannières Jobenfance
+  # description:Bannières Jobenfance
+  # color:red
+  # hide:true
+  # userId:1
+  def self.create_update_calendar(params)
+    events = []
+    Calendar.find(params['id']).update_attributes!({ :color => params['color'],
+                                                   :name => params['name'],
+                                                   :hide => params['hide'],
+                                                   :description => params['description'] })
+    Calendar.all.each { |c|
+      next if c.hide
+      case c.id.to_i
+      when Calendar::REGIE_JOBDEPENDANCE
+        events = EventTypeJd.first.get_regies(Calendar::REGIE_JOBDEPENDANCE, params)
+      when Calendar::REGIE_JOBENFANCE
+        events = EventTypeJe.first.get_regies(Calendar::REGIE_JOBENFANCE, params)
+      when Calendar::ACTIONS_JOBDEPENDANCE
+        events = EventTypeJd.first.get_actions(Calendar::ACTIONS_JOBDEPENDANCE, params)
+      when Calendar::ACTIONS_JOBENFANCE
+        events = EventTypeJe.first.get_actions(Calendar::ACTIONS_JOBENFANCE, params)
+      else
+        # mylogger.debug("Calendar type not found <#{id}>")
+      end
+    }
+    events
+  end
 
   def self.get_events_by_user(params)
     user_id, db = params['user_id'].split('#')
@@ -142,5 +175,23 @@ class Calendar < ActiveRecord::Base
       events = klass.find(user_id).events_todo
     end
   end
-  
+
+
+  # id:895
+  # calendarId:1
+  # startDay:2013-02-01
+  # endDay:2013-02-01
+  # startHMTime:10:00
+  # endHMTime:11:00
+  # repeatType:no
+  # alertFlag:true
+  # locked:false
+  # subject:
+  # description:
+  def self.update_event(params)
+    klass = Utils.cal_to_class(params['calendarId'])
+    event = klass.find(params['id'])
+    event.update_attributes!(event.to_doli(params))
+  end
+
 end

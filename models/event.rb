@@ -36,29 +36,23 @@ module Event
     datep += ' '
     datep += json_obj['endHMTime'].nil? ? json_obj['endTime'] : json_obj['endHMTime']
 
+    fk_action = nil
+
+    if json_obj['calendarId'].to_i == Calendar::REGIE_JOBENFANCE
+      fk_action = EventTypeJe.where('code = "AC_REGIE"').id
+    end
+    if json_obj['calendarId'].to_i == Calendar::REGIE_JOBDEPENDANCE
+      fk_action = EventTypeJd.where('code = "AC_REGIE"').id
+    end
 
     doli_json = {
-      "datea" =>  nil,
-      "datea2" =>  nil,
       "datec" =>  "#{datec}", # "2010-06-03T10:37:42+02:00",
       "datep" =>  "#{datep}", # 2010-06-03T10:37:42+02:00",
       "datep2" =>  "#{datep}",# 2010-06-03T10:37:42+02:00",
-      "durationa" =>  nil,
-      "durationp" =>  nil,
-      "elementtype" =>  nil,
       "entity" =>  1,
-      "fk_action" =>  50,
-      "fk_contact" =>  nil,
-      "fk_element" =>  nil,
-      "fk_parent" =>  0,
-      "fk_project" =>  nil,
-      "fk_soc" =>  1,
       "fk_user_action" =>  json_obj['usertodo'].nil? ? '' : json_obj['usertodo'].split('#')[0],
       "fk_user_author" =>  json_obj['userId'],
       "fk_user_done" =>  json_obj['userdone'].nil? ? '' : json_obj['userdone'].split('#')[0],
-      "fk_user_mod" =>  nil,
-      "fulldayevent" =>  0,
-      "id" =>  1,
       "label" =>  json_obj['subject'], # "Societe PEOPLE AND BABY ajoutee dans Dolibarr",
       "location" =>  "", 
       "note" =>  json_obj['description'], 
@@ -66,9 +60,9 @@ module Event
       "priority" =>  0,
       "punctual" =>  1,
       "ref_ext" =>  nil,
-      # "type_code" => 'AC_OTH',
       "tms" =>  Date.current 
     }
+    not fk_action.nil? and doli_json['fk_action'] = fk_action
     doli_json
   end
 

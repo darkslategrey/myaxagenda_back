@@ -164,8 +164,20 @@ Ext.define('Ext.ux.calendar.DataSource', {
                         icon: Ext.MessageBox.ERROR
                     });
                 } else {
-		    Ext.ux.window.Notification({title: 'Notification', html: 'Mise à jour réussie!',
-						iconCls: 'ux-notification-icon-information'});
+		    Ext.create('widget.uxNotification', {
+			position: 'r',
+			useXAxis: true,
+			cls: 'ux-notification-light',
+			iconCls: 'ux-notification-icon-information',
+			closable: false,
+			title: '',
+			html: 'Action réussie',
+			slideInDuration: 800,
+			slideBackDuration: 1000,
+			autoCloseDelay: 2000,
+			slideInAnimation: 'elasticIn',
+			slideBackAnimation: 'elasticIn'
+		    }).show();
                     sucessFn.call(scope, backObj);
                 }
             },
@@ -286,7 +298,8 @@ Ext.define('Ext.ux.calendar.DataSource', {
                  *              "name":"df"
                  *       }]
                  * }
-                 */                
+                 */               
+		alert("into load cal datastore"); 
                 var backObj = Ext.decode(response.responseText);
                 if (backObj.success == 'false') {
                     Ext.Msg.show({
@@ -563,7 +576,11 @@ Ext.define('Ext.ux.calendar.DataSource', {
                 'alertFlag':Ext.encode(event.alertFlag),
                 'locked':event.locked,                
                 'subject':event.subject,
-                'description':event.content
+                'description':event.content,
+		'usertodo': event.usertodo,
+		'userauthor': event.userauthor,
+		'userdone': event.userdone
+		
             },
             success:function(response, options){
                  var backObj = Ext.decode(response.responseText);
@@ -578,6 +595,21 @@ Ext.define('Ext.ux.calendar.DataSource', {
                         icon: Ext.MessageBox.ERROR
                     });
                 } else {
+		    Ext.create('widget.uxNotification', {
+			position: 'r',
+			useXAxis: true,
+			cls: 'ux-notification-light',
+			iconCls: 'ux-notification-icon-information',
+			closable: false,
+			title: '',
+			html: 'Mise à jour réussie',
+			slideInDuration: 800,
+			slideBackDuration: 500,
+			autoCloseDelay: 1000,
+			slideInAnimation: 'elasticIn',
+			slideBackAnimation: 'elasticIn'
+		    }).show();
+
                     sucessFn.call(scope, backObj);
                 }
             },

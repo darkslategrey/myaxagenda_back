@@ -68,12 +68,12 @@ Ext.onReady(function() {
 
                     var mp = Ext.create('Ext.ux.calendar.MainPanel', { 
                     	title : 'Ax Agenda Version [' + Ext.ux.calendar.CONST.VERSION + ']',
-                    	tools : [{
-                            type : 'close',
-                            handler : function(){                            	
-                            	window.close();
-                            }
-                        }],
+                    	// tools : [{
+                        //     type : 'close',
+                        //     handler : function(){                            	
+                        //     	window.close();
+                        //     }
+                        // }],
                         datasource : ds,
                         calendarSetting : cs,
                         userId : userId

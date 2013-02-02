@@ -1,132 +1,124 @@
 {
-  "cs": [
-    {
-      "createByDblclick": false,
-      "monthFormat": "d/m",
-      "weekFormat": "d/m(D)",
-      "class": "CalendarSettingUIModel",
-      "hideInactiveRow": false,
-      "dayFormat": "l d M Y",
-      "fromtoFormat": "d/m/Y",
-      "id": "2",
-      "intervalSlot": "30",
-      "readOnly": false,
-      "hourFormat": "24",
-      "singleDay": false,
-      "startDay": "1",
-      "activeEndTime": "19:00",
-      "activeStartTime": "09:00",
-      "language": "fr"
-    },
-    {
-      "createByDblclick": false,
-      "monthFormat": "d/m",
-      "weekFormat": "d/m(D)",
-      "class": "CalendarSettingUIModel",
-      "hideInactiveRow": false,
-      "dayFormat": "l d M Y",
-      "fromtoFormat": "d/m/Y",
-      "id": "3",
-      "intervalSlot": "30",
-      "readOnly": false,
-      "hourFormat": "24",
-      "singleDay": false,
-      "startDay": "1",
-      "activeEndTime": "19:00",
-      "activeStartTime": "09:00",
-      "language": "fr"
-    },
-    {
-      "createByDblclick": false,
-      "monthFormat": "d/m",
-      "weekFormat": "d/m(D)",
-      "class": "CalendarSettingUIModel",
-      "hideInactiveRow": false,
-      "dayFormat": "l d M Y",
-      "fromtoFormat": "d/m/Y",
-      "id": "4",
-      "intervalSlot": "30",
-      "readOnly": false,
-      "hourFormat": "24",
-      "singleDay": false,
-      "startDay": "1",
-      "activeEndTime": "19:00",
-      "activeStartTime": "09:00",
-      "language": "fr"
-    },
-    {
-      "createByDblclick": false,
-      "monthFormat": "d/m",
-      "weekFormat": "d/m(D)",
-      "class": "CalendarSettingUIModel",
-      "hideInactiveRow": false,
-      "dayFormat": "l d M Y",
-      "fromtoFormat": "d/m/Y",
-      "id": "5",
-      "intervalSlot": "30",
-      "readOnly": false,
-      "hourFormat": "24",
-      "singleDay": false,
-      "startDay": "1",
-      "activeEndTime": "19:00",
-      "activeStartTime": "09:00",
-      "language": "fr"
-    }
-  ],
-  "owned": [
-    {
-      "shares": [
-      ],
-      "id": "3",
-      "hide": true,
-      "color": "red",
-      "description": 'Bannières Jobenfance',
-      "permit": "all",
-      "name": "Bannières Jobenfance",
-      "class": "CalendarTypeUIModel",
-      "isShared": false
-    },
-    {
-      "shares": [
-      ],
-      "id": "4",
-      "hide": true,
-      "color": "orange",
-      "description": 'Bannières Jobdépendance',
-      "permit": "all",
-      "name": "Bannières Jobdépendance",
-      "class": "CalendarTypeUIModel",
-      "isShared": false
-    },
-    {
-      "shares": [
-      ],
-      "id": "1",
-      "hide": false,
-      "color": "green",
-      "description": 'Actions Jobenfance',
-      "permit": "all",
-      "name": "Actions Jobenfance",
-      "class": "CalendarTypeUIModel",
-      "isShared": false
-    },
-    {
-      "shares": [
-      ],
-      "id": "2",
-      "hide": false,
-      "color": "purple",
-      "description": 'Actions Jobdépendance',
-      "permit": "all",
-      "name": "Actions Jobdépendance",
-      "class": "CalendarTypeUIModel",
-      "isShared": false
-    }
-  ],
-  "shared": [
+    "cs": [
+	{
+	    "createByDblclick": false,
+	    "monthFormat": "d/m",
+	    "weekFormat": "d/m(D)",
+	    "class": "CalendarSettingUIModel",
+	    "hideInactiveRow": false,
+	    "dayFormat": "l d M Y",
+	    "fromtoFormat": "d/m/Y",
+	    "id": "1",
+	    "intervalSlot": "30",
+	    "readOnly": false,
+	    "hourFormat": "24",
+	    "singleDay": false,
+	    "startDay": "1",
+	    "activeEndTime": "19:00",
+	    "activeStartTime": "09:00",
+	    "language": "fr"
+	},
+	{
+	    "createByDblclick": false,
+	    "monthFormat": "d/m",
+	    "weekFormat": "d/m(D)",
+	    "class": "CalendarSettingUIModel",
+	    "hideInactiveRow": false,
+	    "dayFormat": "l d M Y",
+	    "fromtoFormat": "d/m/Y",
+	    "id": "2",
+	    "intervalSlot": "30",
+	    "readOnly": false,
+	    "hourFormat": "24",
+	    "singleDay": false,
+	    "startDay": "1",
+	    "activeEndTime": "19:00",
+	    "activeStartTime": "09:00",
+	    "language": "fr"
+	},
+	{
+	    "createByDblclick": false,
+	    "monthFormat": "d/m",
+	    "weekFormat": "d/m(D)",
+	    "class": "CalendarSettingUIModel",
+	    "hideInactiveRow": false,
+	    "dayFormat": "l d M Y",
+	    "fromtoFormat": "d/m/Y",
+	    "id": "3",
+	    "intervalSlot": "30",
+	    "readOnly": false,
+	    "hourFormat": "24",
+	    "singleDay": false,
+	    "startDay": "1",
+	    "activeEndTime": "19:00",
+	    "activeStartTime": "09:00",
+	    "language": "fr"
+	},
+	{
+	    "createByDblclick": false,
+	    "monthFormat": "d/m",
+	    "weekFormat": "d/m(D)",
+	    "class": "CalendarSettingUIModel",
+	    "hideInactiveRow": false,
+	    "dayFormat": "l d M Y",
+	    "fromtoFormat": "d/m/Y",
+	    "id": "4",
+	    "intervalSlot": "30",
+	    "readOnly": false,
+	    "hourFormat": "24",
+	    "singleDay": false,
+	    "startDay": "1",
+	    "activeEndTime": "19:00",
+	    "activeStartTime": "09:00",
+	    "language": "fr"
+	}
+    ],
+    "owned": [
+	{
+	    "id": "1",
+	    "hide": false,
+	    "color": "green",
+	    "description": 'Actions Jobenfance',
+	    "permit": "all",
+	    "name": "Actions Jobenfance",
+	    "class": "CalendarTypeUIModel",
+	    "isShared": true
+	},
+	{
+	    "id": "2",
+	    "hide": false,
+	    "color": "purple",
+	    "description": 'Actions Jobdépendance',
+	    "permit": "all",
+	    "name": "Actions Jobdépendance",
+	    "class": "CalendarTypeUIModel",
+	    "isShared": true
+	},
+	{
+	    "id": "3",
+	    "hide": true,
+	    "color": "red",
+	    "description": 'Bannières Jobenfance',
+	    "permit": "all",
+	    "name": "Bannières Jobenfance",
+	    "class": "CalendarTypeUIModel",
+	    "isShared": true
+	},
+	{
+	    "id": "4",
+	    "hide": true,
+	    "color": "blue",
+	    "description": 'Bannières Jobdépendance',
+	    "permit": "all",
+	    "name": "Bannières Jobdépendance",
+	    "class": "CalendarTypeUIModel",
+	    "isShared": true
+	}
 
-  ],
-  "re": [
-
-  ]
+    ],
+    "shared": [
+    ],
+    "re": [
+    ],
+    "success": "true"
 }

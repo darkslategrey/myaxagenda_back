@@ -74,6 +74,19 @@ class AxAgenda < Sinatra::Base
     haml data.to_json, :layout => false
   end
 
+  post '/createUpdateCalendar' do
+    events = Calendar.create_update_calendar(params)
+    my_events = events.map { |e| e.to_mycalendar }
+    data = {'total' =>  my_events.size, 'results' => my_events, 'success' => true }
+    haml data.to_json, :layout => false
+  end
+
+  post '/updateEvent' do
+    Calendar.update_event(params)
+    data = { 'success' => true }
+    haml data.to_json, :layout => false
+  end
+
   post '/showOnlyCalendar' do
     events = Calendar.show_only_calendar(params)
     my_events = events.map { |e| e.to_mycalendar }
