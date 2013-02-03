@@ -7,10 +7,15 @@ require './axagenda'
 use Rack::ShowExceptions
 enable :raise_errors
 
-# use Rack::CommonLogger, logger
-# kuse MyLogger, logger
+class MyLogger < Logger
+  def write(msg)
+    msg
+  end
+end
 
-# RackLogger.new(AxAgenda, Logger.new)
+# logger.sync     = true
+
+# use Rack::CommonLogger, mylogger
 
 run AxAgenda
 

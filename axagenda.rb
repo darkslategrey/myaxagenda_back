@@ -1,8 +1,9 @@
+# -*- coding: utf-8 -*-
 require 'sinatra'
 
 require 'sinatra/activerecord'
 require 'haml'
-require 'logger'
+# require 'logger'
 
 require './helpers/utils'
 require 'active_record'
@@ -34,6 +35,20 @@ class AxAgenda < Sinatra::Base
 
   # mylogger = Logger.new(STDOUT)
 
+  # logger = ENV['rack.logger']
+
+  @@logger          = Logger.new('log/axagenda.log')
+  @@logger.level    = Logger::INFO
+  @@logger.progname = "AxAgenda"
+
+  JdDB.logger = @@logger
+  JeDB.logger = @@logger
+
+
+  @@logger.level    = Logger::DEBUG
+  Calendar.logger = @@logger
+
+
   get '/' do
     haml :index
   end
@@ -54,7 +69,7 @@ class AxAgenda < Sinatra::Base
   end
 
   get '/users' do
-    # mylogger.debug("get users")
+    @@logger.debug("get users")
     all_users = Calendar.get_all_users
     data = { 'success' => true, 'users' => all_users }
     haml data.to_json, :layout => false
@@ -84,6 +99,7 @@ class AxAgenda < Sinatra::Base
   end
 
   post '/updateEvent' do
+    @@logger.debug("updateEvent: " + params.to_s)
     begin
       Calendar.update_event(params)
     rescue Exception => e
@@ -98,6 +114,23 @@ class AxAgenda < Sinatra::Base
     events = Calendar.show_only_calendar(params)
     my_events = events.map { |e| e.to_mycalendar }
     data = {'total' =>  my_events.size, 'results' => my_events, 'success' => true }
+    haml data.to_json, :layout => false
+  end
+
+  # {"event_id"=>"", "banniere"=>{:filename=>"www-data.sh", :type=>"application/x-shellscript", :name=>"banniere", :tempfile=>#<File:/tmp/RackMultipart20130203-10261-l7eblx>, :head=>"Content-Disposition: form-data; name=\"banniere\"; filename=\"www-data.sh\"\r\nContent-Type: application/x-shellscript\r\n"}}
+  post '/fileUpload' do
+    @@logger.debug("into fileUpload " + params.to_s)
+    begin
+      Calendar.store_file(params['event_id'], 
+                          params['banniere'][:tempfile], 
+                          params['banniere'][:filename])
+    rescue Exception => e
+      @@logger.error("Oups! #{e.message}")
+      data = { 'success' => false, 'errorInfo' => "Oups! Problème : " + e.message }
+    else
+      data = { 'success' => true }
+    end
+    @@logger.debug("returned value : #{data.to_s}")
     haml data.to_json, :layout => false
   end
 

@@ -49,6 +49,9 @@ Ext.ux.calendar.CONST = {
     /*
      * define the some url here for datasource
      */
+
+
+    uploadFileURL: document.URL + '/' + 'fileUpload',
     searchURL:document.URL + '/' + 'search',
 
     showAllCalendarURL:document.URL + '/' + 'loadEvent',

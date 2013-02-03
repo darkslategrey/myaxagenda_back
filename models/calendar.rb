@@ -7,6 +7,8 @@ class Calendar < CalDB # ActiveRecord::Base
 
   attr_accessible :id, :name, :code, :description, :color, :hide
 
+  @@logger
+
   ACTIONS_JOBENFANCE    = 1
   ACTIONS_JOBDEPENDANCE = 2
 
@@ -215,6 +217,20 @@ class Calendar < CalDB # ActiveRecord::Base
  
   # {"rtype":"day","intervalSlot":2,"dspan":20,"beginDay":"2013-01-29","endDay":"2014-01-23"}
   def self.set_repeat(event, repeatFlag)
+  end
+
+
+  def self.store_file(event_id, filepath, filename)
+    dirpath = "documents/#{event_id}"
+    @@logger.debug("Pwd: #{FileUtils.pwd} / Start saving uploaded file into <#{dirpath}> ")
+    begin
+      FileUtils::mkdir_p(dirpath)
+      File.open("#{dirpath}/#{filename}", 'w') do |f|
+        f.write(filepath.read)
+      end
+    rescue 
+      raise
+    end
   end
 
 end

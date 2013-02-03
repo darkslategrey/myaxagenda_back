@@ -62,7 +62,8 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 		valueField: 'rowid',
 		renderTo: Ext.getBody()
 	    });
-	    this.userdoneLabel = this.userdoneLabel || Ext.create('Ext.form.Label', {text: 'Réalisés par' });
+	    this.userdoneLabel = this.userdoneLabel || Ext.create('Ext.form.Label', 
+								  { text: 'Réalisés par' });
 	    this.userdoneCombo = this.userdoneCombo || Ext.create('Ext.form.ComboBox', {
 		hiddenName: 'userdone',
 		fieldLabel: '',
@@ -160,20 +161,43 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 							fieldLabel : lan['subjectField.label'],
 							anchor : '100%'
 						});
-
 		this.contentField = this.contentField
 				|| Ext.create('Ext.form.TextArea', {
 							fieldLabel : lan['contentField.label'],
 							height : 70,
 							anchor : '100%'
 						});
-	    this.fileUploadBasic = this.fileUploadBasic
-		|| Ext.create('Ext.form.field.File', {
-		    // renderTo: 'fi-basic',
-		    width: 400,
-		    hideLabel: true
+
+	    this.uploadFileBtn = this.uploadFileBtn
+		|| Ext.create('Ext.Button', {
+		    text: 'Transmettre',
+		    handler : this.onUploadFileSubmitFn,
+		    scope : this
 		});
 
+	    this.uploadFilePanel = this.uploadFilePanel 
+		|| Ext.create('Ext.form.Panel', {
+		    title: 'Ajouter un fichier',
+		    width: 400,
+		    border: false,
+		    header: false,
+		    bodyPadding: 0,
+		    frame: false,
+		    renderTo: Ext.getBody(),
+		    items: [{
+			xtype: 'filefield',
+			name: 'banniere', //  + this.bindEl.bindEvent.id,
+			fieldLabel: '',
+			border: false,
+			bodyPadding: false,
+			labelWidth: 50,
+			msgTarget: 'side',
+			allowBlank: true,
+			anchor: '100%',
+			buttonText: 'Ajouter un fichier ...'
+		    }],
+		    buttons: [this.uploadFileBtn]
+		});
 
 		var ctplstr = this.ehandler.cTplStr;
 		this.calendarField = Ext.create('Ext.form.field.ComboBox', {
@@ -419,7 +443,7 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 								 this.usertodoCombo,
 								 this.userdoneLabel,
 								 this.userdoneCombo,
-								 this.fileUploadBasic,
+								 this.uploadFilePanel,
 								 this.calendarField,
 									this.alertCB, this.alertContainer,
 									this.lockCB]
@@ -772,6 +796,70 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 		}
 	},
 
+    onUploadFileSubmitFn: function() {
+	ev_id = '';
+	cal_id = '';
+	store = this.calendarField.store;
+	value = this.calendarField.getValue();
+	index = store.find('id', value);
+	rd = store.getAt(index);
+
+	if(this.bindEl) {
+	    ev_id = this.bindEl.bindEvent.eventId;
+	    cal_id = this.bindEl.bindEvent.calendarId;
+	}
+	if(value.length == 0) {
+	    Ext.create('widget.uxNotification', {
+		position: 'r',
+		useXAxis: true,
+		cls: 'ux-notification-light',
+		iconCls: 'ux-notification-icon-information',
+		closable: false,
+		title: 'Oups!',
+		html: 'Merci de faire le choix de l\'agenda',
+		slideInDuration: 800,
+		slideBackDuration: 500,
+		autoCloseDelay: 1000,
+		slideInAnimation: 'elasticIn',
+		slideBackAnimation: 'elasticIn'
+	    }).show();
+	    return false;
+	}
+	// alert("id event : " + ev_id);
+	form = this.uploadFilePanel.getForm();
+	if(form.isValid()){
+	    form.submit({
+		params: { event_id: ev_id,  cal_value: value, cal_idx: index, cal_rd: rd,
+			  cal_id2: cal_id },
+		url: Ext.ux.calendar.CONST.uploadFileURL,
+		waitMsg: 'Transmission du fichier ...',
+		success: function(form, action) {
+		    Ext.create('widget.uxNotification', {
+			position: 'r',
+			useXAxis: true,
+			cls: 'ux-notification-light',
+			iconCls: 'ux-notification-icon-information',
+			closable: false,
+			title: 'Bonne nouvelle',
+			html: 'Fichier transmis!',
+			slideInDuration: 800,
+			slideBackDuration: 500,
+			autoCloseDelay: 1000,
+			slideInAnimation: 'elasticIn',
+			slideBackAnimation: 'elasticIn'
+		    }).show();
+		},
+		failure: function(form, action) {
+		    Ext.Msg.show({
+                        title:'Error',
+                        msg: action.result.errorInfo,
+                        buttons: Ext.Msg.OK,
+                        icon: Ext.MessageBox.ERROR
+		    });
+		}
+	    });
+	}
+    },
 	onCalendarSelectFn : function(field, val, options) {
 		var coverEl = this.bindEl;
 		if (coverEl && !coverEl.hold) {
@@ -902,11 +990,11 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 				event.content = this.contentField.getValue();
 			    event.usertodo = this.usertodoCombo.getValue();
 			    event.userdone = this.userdoneCombo.getValue();
-			    event.uploadfile = this.fileUploadBasic.getValue();
+			    // event.uploadfile = this.fileUploadBasic.getValue();
 
 			    
 			    // event.calendarId = bindEvent.calendarId; 
-			    alert(this.calendarField.getValue());
+			    // alert(this.calendarField.getValue());
 			    this.calendarField.getValue();
 
 				event.color = eh.calendarSet[event.calendarId].color;
@@ -1127,7 +1215,6 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 		    if(bindEvent.subject == undefined) { // new event
 			this.calendarField.setValue("");
 		    } else {
-			alert("Detail not new");
 			this.calendarField.select(eh.calendarSet[bindEvent.calendarId].name);
 			// this.calendarField.setValue(eh.calendarSet[bindEvent.calendarId].name);
 		    }
