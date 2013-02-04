@@ -251,7 +251,18 @@ Ext.define('Ext.ux.calendar.editor.EventEditor', {
 				event.subject = this.subjectField.getValue();
 				event.content = this.contentField.getValue();
 				event.calendarId = this.calendarField.getValue();
-			    alert(event.calendarId);
+			    // alert("calendar ID 1 " + event.calendarId);
+
+			    store = this.calendarField.store;
+			    value = this.calendarField.getValue();
+			    store.each(function(ele, scope) { 
+				if(ele.get("title") == value) { 
+				    event.calendarId = ele.get("id");
+				}
+			    });
+			    
+			    // alert("calendarId 2 " + event.calendarId);
+
 				event.color = eh.calendarSet[event.calendarId].color;
 				if ('add' == this.action) {
 					if ('string' == Ext.ux.calendar.Mask.typeOf(event.repeatType)) {
@@ -418,11 +429,13 @@ Ext.define('Ext.ux.calendar.editor.EventEditor', {
 	onShowFn : function() {
 		var eh = this.ehandler;
 		if (this.bindEl) {
+
 			var coverEl = this.bindEl;
 			if (!coverEl.hold) {
 				eh.setEditingStatus(coverEl, true);
 			}
 			var bindEvent = coverEl.bindEvent;
+		    // alert("usertodo " + bindEvent.usertodo);
 			var time = '<b>' + eh.generateInfo(bindEvent) + '</b>';
 			this.timeField.setText(time);
 			this.subjectField.setValue(bindEvent.subject);

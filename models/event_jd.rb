@@ -19,7 +19,7 @@ class EventJd < JdDB
   belongs_to :user_todo, :foreign_key => 'fk_user_action', :class_name => 'JdUser', :inverse_of => :events_todo
 
   def cal_id
-    event_type.code != 'AC_REGIE' ? Calendar::ACTIONS_JOBDEPENDANCE : Calendar::REGIES_JOBDEPENDANCE
+    event_type.code != 'AC_REGIE' ? Calendar::ACTIONS_JOBDEPENDANCE : Calendar::REGIE_JOBDEPENDANCE
   end
 
 end

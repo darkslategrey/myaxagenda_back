@@ -26,6 +26,8 @@ require './models/event_jd'
 require './models/jd_user'
 require './models/je_user'
 
+require './models/upload'
+
 # require './controllers/events'
 
 
@@ -41,11 +43,13 @@ class AxAgenda < Sinatra::Base
   @@logger.level    = Logger::INFO
   @@logger.progname = "AxAgenda"
 
-  JdDB.logger = @@logger
-  JeDB.logger = @@logger
+  JdDB.logger  = @@logger
+  JeDB.logger  = @@logger
+  EventJe.logger = @@logger
+  EventJd.logger = @@logger
 
 
-  @@logger.level    = Logger::DEBUG
+  # @@logger.level    = Logger::DEBUG
   Calendar.logger = @@logger
 
 
@@ -69,7 +73,7 @@ class AxAgenda < Sinatra::Base
   end
 
   get '/users' do
-    @@logger.debug("get users")
+    @@logger.info("get users")
     all_users = Calendar.get_all_users
     data = { 'success' => true, 'users' => all_users }
     haml data.to_json, :layout => false
@@ -86,8 +90,14 @@ class AxAgenda < Sinatra::Base
   end
 
   post '/createEvent' do
-    Calendar.createEvent(params)
-    data = { 'success' => true }
+    @@logger.info("Create Event #{params.to_s}")
+    begin
+      event = Calendar.createEvent(params)
+    rescue Exception => e
+      data = { 'success' => false, 'errorInfo' => e.message }
+    else
+      data = { 'success' => true, 'eventId' => event.id  }
+    end
     haml data.to_json, :layout => false
   end
 
@@ -99,12 +109,14 @@ class AxAgenda < Sinatra::Base
   end
 
   post '/updateEvent' do
-    @@logger.debug("updateEvent: " + params.to_s)
+    @@logger.info("updateEvent: " + params.to_s)
     begin
       Calendar.update_event(params)
     rescue Exception => e
+      @@logger.error("Update error : " + e.message)
       data = { 'success' => false, 'errorInfo' => "Oups! (appel le dev!) : " + e.message }
     else
+      @@logger.info("Update ok")
       data = { 'success' => true }
     end
     haml data.to_json, :layout => false
@@ -119,18 +131,20 @@ class AxAgenda < Sinatra::Base
 
   # {"event_id"=>"", "banniere"=>{:filename=>"www-data.sh", :type=>"application/x-shellscript", :name=>"banniere", :tempfile=>#<File:/tmp/RackMultipart20130203-10261-l7eblx>, :head=>"Content-Disposition: form-data; name=\"banniere\"; filename=\"www-data.sh\"\r\nContent-Type: application/x-shellscript\r\n"}}
   post '/fileUpload' do
-    @@logger.debug("into fileUpload " + params.to_s)
+    @@logger.info("into fileUpload " + params.to_s)
+    filename = ""
     begin
-      Calendar.store_file(params['event_id'], 
-                          params['banniere'][:tempfile], 
-                          params['banniere'][:filename])
+      filename = Calendar.store_file(params['event_id'], 
+                                     params['cal_id2'],
+                                     params['banniere'][:tempfile], 
+                                     params['banniere'][:filename])
     rescue Exception => e
       @@logger.error("Oups! #{e.message}")
       data = { 'success' => false, 'errorInfo' => "Oups! Problème : " + e.message }
     else
-      data = { 'success' => true }
+      data = { 'success' => true, 'filename' => filename }
     end
-    @@logger.debug("returned value : #{data.to_s}")
+    @@logger.info("returned value : #{data.to_s}")
     haml data.to_json, :layout => false
   end
 

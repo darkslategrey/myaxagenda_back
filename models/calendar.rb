@@ -33,10 +33,21 @@ class Calendar < CalDB # ActiveRecord::Base
   # alertFlag: [{"type":"email","early":30,"unit":"minute","emails":"a@b.c, d@e.fr"}]
   # uploadfile:C:\fakepath\grego-calibre-gui.socket
   # userId:1
+  # Create Event {"calendarId"=>"4", "startDay"=>"2013-01-28", "endDay"=>"2013-02-03", "startHMTime"=>"09:00", "endHMTime"=>"10:00", "repeatType"=>"no", "alertFlag"=>"[{\"type\":\"email\",\"early\":3,\"unit\":\"jour\",\"emails\":\"e.pecqueur@aerocontact.com,\\nr.delandesen@aerocontact.com,\\nmvignes@jobenfance.com\"}]", "locked"=>"false", "subject"=>"greg creation", "description"=>"whell", "usertodo"=>"2#je", "userdone"=>"", "uploadfile"=>"", "userId"=>"1"}
   def self.createEvent(params={})
-    # logger.info("Calendar.createEvent")
-    klass = Utils.cal_to_class(params['calendarId'])
-    klass.new(klass.first.to_doli(params)).save!
+    event = nil
+    klass       = Utils.cal_to_class(params['calendarId'])
+    alert_flags = params['alertFlag']
+    @@logger.info("Création d'un event #{klass.to_s}")
+    begin
+      event = klass.new(klass.first.to_doli(params))
+      event.save!
+      self.set_alert(klass, alert_flags)
+    rescue Exception => e
+      @@logger.error("Oups! " + e.message)
+      raise e
+    end
+    event
   end
 
 
@@ -199,19 +210,24 @@ class Calendar < CalDB # ActiveRecord::Base
     rescue ActiveRecord::RecordNotFound
       raise
     end
-    params['alertFlag']  && Calendar.set_alert(event, params['alertFlag'])
+    Calendar.set_alert(event, params['alertFlag'])
     params['repeatFlag'] &&  Calendar.set_repeat(event, params['repeatType'])
     event.update_attributes!(event.to_doli(params))
   end
 
   # [{"type":"email","early":30,"unit":"minute","emails":"dfd, fdfds"}]
   def self.set_alert(event, alerts)
-    alerts.each { |alert| 
+    return if alerts.nil? or alerts != /null|true|false/ 
+
+    alerts = JSON.parse(alerts)
+    alerts.each { |alert| n
       ea = EventAlert.find_or_create_by_dol_ev_id(:dol_ev_id => event.id)
       ea.update_attributes!(:type_alert => alert['type'],
+                            :event_class_name => event.to_s,
                             :early => alert['early'].to_i,
                             :unit => alert['unit'],
                             :emails => alert['emails'])
+      @@logger.info("Creation alerte: #{ea.to_s}")
     }
   end
  
@@ -220,7 +236,7 @@ class Calendar < CalDB # ActiveRecord::Base
   end
 
 
-  def self.store_file(event_id, filepath, filename)
+  def self.store_file(event_id, cal_id, filepath, filename)
     dirpath = "documents/#{event_id}"
     @@logger.debug("Pwd: #{FileUtils.pwd} / Start saving uploaded file into <#{dirpath}> ")
     begin
@@ -228,9 +244,16 @@ class Calendar < CalDB # ActiveRecord::Base
       File.open("#{dirpath}/#{filename}", 'w') do |f|
         f.write(filepath.read)
       end
+      upload = Upload.new(:filepath => "#{dirpath}/#{filename}", 
+                          :ev_id => event_id.to_i, 
+                          :classname => Utils.cal_to_class(cal_id).name)
+      upload.save!
     rescue 
       raise
     end
+    "#{dirpath}/#{filename}"
   end
-
 end
+
+
+

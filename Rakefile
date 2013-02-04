@@ -24,6 +24,10 @@ task :console, :environment do |t, args|
   exec "irb -r irb/completion -r ./axagenda.rb"
 end
 
+desc "Remove tilde files"
+task :clean do |t|
+  exec 'find -name \*~ -exec rm {} \;'
+end
 
 desc "start the app"
 task :start, :environment do |t, args|

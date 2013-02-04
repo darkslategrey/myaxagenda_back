@@ -89,7 +89,7 @@ Ext.ux.calendar.Mask = {
         'subjectField.label':'Sujet',
         'contentField.label':'Contenu',
         'calendarField.label':'Agenda',
-        'alertCB.label':'Alerte lorsque activé',
+        'alertCB.label':'Programmer une alerte',
         'lockCB.label':'Vérouillé',
         'deleteBtn.text':'Supprimer',
         'saveBtn.text':'Sauver',
@@ -252,6 +252,7 @@ Ext.ux.calendar.Mask = {
             ['email', 'Couriel']
         ],
         'popupAlertUnit':[
+	    ['jour', 'Jour(s)'],
             ['minute', 'Minute(s)'],
             ['hour', 'Heure(s)']
         ],

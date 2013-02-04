@@ -19,7 +19,7 @@ class EventJe < JeDB
 
 
   def cal_id
-    event_type.code != 'AC_REGIE' ? Calendar::ACTIONS_JOBENFANCE : Calendar::REGIES_JOBENFANCE
+    event_type.code != 'AC_REGIE' ? Calendar::ACTIONS_JOBENFANCE : Calendar::REGIE_JOBENFANCE
   end
 
 end

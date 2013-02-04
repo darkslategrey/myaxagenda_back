@@ -168,34 +168,44 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 							anchor : '100%'
 						});
 
+	    this.uploadedFilesField = this.uploadedFileField
+		|| Ext.create('Ext.form.Label', {
+		    text: 'uploadedFiles',
+		    id: 'uploadedFilesFiles',
+		    hidden: true
+		});
+	    
 	    this.uploadFileBtn = this.uploadFileBtn
 		|| Ext.create('Ext.Button', {
 		    text: 'Transmettre',
 		    handler : this.onUploadFileSubmitFn,
 		    scope : this
 		});
-
+	    
+	    this.uploadFileField = this.uploadFileField 
+		|| Ext.create('Ext.form.field.File', {
+		    name: 'banniere', //  + this.bindEl.bindEvent.id,
+		    fieldLabel: '',
+		    border: false,
+		    bodyPadding: false,
+		    labelWidth: 50,
+		    msgTarget: 'side',
+		    allowBlank: true,
+		    anchor: '100%',
+		    buttonText: 'Ajouter un fichier ...'
+		});
+		
 	    this.uploadFilePanel = this.uploadFilePanel 
 		|| Ext.create('Ext.form.Panel', {
 		    title: 'Ajouter un fichier',
 		    width: 400,
 		    border: false,
 		    header: false,
+		    bodyStyle: 'background:none',
 		    bodyPadding: 0,
 		    frame: false,
 		    renderTo: Ext.getBody(),
-		    items: [{
-			xtype: 'filefield',
-			name: 'banniere', //  + this.bindEl.bindEvent.id,
-			fieldLabel: '',
-			border: false,
-			bodyPadding: false,
-			labelWidth: 50,
-			msgTarget: 'side',
-			allowBlank: true,
-			anchor: '100%',
-			buttonText: 'Ajouter un fichier ...'
-		    }],
+		    items: [this.uploadFileField, this.uploadedFilesFiles],
 		    buttons: [this.uploadFileBtn]
 		});
 
@@ -441,8 +451,8 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 									this.contentField, 
 								 this.usertodoLabel,
 								 this.usertodoCombo,
-								 this.userdoneLabel,
-								 this.userdoneCombo,
+								 // this.userdoneLabel,
+								 // this.userdoneCombo,
 								 this.uploadFilePanel,
 								 this.calendarField,
 									this.alertCB, this.alertContainer,
@@ -799,6 +809,11 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
     onUploadFileSubmitFn: function() {
 	ev_id = '';
 	cal_id = '';
+	html = '';
+
+	filename = this.uploadFileField.getValue();
+	console.log(filename);
+	// alert(filename);
 	store = this.calendarField.store;
 	value = this.calendarField.getValue();
 	index = store.find('id', value);
@@ -808,7 +823,15 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 	    ev_id = this.bindEl.bindEvent.eventId;
 	    cal_id = this.bindEl.bindEvent.calendarId;
 	}
+
 	if(value.length == 0) {
+	    html = 'Merci de faire le choix de l\'agenda';
+	}
+	if(ev_id == '' || ev_id == undefined) {
+	    html = 'Désolé mais vous devez créer l\'action first';
+	}
+	alert("id event : " + ev_id);
+	if(html != '') {
 	    Ext.create('widget.uxNotification', {
 		position: 'r',
 		useXAxis: true,
@@ -825,7 +848,6 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 	    }).show();
 	    return false;
 	}
-	// alert("id event : " + ev_id);
 	form = this.uploadFilePanel.getForm();
 	if(form.isValid()){
 	    form.submit({
@@ -834,20 +856,31 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 		url: Ext.ux.calendar.CONST.uploadFileURL,
 		waitMsg: 'Transmission du fichier ...',
 		success: function(form, action) {
-		    Ext.create('widget.uxNotification', {
-			position: 'r',
-			useXAxis: true,
-			cls: 'ux-notification-light',
-			iconCls: 'ux-notification-icon-information',
-			closable: false,
-			title: 'Bonne nouvelle',
-			html: 'Fichier transmis!',
-			slideInDuration: 800,
-			slideBackDuration: 500,
-			autoCloseDelay: 1000,
-			slideInAnimation: 'elasticIn',
-			slideBackAnimation: 'elasticIn'
-		    }).show();
+
+		    if(action.result.success == false) {
+			Ext.Msg.show({
+			    title:'Error',
+			    msg: action.result.errorInfo,
+			    buttons: Ext.Msg.OK,
+			    icon: Ext.MessageBox.ERROR
+			});
+		    } else {
+			Ext.create('widget.uxNotification', {
+			    position: 'r',
+			    useXAxis: true,
+			    cls: 'ux-notification-light',
+			    iconCls: 'ux-notification-icon-information',
+			    closable: false,
+			    title: 'Bonne nouvelle',
+			    html: 'Fichier transmis!',
+			    slideInDuration: 800,
+			    slideBackDuration: 500,
+			    autoCloseDelay: 1000,
+			    slideInAnimation: 'elasticIn',
+			    slideBackAnimation: 'elasticIn'
+			}).show();
+		    }
+		    alert(action.result.filename);
 		},
 		failure: function(form, action) {
 		    Ext.Msg.show({
@@ -859,6 +892,8 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 		}
 	    });
 	}
+	alert(filename);
+	this.uploadFileField.setValue(filename);
     },
 	onCalendarSelectFn : function(field, val, options) {
 		var coverEl = this.bindEl;
@@ -940,7 +975,7 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 			this.startDayField.setValue(event.day);
 			this.endDayField.setValue(event.eday);
 		    this.usertodoCombo.setValue(event.usertodo);
-		    this.userdoneCombo.setValue(event.userdone);
+		    // this.userdoneCombo.setValue(event.userdone);
 		}
 	},
 
@@ -989,15 +1024,31 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 				event.subject = this.subjectField.getValue();
 				event.content = this.contentField.getValue();
 			    event.usertodo = this.usertodoCombo.getValue();
-			    event.userdone = this.userdoneCombo.getValue();
+			    // event.userdone = this.userdoneCombo.getValue();
 			    // event.uploadfile = this.fileUploadBasic.getValue();
 
 			    
 			    // event.calendarId = bindEvent.calendarId; 
+			    // alert(event.calendarId);
 			    // alert(this.calendarField.getValue());
-			    this.calendarField.getValue();
+			    event.calendarId = this.calendarField.getValue();
+			    // alert("calendarfield.getvalue " + event.calendarId);
+			    // alert("bindEvent.calendarId " + bindEvent.calendarId);
 
-				event.color = eh.calendarSet[event.calendarId].color;
+			    store = this.calendarField.store;
+			    value = this.calendarField.getValue();
+			    // index = store.find('id', value);
+			    // rd = store.getAt(index);
+			    
+			    store.each(function(ele, scope) { 
+				if(ele.get("title") == value) { 
+				    event.calendarId = ele.get("id");
+				}
+			    });
+			    
+			    // alert("calendarId " + event.calendarId);
+			    
+			    event.color = eh.calendarSet[event.calendarId].color;
 				if (this.alertCB.checked) {
 					event.alertFlag = this.getAlertSetting();
 				} else {
@@ -1185,8 +1236,8 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 		    // alert("bind usertodo " + bindEvent.usertodo);
 		    // alert("bind userdone " + bindEvent.userdone);
 
-		    this.usertodoCombo.setValue(bindEvent.usertodo);
-		    this.userdoneCombo.setValue(bindEvent.userdone);
+		    this.usertodoCombo.select(bindEvent.usertodo);
+		    // this.userdoneCombo.setValue(bindEvent.userdone);
 
 			var v = 'no';
 			var rt = bindEvent.repeatType;
@@ -1212,6 +1263,7 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 				this.lockCB.setValue(false);
 			}
 			this.reloadCalendar(eh);
+		
 		    if(bindEvent.subject == undefined) { // new event
 			this.calendarField.setValue("");
 		    } else {
@@ -1342,11 +1394,34 @@ Ext.define('Ext.ux.calendar.AlertSetting', {
 									scope : this
 								});
 
+			    // this.emailsPanel = this.emailsPanel ||
+			    // 	Ext.create('Ext.panel.Panel', {
+			    // 	    title: "Addresses couriels (séparées par des virugules)",
+			    // 	    border: false,
+			    // 	    header: false,
+			    // 	    bodyPadding: 0,
+			    // 	    frame: 0,
+			    // 	    renderTo: Ext.getBody(),
+			    // 	    items: [{
+			    // 		xtype: 'TextField',
+			    // 		allowBlank: false,
+			    // 		anchor: '100%',
+			    // 		name: 'emails',
+			    // 		value: 'e.pecqueur@aerocontact.com,\n' +
+			    // 		    'r.delandesen@aerocontact.com,\n mvignes@jobenfance.com'
+			    // 	    }]
+			    // 	});
 			    this.emailsAddrField = this.emailsAddrField ||
-				Ext.create('Ext.form.TextField', {
-				    fieldLabel : "Addresses couriels (séparées par des virugules)",
-				    anchor : '100%'
-				});
+			    	Ext.create('Ext.form.TextArea', {
+			    	    fieldLabel : "Addresses couriels (séparées par des virugules)",
+			    	    msgTarget: 'top',
+			    	    height: 100,
+			    	    width: 300,
+			    	    anchor : '100%',
+			    	    allowBlank: false,
+			    	    value:'e.pecqueur@aerocontact.com,\n' +
+			    		'r.delandesen@aerocontact.com,\nmvignes@jobenfance.com'
+			    	});
 
 				this.alertTypeField = this.alertTypeField
 						|| Ext.create('Ext.form.field.ComboBox', {
@@ -1372,9 +1447,9 @@ Ext.define('Ext.ux.calendar.AlertSetting', {
 						|| Ext.create('Ext.form.NumberField', {
 									hideLabel : true,
 									labelSeparator : '',
-									value : 30,
+									value : 3,
 									sender : this,
-									validator : this.alertEarlyTimeValidator,
+					//				validator : this.alertEarlyTimeValidator,
 									allowBlank : false,
 									style : 'margin-left:10px;',
 									flex : 1
@@ -1394,7 +1469,7 @@ Ext.define('Ext.ux.calendar.AlertSetting', {
 									selectOnFocus : true,
 									allowBlank : false,
 									editable : false,
-									value : 'minute',
+									value : 'jour',
 									style : 'margin-left:10px;',
 									flex : 1
 								});
@@ -1418,9 +1493,14 @@ Ext.define('Ext.ux.calendar.AlertSetting', {
 								type : 'hbox'
 							},
 							items : [this.alertTypeField,
-									this.alertEarlyTimeField,
-								 this.alertUnitField, this.alertEarlyField, this.emailsAddrField,
-									this.deleteAlertBtn]
+								 this.alertEarlyTimeField,
+								 this.alertUnitField, 
+								 this.alertEarlyField, 
+								 this.emailsAddrField,
+								 this.deleteAlertBtn]
+								 // this.emailsPanel,
+
+
 						})
 				this.callParent(arguments);
 			},

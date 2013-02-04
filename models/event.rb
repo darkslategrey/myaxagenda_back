@@ -1,5 +1,4 @@
 module Event 
-  @@mylogger    = Logger.new(STDOUT)
 
   def to_mycalendar(cal_id=1)
     self_json = self.to_json
@@ -12,16 +11,16 @@ module Event
       "repeatType"  =>  "no",
       "class"       =>  "CalendarEventUIModel",
       "endTime"     =>  endTime,
-      "id"          =>  self.id,
+      "id"          =>  id,
       "startTime"   =>  startTime, 
       "alertFlag"   =>  true,
       "color"       =>  Calendar.find(cal_id).color,
       "ymd"         =>  Utils.start_date(self),
       "description" =>  self.note.nil? ? '' : self.note.gsub(/\n/, ' '),
       "eymd"        => Utils.end_date(self).to_s,
-      "userasked"   => self.user_asked.nil? ? '' : self.user_asked.rowid,
+      "userasked"   => self.user_asked.nil? ? '' : self.user_asked.rowid, # fk_user_author
       "userdone"    => self.user_done.nil? ? '' : self.user_done.rowid,
-      "usertodo"    => self.user_todo.nil? ? '' : self.user_todo.rowid,
+      "usertodo"    => self.user_todo.nil? ? '' : self.user_todo.rowid, # fk_user_action
       "locked"      =>  false }
     my_json
   end
@@ -38,11 +37,19 @@ module Event
 
     fk_action = nil
 
-    if json_obj['calendarId'].to_i == Calendar::REGIE_JOBENFANCE
-      fk_action = EventTypeJe.where('code = "AC_REGIE"').id
-    end
-    if json_obj['calendarId'].to_i == Calendar::REGIE_JOBDEPENDANCE
-      fk_action = EventTypeJd.where('code = "AC_REGIE"').id
+    case json_obj['calendarId'].to_i
+    when Calendar::REGIE_JOBENFANCE
+      fk_action = EventTypeJe.where('code = "AC_REGIE"').first.id
+    when Calendar::REGIE_JOBDEPENDANCE
+      fk_action = EventTypeJd.where('code = "AC_REGIE"').first.id
+    when Calendar::ACTIONS_JOBENFANCE
+      fk_action = EventTypeJe.where('code = "AC_OTH"').first.id
+    when Calendar::ACTIONS_JOBDEPENDANCE
+      fk_action = EventTypeJd.where('code = "AC_OTH"').first.id
+    else
+      @@logger.error("Calendrier inconnu : <#{json_obj['calendarId']}>")
+      e = Exception.new("Calendrier inconnu : <#{json_obj['calendarId']}>")
+      raise e
     end
 
     doli_json = {
@@ -50,19 +57,19 @@ module Event
       "datep" =>  "#{datep}", # 2010-06-03T10:37:42+02:00",
       "datep2" =>  "#{datep}",# 2010-06-03T10:37:42+02:00",
       "entity" =>  1,
+      "fk_action" => fk_action,
       "fk_user_action" =>  json_obj['usertodo'].nil? ? '' : json_obj['usertodo'].split('#')[0],
       "fk_user_author" =>  json_obj['userId'] || 1,
       "fk_user_done" =>  json_obj['userdone'].nil? ? '' : json_obj['userdone'].split('#')[0],
       "label" =>  json_obj['subject'], # "Societe PEOPLE AND BABY ajoutee dans Dolibarr",
       "location" =>  "", 
       "note" =>  json_obj['description'], 
-      "percent" =>  100,
+      "percent" =>  0,
       "priority" =>  0,
       "punctual" =>  1,
       "ref_ext" =>  nil,
       "tms" =>  Date.current 
     }
-    not fk_action.nil? and doli_json['fk_action'] = fk_action
     doli_json
   end
 

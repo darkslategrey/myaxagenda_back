@@ -396,6 +396,8 @@ Ext.define('Ext.ux.calendar.DataSource', {
                                 startRow:startRow,
                                 endRow:endRow,
                                 subject:data.subject,
+				usertodo: data.usertodo,
+				userasked: data.userasked,
                                 content:data.description,
                                 day:day,
                                 eday:eday,
@@ -524,7 +526,7 @@ Ext.define('Ext.ux.calendar.DataSource', {
                  * it should also have a param "success", when it equal "false" means fail to create/update in server side,
                  * for example: {"success":"true","info":"Your have successful created event","id":17}
                  */
-                if (backObj.success == 'false') {
+                if (backObj.success == false) {
                     Ext.Msg.show({
                         title:'Error',
                         msg: backObj.errorInfo,
@@ -532,6 +534,20 @@ Ext.define('Ext.ux.calendar.DataSource', {
                         icon: Ext.MessageBox.ERROR
                     });
                 } else {
+		    Ext.create('widget.uxNotification', {
+			position: 'r',
+			useXAxis: true,
+			cls: 'ux-notification-light',
+			iconCls: 'ux-notification-icon-information',
+			closable: false,
+			title: 'Bravo!',
+			html: 'Création réussie ('+backObj.eventId+')',
+			slideInDuration: 800,
+			slideBackDuration: 500,
+			autoCloseDelay: 1000,
+			slideInAnimation: 'elasticIn',
+			slideBackAnimation: 'elasticIn'
+		    }).show();
                     sucessFn.call(scope, backObj);
                 }
             },
@@ -587,7 +603,7 @@ Ext.define('Ext.ux.calendar.DataSource', {
                 /*
                  * The back json string should have a param "success", when it equal "false" means fail to create/update in server side
                  */
-                if (backObj.success == 'false') {
+                if (backObj.success == false) {
                     Ext.Msg.show({
                         title:'Error',
                         msg: backObj.errorInfo,
@@ -601,7 +617,7 @@ Ext.define('Ext.ux.calendar.DataSource', {
 			cls: 'ux-notification-light',
 			iconCls: 'ux-notification-icon-information',
 			closable: false,
-			title: '',
+			title: 'Bravo!',
 			html: 'Mise à jour réussie',
 			slideInDuration: 800,
 			slideBackDuration: 500,

@@ -1212,7 +1212,7 @@ Ext.extend(Ext.ux.calendar.EventHandler, Ext.util.Observable, {
     createEvent:function(event, cview, col){     
         this.ds.createEvent(event, function(backObj){
             event.eventId = backObj.id;
-            this.createEventToLayout(event, cview, col);//添加事件时候出错
+            this.createEventToLayout(event, cview, col);
             this.fireEvent('changeEventCache', this);
         }, this);
     },
