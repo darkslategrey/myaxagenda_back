@@ -1,0 +1,31 @@
+
+
+EN DEV:
+
+- Filtre sur les utilisateurs;
+- Les couleurs;
+- Indicateur 'finit' pour les évènements;
+- Supprimer 'réalisé par' sur la page d'accueil
+- Redmine
+- Docs
+- Dans les dolis, supprimer les items: regie, envoi fax;
+- Récurrence personnalisée (on a les masques de saisies, mais non fonctionnels);
+- Les actions non réalisées en entier sont reportées au lendemain;
+- Migration vers le nouveau doli.
+
+DONE:
+
+- Supprimer 'réalisé par' sur la page de création / édition des évènements;
+- Ne pas afficher les agendas des bannières par défaut;
+- Champs pour l'ajout des mails lors de la conf des alertes;
+- Remplacer 'calendrier' par 'agenda';
+- Supprimer items: supprimer agenda / vider / editer agenda;
+- Regies sous les actions;
+- Bug sur la couleurs des agendas (visible / non visible);
+- Bug: Lors de l'édition / création d'un évènement, c'est le numéro de l'agenda qui apparaît au lieu de son label;
+- Remplacer 'Régie' par 'Bannière';
+- Fautes d'ortho;
+- Les accents sur Firefox;
+- Problème de perfs pour la page des tiers.
+
+

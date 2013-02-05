@@ -163,6 +163,8 @@ Ext.define('Ext.ux.calendar.view.ResultView', {
 		t.add('->', this.groupBtn, '-', this.returnBtn);
 	},
 	onRowClickFn : function(grid, record, item, rowIndex, e) {
+	    alert("onRowClickFn calid : "+rd.data.calendarId);
+	    console.log("onRowClickFn calid : "+rd.data.calendarId);
 		var target = e.getTarget();
 		var tgEl = Ext.get(target);
 		var eh = this.ehandler;
@@ -208,6 +210,7 @@ Ext.define('Ext.ux.calendar.view.ResultView', {
 	},
 
 	onRowDblClickFn : function(grid, record, item, rowIndex, e) {
+	    alert("onRowDblClickFn calid : "+rd.data.calendarId);
 		var cc = this.ownerCt;
 		var cview = cc.currentView;
 		var eh = this.ehandler;

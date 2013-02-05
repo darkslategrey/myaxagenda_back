@@ -73,7 +73,7 @@ class AxAgenda < Sinatra::Base
   end
 
   get '/users' do
-    @@logger.info("get users")
+    @@logger.info("get users here")
     all_users = Calendar.get_all_users
     data = { 'success' => true, 'users' => all_users }
     haml data.to_json, :layout => false
@@ -142,10 +142,18 @@ class AxAgenda < Sinatra::Base
       @@logger.error("Oups! #{e.message}")
       data = { 'success' => false, 'errorInfo' => "Oups! Problème : " + e.message }
     else
-      data = { 'success' => true, 'filename' => filename }
+      data = { 'success' => true, 'filename' => filename.filepath, 'id' => filename.id }
     end
     @@logger.info("returned value : #{data.to_s}")
     haml data.to_json, :layout => false
+  end
+
+  get '/files' do
+    @@logger.info("Get the files")
+  end
+
+  post '/files' do 
+    @@logger.info("Post the files for #{params.to_s}")
   end
 
 end

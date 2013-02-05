@@ -10,6 +10,7 @@ class EventJd < JdDB
   # belongs_to :EventTypeJd, :class_name => "EventTypeJd", :inverse_of => :events
   belongs_to :event_type, :foreign_key => 'fk_action', :class_name => 'EventTypeJd', :inverse_of => :events
 
+  has_many :files, :class_name => 'Upload', :foreign_key => 'ev_id', :conditions => 'classname = "EventJd"'
 
   # fk_user_author / userasked
   # fk_user_done / userdone

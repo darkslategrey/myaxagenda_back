@@ -1211,7 +1211,8 @@ Ext.extend(Ext.ux.calendar.EventHandler, Ext.util.Observable, {
      */
     createEvent:function(event, cview, col){     
         this.ds.createEvent(event, function(backObj){
-            event.eventId = backObj.id;
+            event.eventId = backObj.eventId;
+	    console.log("createEvent " + event.eventId);
             this.createEventToLayout(event, cview, col);
             this.fireEvent('changeEventCache', this);
         }, this);
@@ -1411,6 +1412,7 @@ Ext.extend(Ext.ux.calendar.EventHandler, Ext.util.Observable, {
     },
 
     onPinElClickFn:function(e){
+	alert("onPinElClickFn");
         e.stopEvent();
         var target = e.getTarget();
         var tgEl = Ext.get(target);
@@ -1636,6 +1638,7 @@ Ext.extend(Ext.ux.calendar.EventHandler, Ext.util.Observable, {
     },
 
     onCalendarElDblClickFn:function(e){
+	console.log("onCalendarElDblClickFn");
         var sp = this.sp;
         var cEl = this.cEl;
         var calendar = cEl.calendar;
@@ -1646,7 +1649,7 @@ Ext.extend(Ext.ux.calendar.EventHandler, Ext.util.Observable, {
     },
 
     onCalendarElClickFn:function(e){
-	// alert('onCalendarElClickFn');
+	 alert('onCalendarElClickFn');
         var sp = this.sp;
         var cEl = this.cEl;
         var calendar = cEl.calendar;

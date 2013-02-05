@@ -1,10 +1,16 @@
 module Event 
 
+
   def to_mycalendar(cal_id=1)
     self_json = self.to_json
 
     endTime   = Utils.end_hour(self) + ':' + Utils.end_minute(self)
     startTime = Utils.start_hour(self) + ':' + Utils.start_minute(self)
+
+    files = []
+    self.files.each { |f| 
+      files.push({'id' => f.id, 'filename' => f.filepath})
+    }
 
     my_json = { "calendarId" => self.cal_id,
       "subject"     =>  self.label.nil? ? '' : self.label.gsub(/\n/, ' '),
@@ -13,7 +19,7 @@ module Event
       "endTime"     =>  endTime,
       "id"          =>  id,
       "startTime"   =>  startTime, 
-      "alertFlag"   =>  true,
+      "alertFlag"   =>  false,
       "color"       =>  Calendar.find(cal_id).color,
       "ymd"         =>  Utils.start_date(self),
       "description" =>  self.note.nil? ? '' : self.note.gsub(/\n/, ' '),
@@ -21,6 +27,7 @@ module Event
       "userasked"   => self.user_asked.nil? ? '' : self.user_asked.rowid, # fk_user_author
       "userdone"    => self.user_done.nil? ? '' : self.user_done.rowid,
       "usertodo"    => self.user_todo.nil? ? '' : self.user_todo.rowid, # fk_user_action
+      "files"       => files.size == 0 ? '' : files,
       "locked"      =>  false }
     my_json
   end

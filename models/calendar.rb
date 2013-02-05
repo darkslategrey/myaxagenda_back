@@ -239,6 +239,7 @@ class Calendar < CalDB # ActiveRecord::Base
   def self.store_file(event_id, cal_id, filepath, filename)
     dirpath = "documents/#{event_id}"
     @@logger.debug("Pwd: #{FileUtils.pwd} / Start saving uploaded file into <#{dirpath}> ")
+    upload = nil
     begin
       FileUtils::mkdir_p(dirpath)
       File.open("#{dirpath}/#{filename}", 'w') do |f|
@@ -251,7 +252,8 @@ class Calendar < CalDB # ActiveRecord::Base
     rescue 
       raise
     end
-    "#{dirpath}/#{filename}"
+    # "#{dirpath}/#{filename}"
+    upload 
   end
 end
 

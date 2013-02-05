@@ -43,15 +43,45 @@ var calUsers = Ext.create('Ext.data.Store', {
     autoLoad: true
 });
 
+// var files = Ext.create('Ext.data.Store', {
+//     model: 'File',
+//     proxy: {
+// 	type: 'ajax',
+// 	url: document.URL + '/files',
+// 	reader: {
+// 	    type: 'json',
+// 	    root: 'files',
+// 	    successProperty: 'success'
+// 	}
+//     },
+//     autoLoad: true
+// });
+
+
 Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 	
 	extend : 'Ext.ux.calendar.view.BasicView',
+
 	
 	initComponent : function() {
 		this.ehandler.applyCalendarSetting(this);
 		var lan = Ext.ux.calendar.Mask.Editor;
 
+
 	    this.usertodoLabel = this.usertodoLabel || Ext.create('Ext.form.Label', {text: 'Affectés à' });
+
+	    this.filesCombo = this.filesCombo || Ext.create('Ext.form.ComboBox', {
+		hiddenName: 'filescombo',
+		fieldLabel: 'Fichiers associés',
+		editable: false,
+		width: 150,
+		// store: filesStore,
+		// queryMode: 'local',
+		displayField: 'filename',
+		valueField: 'id',
+		renderTo: Ext.getBody(),
+		scope: this
+	    });
 	    this.usertodoCombo = this.usertodoCombo || Ext.create('Ext.form.ComboBox', {
 		hiddenName: 'usertodo',
 		fieldLabel: '',
@@ -168,13 +198,6 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 							anchor : '100%'
 						});
 
-	    this.uploadedFilesField = this.uploadedFileField
-		|| Ext.create('Ext.form.Label', {
-		    text: 'uploadedFiles',
-		    id: 'uploadedFilesFiles',
-		    hidden: true
-		});
-	    
 	    this.uploadFileBtn = this.uploadFileBtn
 		|| Ext.create('Ext.Button', {
 		    text: 'Transmettre',
@@ -205,7 +228,7 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 		    bodyPadding: 0,
 		    frame: false,
 		    renderTo: Ext.getBody(),
-		    items: [this.uploadFileField, this.uploadedFilesFiles],
+		    items: [this.uploadFileField, this.filesCombo],
 		    buttons: [this.uploadFileBtn]
 		});
 
@@ -849,6 +872,7 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 	    return false;
 	}
 	form = this.uploadFilePanel.getForm();
+	var file_id = '';
 	if(form.isValid()){
 	    form.submit({
 		params: { event_id: ev_id,  cal_value: value, cal_idx: index, cal_rd: rd,
@@ -879,9 +903,10 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 			    slideInAnimation: 'elasticIn',
 			    slideBackAnimation: 'elasticIn'
 			}).show();
+			console.log("apres upload ok " + action.result.filename + " " + action.result.id);
+			file_id = action.result.id;
 		    }
-		    alert(action.result.filename);
-		},
+ 		},
 		failure: function(form, action) {
 		    Ext.Msg.show({
                         title:'Error',
@@ -891,9 +916,13 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 		    });
 		}
 	    });
+	
 	}
-	alert(filename);
-	this.uploadFileField.setValue(filename);
+	console.log("avant reaffectation store <" + file_id + ">");
+	// filesStore.data.push({file_id: filename});
+	// this.filesCombo.bindStore(filesStore); // checkChange();
+
+	// this.uploadFileField.setValue(filename);
     },
 	onCalendarSelectFn : function(field, val, options) {
 		var coverEl = this.bindEl;
@@ -1226,6 +1255,17 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 					}
 				}
 			}
+		    filesStore = Ext.create('Ext.data.Store', {
+			fields: [ 
+			    { name: 'filename', type: 'string' },
+			    { name: 'id', type: 'string' } ]
+			// data : bindEvent.files 
+		    });
+
+		    console.log(bindEvent.eventId);
+		    // console.log(Ext.decode(bindEvent.files));
+		    filesStore.data = bindEvent.files;
+		    this.filesCombo.store = filesStore; // setValue();
 			this.repeatStartField.setValue(bindEvent.day);
 			this.startTimeField.setValue(bindEvent.startRow);
 			this.endTimeField.setValue(bindEvent.endRow);

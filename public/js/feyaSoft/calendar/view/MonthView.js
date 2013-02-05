@@ -619,6 +619,7 @@ Ext.define('Ext.ux.calendar.view.MonthView', {
 	},
 
 	_onLefterClickFn : function(e) {
+	    console.log("_onLefterClickFn");
 		e.stopEvent();
 		var target = e.getTarget();
 		var tgEl = Ext.get(target);
@@ -633,6 +634,7 @@ Ext.define('Ext.ux.calendar.view.MonthView', {
 	},
 
 	_onPortDblclickFn : function(e) {
+	    console.log("_onPortDblclickFn");
 		e.stopEvent();
 		var eh = this.ehandler;
 		var target = e.getTarget();
@@ -697,6 +699,7 @@ Ext.define('Ext.ux.calendar.view.MonthView', {
 	},
 
 	_onPortClickFn : function(e) {
+	    console.log("_onPortClickFn");
 		
 		var eh = this.ehandler;
 		var target = e.getTarget();

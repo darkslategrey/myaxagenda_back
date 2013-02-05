@@ -320,6 +320,7 @@ Ext.ux.calendar.Mask = {
         });
         return store;
     },
+
 	getEventStore : function(url,pageSize) {
 		var store = Ext.create('Ext.data.Store', {
 					//sorters : ['ymd'],
@@ -348,7 +349,7 @@ Ext.ux.calendar.Mask = {
 			                {name: "locked"},
 			                {name: "repeatType"}]
 					
-				})
+		})
 		return store;
 	},
     getCalendarStore:function(){

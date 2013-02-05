@@ -474,6 +474,7 @@
 	},       
 
     _onPortClickFn:function(e){
+	console.log("_onPortClickFn");
         var eh = this.ehandler;
         var target = e.getTarget();
 		var tgEl = Ext.get(target);    
@@ -527,6 +528,7 @@
     },
 
 	_onBodyClickFn:function(e){        
+	    console.log("_onBodyClickFn");
 		var target = e.getTarget();
 		var tgEl = Ext.get(target);
 		var eh = this.ehandler;
@@ -586,6 +588,7 @@
     },
 
     _onBodyDblclickFn:function(e){
+	console.log("_onBodyDblclickFn");
         var eh = this.ehandler;
         var target = e.getTarget();
 		var tgEl = Ext.get(target);    
@@ -928,6 +931,7 @@
     },
 
     _onPortDblclickFn:function(e){
+	console.log("_onPortDblclickFn");
         var target = e.getTarget();
         var tgEl = Ext.get(target);
         var eh = this.ehandler;

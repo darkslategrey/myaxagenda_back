@@ -401,6 +401,7 @@ Ext.define('Ext.ux.calendar.DataSource', {
                                 content:data.description,
                                 day:day,
                                 eday:eday,
+				files: data.files,
                                 alertFlag:Ext.decode(data.alertFlag),                                
                                 locked:data.locked,
                                 repeatType:data.repeatType
