@@ -38,6 +38,10 @@ class AxAgenda < Sinatra::Base
   # mylogger = Logger.new(STDOUT)
 
   # logger = ENV['rack.logger']
+  set :username,'axagenda'
+  set :password,'axagenda'
+  set :token,'osh@kerp@$@l@cuill3re'
+
 
   @@logger          = Logger.new('log/axagenda.log')
   @@logger.level    = Logger::INFO
@@ -52,14 +56,35 @@ class AxAgenda < Sinatra::Base
   # @@logger.level    = Logger::DEBUG
   Calendar.logger = @@logger
 
+  helpers do
+    def admin? ; request.cookies[settings.username] == settings.token ; end
+    def protected! ; redirect '/login' unless admin? ; end
+  end
+
+
+
 
   get '/' do
+    protected!
     haml :index
   end
 
+  post '/login' do
+    if params['username'] == settings.username && params['password'] == settings.password
+      response.set_cookie(settings.username,settings.token) 
+      redirect ''
+    else
+      redirect '/login'
+    end
+  end
+
+  get '/login' do
+    haml :admin, :layout => :admin_layout
+  end
+
   post '/initialLoad' do
-    # mylogger.info("initialLoad post")
-    send_file 'public/init_load.json'
+    @@logger.info("initialLoad post")
+    send_file '/home/ks304579/public_html/myaxagenda_back/public/init_load.json'
   end
 
   post '/loadEvent' do

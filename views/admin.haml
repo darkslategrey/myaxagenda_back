@@ -1,0 +1,23 @@
+%form{:action => "/login", :method => "post"}
+  %div{:style => "margin:0;padding:0;display:inline"}
+    %table
+      %tr
+        %td{:align => "right"}
+          %label{:for => "username"}
+            Identifiant :
+        %td{:align => "left"}
+          %input{:id => "username", :name => "username", :tabindex => "1", :type => "type"}
+        %td{:align => "right"}
+          %label{:for => "password"}
+            Mot de passe :
+        %td{:align => "left"}
+          %input{:id => "password", :name => "password", :tabindex => "2", :type => "type"}
+
+
+      %tr
+        %td
+        %td{:align => "left"}
+      %tr
+        %td{:align => "left"}
+        %td{:align => "right"}
+          %input{:type => "submit", :name => "login", :value => "Connexion", :tabindex => "5"}

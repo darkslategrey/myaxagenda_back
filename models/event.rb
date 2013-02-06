@@ -13,7 +13,7 @@ module Event
       "endTime"     =>  endTime,
       "id"          =>  id,
       "startTime"   =>  startTime, 
-      "alertFlag"   =>  true,
+      "alertFlag"   =>  false,
       "color"       =>  Calendar.find(cal_id).color,
       "ymd"         =>  Utils.start_date(self),
       "description" =>  self.note.nil? ? '' : self.note.gsub(/\n/, ' '),

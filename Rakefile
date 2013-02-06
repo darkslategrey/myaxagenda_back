@@ -33,7 +33,7 @@ desc "start the app"
 task :start, :environment do |t, args|
   puts args
   # ENV['RACK_ENV'] = args[:environment] || 'development'
-  exec "ruby back_srv.rb"
+  exec "ruby axagenda.rb"
 end
 
 

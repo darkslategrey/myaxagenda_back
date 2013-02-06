@@ -90,5 +90,5 @@ Ext.ux.calendar.CONST = {
 
     createUpdateRepeatEventURL:document.URL + '/' + 'createUpdateRepeatEvent',
 
-    initialLoadURL:document.URL + '/' + 'initialLoad'
+    initialLoadURL:document.URL + 'initialLoad'
 };

@@ -5,7 +5,7 @@ jobenfance:
   password: admin
   pool: 100
   # reconnect: false
-  database: dolibarr-integ
+  database: dolibarr-jobenfance
   # socket: /var/run/mysqld/mysqld.sock
 
 jobdependance:
@@ -15,7 +15,7 @@ jobdependance:
   password: admin
   pool: 100
   # reconnect: false
-  database: dolibarr-new
+  database: dolibarr-jobdependance
   #   socket: /var/run/mysqld/mysqld.sock
 
 calendars:

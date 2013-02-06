@@ -3,7 +3,6 @@ require 'sinatra'
 require './axagenda'
 
 
-
 use Rack::ShowExceptions
 enable :raise_errors
 
