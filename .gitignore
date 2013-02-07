@@ -1,3 +1,4 @@
+rack.pid
 config/*
 nohup.out
 calendar
