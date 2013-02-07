@@ -51,44 +51,44 @@ Ext.ux.calendar.CONST = {
      */
 
 
-    uploadFileURL: document.URL + '/' + 'fileUpload',
-    searchURL:document.URL + '/' + 'search',
+    uploadFileURL: document.URL + '/fileUpload',
+    searchURL:document.URL + '/search',
 
-    showAllCalendarURL:document.URL + '/' + 'loadEvent',
+    showAllCalendarURL:document.URL + '/loadEvent',
 
     showOnlyUserEventURL:document.URL + '/' +  'showOnlyUserEvent',
 
-    showOnlyCalendarURL:document.URL + '/' + 'showOnlyCalendar',
+    showOnlyCalendarURL:document.URL + '/showOnlyCalendar',
 
-    createUpdateCalendarURL:document.URL + '/' + 'createUpdateCalendar',
+    createUpdateCalendarURL:document.URL + '/createUpdateCalendar',
 
-    deleteEventsByCalendarURL:document.URL + '/' + 'deleteEventsByCalendar',
+    deleteEventsByCalendarURL:document.URL + '/deleteEventsByCalendar',
 
-    deleteCalendarURL:document.URL + '/' + 'deleteCalendar',
+    deleteCalendarURL:document.URL + '/deleteCalendar',
 
-    loadCalendarURL:document.URL + '/' + 'loadCalendar',
+    loadCalendarURL:document.URL + '/loadCalendar',
 
-    loadEventURL:document.URL + '/' + 'loadEvent',
+    loadEventURL:document.URL + '/loadEvent',
 
-    loadRepeatEventURL:document.URL + '/' + 'loadRepeatEvent',
+    loadRepeatEventURL:document.URL + '/loadRepeatEvent',
 
-    createEventURL:document.URL + '/' + 'createEvent',
+    createEventURL:document.URL + '/createEvent',
 
-    updateEventURL:document.URL + '/' + 'updateEvent',
+    updateEventURL:document.URL + '/updateEvent',
 
-    deleteEventURL:document.URL + '/' + 'deleteEvent',
+    deleteEventURL:document.URL + '/deleteEvent',
 
-    deleteRepeatEventURL:document.URL + '/' + 'deleteRepeatEvent',
+    deleteRepeatEventURL:document.URL + '/deleteRepeatEvent',
 
-    changeDayURL:document.URL + '/' + 'changeDay',
+    changeDayURL:document.URL + '/changeDay',
 
-    deleteDayURL:document.URL + '/' + 'deleteDay',
+    deleteDayURL:document.URL + '/deleteDay',
 
-    loadSettingURL:document.URL + '/' + 'loadSetting',
+    loadSettingURL:document.URL + '/loadSetting',
 
-    updateSettingURL:document.URL + '/' + 'updateSetting',
+    updateSettingURL:document.URL + '/updateSetting',
 
-    createUpdateRepeatEventURL:document.URL + '/' + 'createUpdateRepeatEvent',
+    createUpdateRepeatEventURL:document.URL + '/createUpdateRepeatEvent',
 
-    initialLoadURL:document.URL + 'initialLoad'
+    initialLoadURL:document.URL + '/initialLoad'
 };

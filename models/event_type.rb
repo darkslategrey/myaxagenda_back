@@ -6,8 +6,8 @@ module EventType
     date = DateTime.current
     prev_month = date - 1.month
     next_month = date + 1.month
-    actions = []
-    ev_types = eval(self.class.name).where('code != "AC_REGIE"')
+    actions = [] 
+    ev_types = eval(self.class.name).where("code not in (?, ?, ?)", 'AC_OTH_AUTO', 'AC_REGIE', 'AC_OTH')
     @@mylogger.debug("#{self.class.name}: get actions EVENT TYPE <#{ev_types.to_s}>")
     if not ev_types.nil?
       actions = ev_types.to_a.map { |et|

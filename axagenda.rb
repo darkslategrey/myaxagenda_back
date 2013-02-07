@@ -58,7 +58,7 @@ class AxAgenda < Sinatra::Base
 
   helpers do
     def admin? ; request.cookies[settings.username] == settings.token ; end
-    def protected! ; redirect '/login' unless admin? ; end
+    def protected! ; redirect url '/login' unless admin? ; end
   end
 
 
@@ -72,9 +72,9 @@ class AxAgenda < Sinatra::Base
   post '/login' do
     if params['username'] == settings.username && params['password'] == settings.password
       response.set_cookie(settings.username,settings.token) 
-      redirect ''
+      redirect '/'
     else
-      redirect '/login'
+      redirect url '/login'
     end
   end
 
@@ -84,7 +84,7 @@ class AxAgenda < Sinatra::Base
 
   post '/initialLoad' do
     @@logger.info("initialLoad post")
-    send_file '/home/ks304579/public_html/myaxagenda_back/public/init_load.json'
+    send_file 'public/init_load.json'
   end
 
   post '/loadEvent' do

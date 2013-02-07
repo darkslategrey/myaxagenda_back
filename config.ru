@@ -16,7 +16,11 @@ end
 
 # use Rack::CommonLogger, mylogger
 
+use Rack::Lint
+
 run AxAgenda
+
+
 
 
 
