@@ -51,7 +51,8 @@ class AxAgenda < Sinatra::Base
   JeDB.logger  = @@logger
   EventJe.logger = @@logger
   EventJd.logger = @@logger
-
+  EventTypeJe.logger = @@logger
+  EventTypeJd.logger = @@logger
 
   # @@logger.level    = Logger::DEBUG
   Calendar.logger = @@logger
@@ -107,6 +108,7 @@ class AxAgenda < Sinatra::Base
   # params : user_id : id#[je|jd]
   #          combo_name: [userasked|usertodo|userdone]
   post '/showOnlyUserEvent' do
+    @@logger.info("showOnlyUserEvent #{params.to_s}")
     events = Calendar.get_events_by_user(params)
     my_events = events.map { |e| e.to_mycalendar }
     # mylogger.debug("showOnlyUserEvent: size <#{my_events.size}>")
@@ -148,9 +150,10 @@ class AxAgenda < Sinatra::Base
   end
 
   post '/showOnlyCalendar' do
-    events = Calendar.show_only_calendar(params)
-    my_events = events.map { |e| e.to_mycalendar }
-    data = {'total' =>  my_events.size, 'results' => my_events, 'success' => true }
+    # events = Calendar.show_only_calendar(params)
+    # my_events = events.map { |e| e.to_mycalendar }
+    # data = {'total' =>  my_events.size, 'results' => my_events, 'success' => true }
+    data = {'total' =>  0, 'results' => [], 'success' => true }
     haml data.to_json, :layout => false
   end
 

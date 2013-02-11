@@ -27,13 +27,17 @@ module Event
 
   def to_doli(json)
     json_obj = JSON.parse(json.to_json)
-    datec = json_obj['startDay'].nil? ? json_obj['ymd'] : json_obj['startDay']
-    datec += ' '
-    datec += json_obj['startHMTime'].nil? ? json_obj['startTime'] : json_obj['startHMTime']
-
-    datep = json_obj['endDay'].nil? ? json_obj['eymd'] : json_obj['endDay']
+    datep = json_obj['startDay'].nil? ? json_obj['ymd'] : json_obj['startDay']
     datep += ' '
-    datep += json_obj['endHMTime'].nil? ? json_obj['endTime'] : json_obj['endHMTime']
+    datep += json_obj['startHMTime'].nil? ? json_obj['startTime'] : json_obj['startHMTime']
+
+    datep2 = json_obj['endDay'].nil? ? json_obj['eymd'] : json_obj['endDay']
+    datep2 += ' '
+    datep2 += json_obj['endHMTime'].nil? ? json_obj['endTime'] : json_obj['endHMTime']
+    
+    
+    fulldayevent = 0
+    json_obj['startDay'] == json_obj['endDay'] and json_obj['startHMTime'] == '00:00' and json_obj['endHHTime'] == '24:00' and fulldayevent = 1
 
     fk_action = nil
 
@@ -55,7 +59,8 @@ module Event
     doli_json = {
       "datec" =>  "#{datec}", # "2010-06-03T10:37:42+02:00",
       "datep" =>  "#{datep}", # 2010-06-03T10:37:42+02:00",
-      "datep2" =>  "#{datep}",# 2010-06-03T10:37:42+02:00",
+      "datep2" =>  "#{datep2}",# 2010-06-03T10:37:42+02:00",
+      "fulldayevent" => fulldayevent,
       "entity" =>  1,
       "fk_action" => fk_action,
       "fk_user_action" =>  json_obj['usertodo'].nil? ? '' : json_obj['usertodo'].split('#')[0],

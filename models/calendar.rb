@@ -18,6 +18,10 @@ class Calendar < CalDB # ActiveRecord::Base
   # @@mylogger = Logger.new(STDOUT)
 
 
+  def hidden?
+    hide == true
+  end
+
   # calendarId:1
   # startDay:2013-01-29
   # endDay:2013-01-29
@@ -171,24 +175,60 @@ class Calendar < CalDB # ActiveRecord::Base
   end
 
   def self.get_events_by_user(params)
-    user_id, db = params['user_id'].split('#')
-    user_id = user_id.to_i
-    filtername = params['combo_name']
-    klass = ''
-    if db == 'je'
-      klass = eval('JeUser')
-    else
-      klass = eval('JdUser')
+    # format : 3#je,1#je,2#je
+    userasked, usertodo = params.values
+    users_filter = { 'users_asked' => { 'je' => [], 'jd' => [] },
+                     'users_todo'  => { 'je' => [], 'jd' => [] } }
+    if(not userasked.nil?)
+      userasked.split(',').each { |ua|
+        user_id, agenda = ua.split('#')
+        users_filter['users_asked'][agenda].push(user_id.to_i)
+      }
     end
-    
-    case filtername
-    when 'userasked'
-      events = klass.find(user_id).events_author
-    when 'userdone'
-      events = klass.find(user_id).events_done
-    when 'usertodo'
-      events = klass.find(user_id).events_todo
+    if(not usertodo.nil?)
+      usertodo.split(',').each { |utd|
+        user_id, agenda = utd.split('#')
+        users_filter['users_todo'][agenda].push(user_id.to_i)
+      }
     end
+    events = []
+    [ Calendar::ACTIONS_JOBENFANCE, Calendar::ACTIONS_JOBDEPENDANCE,
+      Calendar::REGIE_JOBENFANCE, Calendar::REGIE_JOBDEPENDANCE ].each { |agenda|
+      next if Calendar.find(agenda).hidden?
+      case agenda
+      when Calendar::ACTIONS_JOBENFANCE
+        if(users_filter['users_asked']['je'].size > 0)
+          events += EventTypeJe.first.find_actions_by_author(users_filter['users_asked']['je'])
+        end
+        if(users_filter['users_todo']['je'].size > 0)
+          events += EventTypeJe.first.find_actions_by_todo(users_filter['users_todo']['je'])
+        end
+      when Calendar::ACTIONS_JOBDEPENDANCE
+        if(users_filter['users_asked']['jd'].size > 0)
+          events += EventTypeJd.first.find_actions_by_author(users_filter['users_asked']['jd'])
+        end
+        if(users_filter['users_todo']['jd'].size > 0)
+          events += EventTypeJd.first.find_actions_by_todo(users_filter['users_todo']['jd'])
+        end
+      when Calendar::REGIE_JOBENFANCE
+        if(users_filter['users_asked']['je'].size > 0)
+          events += EventTypeJe.first.find_regies_by_author(users_filter['users_asked']['je'])
+        end
+        if(users_filter['users_todo']['je'].size > 0)
+          events += EventTypeJe.first.find_regies_by_todo(users_filter['users_todo']['je'])
+        end
+      when Calendar::REGIE_JOBDEPENDANCE
+        if(users_filter['users_asked']['jd'].size > 0)
+          events += EventTypeJe.first.find_regies_by_author(users_filter['users_asked']['jd'])
+        end
+        if(users_filter['users_todo']['jd'].size > 0)
+          events += EventTypeJe.first.find_regies_by_todo(users_filter['users_todo']['jd'])
+        end
+      end
+    }
+    events.flatten!
+    @@logger.info("Calendar.get_events_by_user: nbr of events found <#{events.size}>")
+    events
   end
 
 

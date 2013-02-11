@@ -24,7 +24,7 @@ class Utils
   def self.end_hour(event)
     hour_s = ''
     begin
-      hour = DateTime.parse(event.datep.to_s).hour
+      hour = event.fulldayevent ? 24 : DateTime.parse(event.datep2.to_s).hour
       if(hour < 10)
         hour_s = '0'+hour.to_s
       else
@@ -39,7 +39,7 @@ class Utils
   def self.end_minute(event)
     minute_s = ''
     begin
-      minute = DateTime.parse(event.datep.to_s).minute
+      minute = event.fulldayevent ? 0 : DateTime.parse(event.datep2.to_s).minute
       if(minute < 10)
         minute_s = '0'+minute.to_s
       else
@@ -52,7 +52,7 @@ class Utils
   end
 
   def self.end_day(event)
-    day = Date.parse(event.datep.to_s).day
+    day = event.fulldayevent ? Date.parse(event.datep.to_s).day : Date.parse(event.datep2.to_s).day
     day_s = ''
     if(day < 10)
       day_s = '0'+day.to_s
@@ -63,7 +63,7 @@ class Utils
   end
 
   def self.end_month(event)
-    month = Date.parse(event.datep.to_s).month
+    month = event.fulldayevent ? Date.parse(event.datep.to_s).month : Date.parse(event.datep2.to_s).month     
     month_s = ''
     if(month < 10)
       month_s = '0'+month.to_s
@@ -74,11 +74,11 @@ class Utils
   end
 
   def self.end_year(event)
-    Date.parse(event.datep.to_s).year
+    Date.parse(event.datep2.to_s).year
   end
 
   def self.start_hour(event)
-    hour = DateTime.parse(event.datec.to_s).hour
+    hour = event.fulldayevent ? 0 : DateTime.parse(event.datep.to_s).hour
     hour_s = ''
     if(hour < 10)
       hour_s = '0'+hour.to_s
@@ -89,7 +89,7 @@ class Utils
   end
 
   def self.start_minute(event)
-    minute = DateTime.parse(event.datec.to_s).minute
+    minute = event.fulldayevent ? 0 : DateTime.parse(event.datep.to_s).minute
     minute_s = ''
     if(minute < 10)
       minute_s = '0'+minute.to_s
@@ -100,7 +100,7 @@ class Utils
   end
 
   def self.start_day(event)
-    day = Date.parse(event.datec.to_s).day
+    day = Date.parse(event.datep.to_s).day
     day_s = ''
     if(day < 10)
       day_s = '0'+day.to_s
@@ -111,7 +111,7 @@ class Utils
   end
 
   def self.start_month(event)
-    month = Date.parse(event.datec.to_s).month
+    month = Date.parse(event.datep.to_s).month
     month_s = ''
     if(month < 10)
       month_s = '0'+month.to_s
@@ -122,12 +122,12 @@ class Utils
   end
 
   def self.start_year(event)
-    Date.parse(event.datec.to_s).year
+    Date.parse(event.datep.to_s).year
   end
 
   def self.start_date(event)
     begin
-      Date.parse(event.datec.to_s)
+      Date.parse(event.datep.to_s)
     rescue ArgumentError
       ""
     end
@@ -135,7 +135,7 @@ class Utils
 
   def self.end_date(event)
     begin
-      Date.parse(event.datep.to_s)
+      event.fulldayevent ? Date.parse(event.datep.to_s) : Date.parse(event.datep2.to_s)
     rescue ArgumentError
       ""
     end
