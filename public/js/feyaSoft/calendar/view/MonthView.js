@@ -1014,6 +1014,7 @@ Ext.define('Ext.ux.calendar.view.MonthView', {
 						}
 						this.fireEvent('remoteload');
 					}, this);
+		    console.log("MonthView.checkLayout()");
 		}
 		this.setToday();
 	},

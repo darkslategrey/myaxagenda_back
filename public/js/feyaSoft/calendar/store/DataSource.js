@@ -46,6 +46,30 @@ Ext.define('Ext.ux.calendar.DataSource', {
     // 	});
     // },
 
+    showOnlyUsers: function(useraskedValue, usertodoValue, sucessFn, scope) {
+	console.log("DataSource.showOnlyUsers: useraskedValue <"+useraskedValue+">");
+	console.log("DataSource.showOnlyUsers: usertodoValue <"+usertodoValue+">");
+
+	Ext.Ajax.request({ 
+	    url: Ext.ux.calendar.CONST.showOnlyUserEventURL,
+	    params: {
+		userasked: new String(useraskedValue), 
+		usertodo: new String(usertodoValue)
+	    },
+	    success: function(response, options) {
+		var backObj = Ext.decode(response.responseText);
+		if(backObj.success == 'false') {
+		    console.log("Error while getting specific user's events");
+		} else {
+		    console.log("Success while getting specific user's events");
+		    sucessFn.call(scope, backObj);
+		}
+	    },
+	    failure: function(response, options) {
+	    },
+	    scope: scope || this
+	});
+    },
     /*
      * For show all calendars
      * @param {function} sucessFn: the callback function when request completed successfully

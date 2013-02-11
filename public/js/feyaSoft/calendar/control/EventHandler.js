@@ -851,6 +851,22 @@ Ext.extend(Ext.ux.calendar.EventHandler, Ext.util.Observable, {
             } catch(err) {}  // for support extjs 2.2
         }
     },    
+
+    onUsersFilterFn: function(useraskedValue, usertodoValue) { 
+	console.log("eh.onSelectUsersFn: useraskedValue <"+useraskedValue+">");
+	console.log("eh.onSelectUsersFn: usertodoValue <"+usertodoValue+">");
+        var cview = this.mainPanel.calendarContainer.getLayout().activeItem;        
+	this.ds.showOnlyUsers(useraskedValue, usertodoValue, function(backObj) {
+	    console.log("into the Fn");
+            this.calendarLayout.resetLayout({
+                hideCalendar:true,
+                deleteCalendar:false,
+		uaValue: new String(useraskedValue),
+		utdValue: new String(usertodoValue)
+            }, true);
+            cview.checkLayout();
+	}, this);
+    },
     /*
      * For show all calendars belong to current user
      */

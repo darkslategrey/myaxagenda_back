@@ -208,7 +208,7 @@ Ext.define('Ext.ux.calendar.CalendarLayout', {
         delete(layout.layouted);
         var v = layout.visited;
         if(reLayout){
-            layout.reLayout();
+            layout.reLayout(config);
         }
         if(layout.hideCalendar){
             for(var p in v){

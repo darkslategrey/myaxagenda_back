@@ -1278,14 +1278,17 @@
             glayout.showWeek(this, this.cptable.dom.firstChild, 0, whole, true);
             this.resizePort();
             for(var p in layoutSet){                
+                console.log("DayView.checkLayout() 0");
                 var layout = layoutSet[p];
                 var rs = layout.reLayout(false, true);                
                 eh.renderEvent(this, rs.elist, p);                
             }
             if(force){
+                console.log("DayView.checkLayout() 1");
                 this.adjustScroller();
             }
 	    }else{  
+                console.log("DayView.checkLayout() 2");
 	    	this.fireEvent('beforeremoteload');
             this.cleanup();
           
@@ -1294,7 +1297,7 @@
                 var glayout = eh.calendarLayout;
                 var wlist = eventSet['whole'];
                 glayout.updateWholeList(wlist, 'add');   
-                 
+
 		        this.showEvents(eventSet, refresh);
                 eh.pushDayCache(startDate, endDate);
                 

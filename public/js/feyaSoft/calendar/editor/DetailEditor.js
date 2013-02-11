@@ -57,6 +57,7 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 		fieldLabel: '',
 		editable: false,
 		store: calUsers,
+		width: 300,
 		queryMode: 'local',
 		displayField: 'completename',
 		valueField: 'rowid',

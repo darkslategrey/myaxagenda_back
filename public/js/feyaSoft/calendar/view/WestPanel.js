@@ -92,15 +92,6 @@ Ext.define('Ext.ux.calendar.WestPanel', {
             bbar : bbar
         });
 
-	var states = Ext.create('Ext.data.Store', {
-	    fields: ['abbr', 'name'],
-	    data : [
-		{"abbr":"AL", "name":"Alabama"},
-		{"abbr":"AK", "name":"Alaska"},
-		{"abbr":"AZ", "name":"Arizona"}
-	    ]
-	});
-
 	Ext.define('User', {
 	    extend: 'Ext.data.Model',
 	    fields: [
@@ -123,6 +114,14 @@ Ext.define('Ext.ux.calendar.WestPanel', {
 		}
 	    },
 	    autoLoad: true
+	});
+
+	this.usersFilterBtn = Ext.create('Ext.Button', {
+	    text: 'Filtrer par utilisateur',
+	    padding: 3,
+	    margin: 3,
+	    handler: this.onUsersFilterFn,
+	    scope: this
 	});
 
 	this.useraskedLabel = Ext.create('Ext.form.Label', {text: 'Enregistrés par' });
@@ -148,77 +147,93 @@ Ext.define('Ext.ux.calendar.WestPanel', {
 	    multiSelect: true,
 	    renderTo: Ext.getBody()
 	});
-	this.userdoneLabel = Ext.create('Ext.form.Label', {text: 'Réalisés par' });
-	this.userdoneCombo = Ext.create('Ext.form.ComboBox', {
-	    hiddenName: 'userdone',
-	    editable: false,
-	    fieldLabel: '',
-	    store: calUsers,
-	    queryMode: 'local',
-	    displayField: 'completename',
-	    valueField: 'rowid',
-	    multiSelect: true,
-	    renderTo: Ext.getBody()
-	});
-	this.useraskedCombo.on('select', function(combo, records, oOpts) {
-	    Ext.Ajax.request({ 
-		url: Ext.ux.calendar.CONST.showOnlyUserEventURL,
-		params: {
-		    user_id: combo.value,
-		    combo_name: combo.hiddenName
-		},
-		success: function(response, options) {
-		    var backObj = Ext.decode(response.responseText);
-		},
-		failure: function(response, options) {
-		},
-		scope: this
-	    });
-	    
-	});
-	this.usertodoCombo.on('select', function(combo, records, oOpts) {
-	    Ext.Ajax.request({ 
-		url: Ext.ux.calendar.CONST.showOnlyUserEventURL,
-		params: {
-		    user_id: combo.value,
-		    combo_name: combo.hiddenName
-		},
-		success: function(response, options) {
-		    var backObj = Ext.decode(response.responseText);
-		    sucessFn.call(this, backObj);
-		},
-		failure: function(response, options) {
+	// this.useraskedCombo.on('select', function(combo, records, oOpts) {
+	//     onSelectAskedFn(combo, records, oOpts);
+	// });
+	// this.usertodoCombo.on('select', function(combo, records, oOpts) {
+	//     onSelectTodoFn(combo, records, oOpts);
+	// });
 
-		},
-		scope: this
-	    });
+	// this.userdoneLabel = Ext.create('Ext.form.Label', {text: 'Réalisés par' });
+	// this.userdoneCombo = Ext.create('Ext.form.ComboBox', {
+	//     hiddenName: 'userdone',
+	//     editable: false,
+	//     fieldLabel: '',
+	//     store: calUsers,
+	//     queryMode: 'local',
+	//     displayField: 'completename',
+	//     valueField: 'rowid',
+	//     multiSelect: true,
+	//     renderTo: Ext.getBody()
+	// });
+	// this.useraskedCombo.on('select', function(combo, records, oOpts) {
+	//     Ext.Ajax.request({ 
+	// 	url: Ext.ux.calendar.CONST.showOnlyUserEventURL,
+	// 	params: {
+	// 	    user_id: combo.value,
+	// 	    combo_name: combo.hiddenName
+	// 	},
+	// 	success: function(response, options) {
+	// 	    var backObj = Ext.decode(response.responseText);
+	// 	},
+	// 	failure: function(response, options) {
+	// 	},
+	// 	scope: this
+	//     });
 	    
-	});
-	this.userdoneCombo.on('select', function(combo, records, oOpts) {
-	    Ext.Ajax.request({ 
-		url: Ext.ux.calendar.CONST.showOnlyUserEventURL,
-		params: {
-		    user_id: combo.value,
-		    combo_name: combo.hiddenName
-		},
-		success: function(response, options) {
-		    var backObj = Ext.decode(response.responseText);
-		    sucessFn.call(this, backObj);
-		},
-		failure: function(response, options) {
+	// });
+	// this.usertodoCombo.on('select', function(combo, records, oOpts) {
+	//     Ext.Ajax.request({ 
+	// 	url: Ext.ux.calendar.CONST.showOnlyUserEventURL,
+	// 	params: {
+	// 	    user_id: combo.value,
+	// 	    combo_name: combo.hiddenName
+	// 	},
+	// 	success: function(response, options) {
+	// 	    var backObj = Ext.decode(response.responseText);
+	// 	    sucessFn.call(this, backObj);
+	// 	},
+	// 	failure: function(response, options) {
 
-		},
-		scope: this
-	    });
+	// 	},
+	// 	scope: this
+	//     });
 	    
-	});
+	// });
+	// this.userdoneCombo.on('select', function(combo, records, oOpts) {
+	//     Ext.Ajax.request({ 
+	// 	url: Ext.ux.calendar.CONST.showOnlyUserEventURL,
+	// 	params: {
+	// 	    user_id: combo.value,
+	// 	    combo_name: combo.hiddenName
+	// 	},
+	// 	success: function(response, options) {
+	// 	    var backObj = Ext.decode(response.responseText);
+	// 	    sucessFn.call(this, backObj);
+	// 	},
+	// 	failure: function(response, options) {
+
+	// 	},
+	// 	scope: this
+	//     });
+	    
+	// });
+
 
         this.myCalendarPanel.on('render', this.onMyCalendarRenderFn, this);
-	        
-        this.items = [this.datePicker, this.myCalendarPanel, 
-		      this.useraskedLabel, this.useraskedCombo, 
-		      this.usertodoLabel, this.usertodoCombo, 
-		      this.userdoneLabel, this.userdoneCombo ];
+
+	this.usersFilterPanel = Ext.create('Ext.Panel', {
+	    title: "Filtres",
+	    layout: { type:'vbox', align: 'stretch', padding: 3 },
+	    items: [ this.useraskedLabel, this.useraskedCombo, 
+		     this.usertodoLabel, this.usertodoCombo, 
+		     this.userdoneLabel, this.userdoneCombo,
+		     this.usersFilterBtn
+		   ]
+	});
+
+        this.items = [this.datePicker, this.myCalendarPanel, this.usersFilterPanel];
+
         
         this.callParent(arguments);
         
@@ -227,6 +242,8 @@ Ext.define('Ext.ux.calendar.WestPanel', {
         this.datePicker.on('select', this.onSelectFn, this);
         this.on('changedate', this.changeDateLabel, this);
         this.on('afterrender', this.onRenderFn, this);        
+	// this.useraskedCombo.on('select', this.onSelectUsersFn, this);
+	// this.usertodoCombo.on('select', this.onSelectUsersFn, this);
     },
     
     onOtherCalendarRenderFn : function(p) {
@@ -247,6 +264,18 @@ Ext.define('Ext.ux.calendar.WestPanel', {
         }
     },
 	
+    // onSelectUsersFn: function(combo, record, oOpts) {
+    // 	console.log("asked value <" + combo.value + ">");
+    // 	console.log("asked hidden val <" + combo.hiddenName + ">");
+    // 	this.ehandler.onSelectUsersFn(combo.value, combo.hiddenName);
+    // },
+    onUsersFilterFn: function(e) {
+	console.log("useraskedCombo.value <"+this.useraskedCombo.value+">");
+	console.log("useraskedCombo.hiddenName <"+this.useraskedCombo.hiddenName+">");
+	console.log("usertodoCombo.value <"+this.usertodoCombo.value+">");
+	console.log("usertodoCombo.hiddenName <"+this.usertodoCombo.hiddenName+">");
+	this.ehandler.onUsersFilterFn(this.useraskedCombo.value, this.usertodoCombo.value);
+    },
     onShowAllFn : function() {
         this.ehandler.onShowAllFn();
     },
