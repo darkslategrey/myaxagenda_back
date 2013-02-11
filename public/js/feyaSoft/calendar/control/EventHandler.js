@@ -1990,7 +1990,7 @@ Ext.extend(Ext.ux.calendar.EventHandler, Ext.util.Observable, {
     },
 
     loadRepeatEvent:function(fn, scope){
-        this.ds.loadRepeatEvent(function(eventSet){            
+        this.ds.loadEvent(undefined,undefined,function(eventSet){            
             this.calendarLayout.repeatSet = eventSet;
             fn.call(scope);
         }, this);

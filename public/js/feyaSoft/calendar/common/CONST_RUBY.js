@@ -70,7 +70,8 @@ Ext.ux.calendar.CONST = {
 
     loadEventURL:document.URL + '/loadEvent',
 
-    loadRepeatEventURL:document.URL + '/loadRepeatEvent',
+    // loadRepeatEventURL:document.URL + '/loadRepeatEvent',
+    loadRepeatEventURL:document.URL + '/loadEvent',
 
     createEventURL:document.URL + '/createEvent',
 
