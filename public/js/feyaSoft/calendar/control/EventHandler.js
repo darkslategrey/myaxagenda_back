@@ -1064,10 +1064,13 @@ Ext.extend(Ext.ux.calendar.EventHandler, Ext.util.Observable, {
         var startRow = event.startRow;
         var endRow = event.endRow;
         if(0 == startRow && this.rowCount == endRow){
-            return Ext.ux.calendar.Mask.EventHandler['wholeDay'];
-        }else{            
-            var hm = Ext.ux.calendar.Mask.getIntervalFromRow(this.intervalSlot, startRow, this.hourFormat)+'-'+
-                Ext.ux.calendar.Mask.getIntervalFromRow(this.intervalSlot, endRow, this.hourFormat);
+            var hm = event.societe + " " + event.contact;
+	    return hm;
+            // return Ext.ux.calendar.Mask.EventHandler['wholeDay'];
+        }else{
+            var hm = event.societe + " " + event.contact;
+            // var hm = Ext.ux.calendar.Mask.getIntervalFromRow(this.intervalSlot, startRow, this.hourFormat)+'-'+
+            //     Ext.ux.calendar.Mask.getIntervalFromRow(this.intervalSlot, endRow, this.hourFormat);
             return hm;
         }
     },
@@ -1168,7 +1171,7 @@ Ext.extend(Ext.ux.calendar.EventHandler, Ext.util.Observable, {
 	                'left-style':'width:'+leftStyle+'px;',
 	                'right-style':'width:'+rightStyle+'px;',                
 	                'title':this.generateTitle(e),
-	                'time':this.generateInfo(e),
+	                'time':this.generateTitle(e),
 	                'subject':subject,
 	                'content':e.content || '',
 	                'day':e.day,
@@ -1549,7 +1552,7 @@ Ext.extend(Ext.ux.calendar.EventHandler, Ext.util.Observable, {
     },        
 
     generateLegend:function(cview, e){        
-        var subject = e.subject || '';
+        var subject = e.societe || e.subject || '';
         if('' ===  Ext.String.trim(subject)){
             subject = Ext.ux.calendar.Mask.EventHandler['untitled'];
         }
@@ -1581,7 +1584,7 @@ Ext.extend(Ext.ux.calendar.EventHandler, Ext.util.Observable, {
                 'id':e.eventId,
                 'calendarId':e.calendarId,
                 'color':color,
-                'title':this.generateTitle(e),
+                'title':this.generateTitle(e) + "GREGO 2",
                 'time':this.generateInfo(e),
                 'subject':subject,
                 'content':e.content || '',

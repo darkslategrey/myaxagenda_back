@@ -26,6 +26,12 @@ require './models/event_jd'
 require './models/jd_user'
 require './models/je_user'
 
+require './models/je_societe'
+require './models/jd_societe'
+
+require './models/je_contact'
+require './models/jd_contact'
+
 require './models/upload'
 
 # require './controllers/events'

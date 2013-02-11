@@ -16,6 +16,9 @@ class EventJe < JeDB
   belongs_to :user_asked, :foreign_key => 'fk_user_author', :class_name => 'JeUser', :inverse_of => :events_author
   belongs_to :user_done, :foreign_key => 'fk_user_done', :class_name => 'JeUser', :inverse_of => :events_done
   belongs_to :user_todo, :foreign_key => 'fk_user_action', :class_name => 'JeUser', :inverse_of => :events_todo
+  
+  belongs_to :societe, :foreign_key => 'fk_soc', :class_name => 'JeSociete', :inverse_of => :events
+  belongs_to :contact, :foreign_key => 'fk_contact', :class_name => 'JeContact', :inverse_of => :events
 
 
   def cal_id

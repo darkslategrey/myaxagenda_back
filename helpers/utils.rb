@@ -4,6 +4,25 @@ class Utils
   
   @@mylogger = Logger.new(STDOUT)
 
+
+  def self.societe_url(societe)
+    url = ""
+    if not societe.nil?
+      # url = "<a href='http://dolibarr-new.local:88/societe/soc.php?socid="+societe.rowid.to_s+"'>"+societe.nom+"</a>"
+      url = societe.nom
+    end
+    url
+  end
+
+  def self.contact_url(contact)
+    url = ""
+    if not contact.nil?
+      # url = "<a href='http://dolibarr-new.local:88/contact/fiche.php?id="+contact.rowid.to_s+"'>"+contact.firstname + " " + contact.name + "</a>"
+      url = contact.firstname + " " + contact.name
+    end
+    url
+  end
+
   def self.cal_to_class(cal_nbr)
     class_name = nil
     case cal_nbr.to_i
@@ -24,7 +43,7 @@ class Utils
   def self.end_hour(event)
     hour_s = ''
     begin
-      hour = event.fulldayevent ? 24 : DateTime.parse(event.datep2.to_s).hour
+      hour = event.fulldayevent == 1 ? 24 : DateTime.parse(event.datep2.to_s).hour
       if(hour < 10)
         hour_s = '0'+hour.to_s
       else
@@ -39,7 +58,7 @@ class Utils
   def self.end_minute(event)
     minute_s = ''
     begin
-      minute = event.fulldayevent ? 0 : DateTime.parse(event.datep2.to_s).minute
+      minute = event.fulldayevent == 1 ? 0 : DateTime.parse(event.datep2.to_s).minute
       if(minute < 10)
         minute_s = '0'+minute.to_s
       else
@@ -52,7 +71,7 @@ class Utils
   end
 
   def self.end_day(event)
-    day = event.fulldayevent ? Date.parse(event.datep.to_s).day : Date.parse(event.datep2.to_s).day
+    day = event.fulldayevent == 1 ? Date.parse(event.datep.to_s).day : Date.parse(event.datep2.to_s).day
     day_s = ''
     if(day < 10)
       day_s = '0'+day.to_s
@@ -63,7 +82,7 @@ class Utils
   end
 
   def self.end_month(event)
-    month = event.fulldayevent ? Date.parse(event.datep.to_s).month : Date.parse(event.datep2.to_s).month     
+    month = event.fulldayevent == 1 ? Date.parse(event.datep.to_s).month : Date.parse(event.datep2.to_s).month     
     month_s = ''
     if(month < 10)
       month_s = '0'+month.to_s
@@ -78,7 +97,7 @@ class Utils
   end
 
   def self.start_hour(event)
-    hour = event.fulldayevent ? 0 : DateTime.parse(event.datep.to_s).hour
+    hour = event.fulldayevent == 1 ? 0 : DateTime.parse(event.datep.to_s).hour
     hour_s = ''
     if(hour < 10)
       hour_s = '0'+hour.to_s
@@ -89,7 +108,7 @@ class Utils
   end
 
   def self.start_minute(event)
-    minute = event.fulldayevent ? 0 : DateTime.parse(event.datep.to_s).minute
+    minute = event.fulldayevent == 1 ? 0 : DateTime.parse(event.datep.to_s).minute
     minute_s = ''
     if(minute < 10)
       minute_s = '0'+minute.to_s
@@ -135,7 +154,7 @@ class Utils
 
   def self.end_date(event)
     begin
-      event.fulldayevent ? Date.parse(event.datep.to_s) : Date.parse(event.datep2.to_s)
+      event.fulldayevent == 1 ? Date.parse(event.datep.to_s) : Date.parse(event.datep2.to_s)
     rescue ArgumentError
       ""
     end

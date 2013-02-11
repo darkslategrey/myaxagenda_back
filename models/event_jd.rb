@@ -18,6 +18,10 @@ class EventJd < JdDB
   belongs_to :user_done, :foreign_key => 'fk_user_done', :class_name => 'JdUser', :inverse_of => :events_done
   belongs_to :user_todo, :foreign_key => 'fk_user_action', :class_name => 'JdUser', :inverse_of => :events_todo
 
+
+  belongs_to :societe, :foreign_key => 'fk_soc', :class_name => 'JdSociete', :inverse_of => :events
+  belongs_to :contact, :foreign_key => 'fk_contact', :class_name => 'JdContact', :inverse_of => :events
+
   def cal_id
     event_type.code != 'AC_REGIE' ? Calendar::ACTIONS_JOBDEPENDANCE : Calendar::REGIE_JOBDEPENDANCE
   end

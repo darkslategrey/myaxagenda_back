@@ -5,7 +5,7 @@ module Event
 
     endTime   = Utils.end_hour(self) + ':' + Utils.end_minute(self)
     startTime = Utils.start_hour(self) + ':' + Utils.start_minute(self)
-
+    self.logger.info("StartTime : <"+startTime+"> endTime <"+endTime+">")
     my_json = { "calendarId" => self.cal_id,
       "subject"     =>  self.label.nil? ? '' : self.label.gsub(/\n/, ' '),
       "repeatType"  =>  "no",
@@ -18,6 +18,8 @@ module Event
       "ymd"         =>  Utils.start_date(self),
       "description" =>  self.note.nil? ? '' : self.note.gsub(/\n/, ' '),
       "eymd"        => Utils.end_date(self).to_s,
+      "societe"     => Utils.societe_url(self.societe),
+      "contact"     => Utils.contact_url(self.contact),
       "userasked"   => self.user_asked.nil? ? '' : self.user_asked.rowid, # fk_user_author
       "userdone"    => self.user_done.nil? ? '' : self.user_done.rowid,
       "usertodo"    => self.user_todo.nil? ? '' : self.user_todo.rowid, # fk_user_action

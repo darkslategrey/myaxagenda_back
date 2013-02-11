@@ -424,6 +424,8 @@ Ext.define('Ext.ux.calendar.DataSource', {
 				userasked: data.userasked,
                                 content:data.description,
                                 day:day,
+				contact: data.contact,
+				societe: data.societe,
                                 eday:eday,
                                 alertFlag:Ext.decode(data.alertFlag),                                
                                 locked:data.locked,
