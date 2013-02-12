@@ -1006,10 +1006,16 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 
 	onSaveFn : function() {
 		var vDate = Ext.Date;
-		if (this.generalForm.getForm().isValid()
-				&& this.repeatForm.getForm().isValid()
+	    console.log("onsave 1");
+	    console.log("this.generalForm.getForm().isValid(): " + this.generalForm.getForm().isValid());
+	    console.log("this.repeatForm.getForm().isValid() : " + this.repeatForm.getForm().isValid());
+	    console.log("this.checkAlertValid(): " + this.checkAlertValid());
+	    // if (this.generalForm.getForm().isValid()
+	    if(this.repeatForm.getForm().isValid()
 				&& this.checkAlertValid()) {
+		    console.log("onsave 2");
 			if (this.bindEl) {
+		    console.log("onsave 3");
 				var coverEl = this.bindEl;
 				var event = coverEl.bindEvent;
 				var oevent = Ext.apply({}, event);
@@ -1085,13 +1091,14 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 						eh.createRepeatEvent(event, cview);
 					}
 				} else if ('update' == this.action) {
+				    console.log("onSave: update");
 					if (!Ext.ux.calendar.Mask.isEqualObj(oevent, event)) {
 						if ('string' == Ext.ux.calendar.Mask
 								.typeOf(oevent.repeatType)
 								&& 'string' == Ext.ux.calendar.Mask
 										.typeOf(event.repeatType)) {
 							event.repeatType = oevent.repeatType;
-							eh.updateEvent(event, cview, null, oevent,
+						    eh.updateEvent(event, cview, null, oevent,
 									this.noLayout);
 						} else {
 							if ('string' != Ext.ux.calendar.Mask
