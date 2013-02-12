@@ -1230,7 +1230,8 @@ Ext.extend(Ext.ux.calendar.EventHandler, Ext.util.Observable, {
      */
     createEvent:function(event, uploadFilePanel, calendarId, cview, col){     
         this.ds.createEvent(event, uploadFilePanel, calendarId, function(backObj){
-            event.eventId = backObj.id;
+            event.eventId = backObj.eventId;
+	    console.log("Eventid <"+event.eventId+">");
             this.createEventToLayout(event, cview, col);
             this.fireEvent('changeEventCache', this);
 

@@ -413,6 +413,8 @@ Ext.define('Ext.ux.calendar.DataSource', {
                                 || (0 == startRow && this.rowCount == endRow) || (day != eday)){
                             
                             eventSet[day] = eventSet[day] || [];                            
+
+			    console.log("finished : <"+data.finished+"> event id <" + data.id + ">");
                             var e = {
                                 eventId:data.id,
                                 calendarId:data.calendarId,
@@ -423,6 +425,7 @@ Ext.define('Ext.ux.calendar.DataSource', {
 				usertodo: data.usertodo,
 				userasked: data.userasked,
                                 content:data.description,
+				finished: data.finished,
                                 day:day,
 				contact: data.contact,
 				societe: data.societe,
@@ -549,6 +552,7 @@ Ext.define('Ext.ux.calendar.DataSource', {
 		'allday': allday,
 		'usertodo': event.usertodo,
 		'userdone': event.userdone,
+		'finished': event.finished,
 		'uploadfile': event.uploadfile,
                 'userId':this.mainPanel.userId
             },
@@ -588,6 +592,9 @@ Ext.define('Ext.ux.calendar.DataSource', {
 
             },
 	    callback: function(opt, sucess, response) {
+		if(uploadFilePanel == undefined) {
+		    return true;
+		}
                 backObj = Ext.decode(response.responseText);
 	form = uploadFilePanel.getForm();
 	    console.log("apres createion de event <"+backObj.eventId+">");
@@ -679,6 +686,7 @@ Ext.define('Ext.ux.calendar.DataSource', {
                 'description':event.content,
 		'usertodo': event.usertodo,
 		'userauthor': event.userauthor,
+		'finished': event.finished,
 		'userdone': event.userdone
 		
             },

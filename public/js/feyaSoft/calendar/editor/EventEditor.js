@@ -43,6 +43,14 @@ Ext.define('Ext.ux.calendar.editor.EventEditor', {
 					fieldLabel : lan['contentField.label'],
 					anchor : '99%'
 				});
+	    this.finishedTask = this.finishedTask || Ext.create('Ext.form.field.Checkbox', {
+		style : 'margin-left:5px;',
+		hideLabel : true,
+		labelSeparator : '',
+		checked: false,
+		boxLabel : 'Tâche terminée'
+	    });
+
 
 		var ctplstr = this.ehandler.cTplStr;
 		this.calendarField = Ext.create('Ext.form.field.ComboBox', {
@@ -124,8 +132,8 @@ Ext.define('Ext.ux.calendar.editor.EventEditor', {
 											items : [this.calendarField]
 										}, {
 											xtype : 'container',
-											columnWidth : .4
-										    // items : [this.alertCB]
+										    columnWidth : .4,
+										    items : [this.finishedTask]
 										}]
 							}],
 					buttonAlign : 'center',
@@ -247,6 +255,12 @@ Ext.define('Ext.ux.calendar.editor.EventEditor', {
 				} else {
 					delete(event.alertFlag);
 				}
+			    event.finished = false;
+			    if(this.finishedTask.checked) {
+				event.finished = true;
+			    }
+			    console.log("this.finishedTask.checked <"+this.finishedTask.checked+">");
+			    console.log("event.finished <"+event.finished+">");
 				event.locked = event.locked || false;
 				event.subject = this.subjectField.getValue();
 				event.content = this.contentField.getValue();
@@ -266,7 +280,7 @@ Ext.define('Ext.ux.calendar.editor.EventEditor', {
 				event.color = eh.calendarSet[event.calendarId].color;
 				if ('add' == this.action) {
 					if ('string' == Ext.ux.calendar.Mask.typeOf(event.repeatType)) {
-						eh.createEvent(event, cview);
+					    eh.createEvent(event, undefined, event.calendarId, cview);
 					} else {
 						eh.createRepeatEvent(event, cview);
 					}
@@ -440,6 +454,13 @@ Ext.define('Ext.ux.calendar.editor.EventEditor', {
 			this.timeField.setText(time);
 			this.subjectField.setValue(bindEvent.subject);
 			this.contentField.setValue(bindEvent.content);
+		    console.log("event.Finished <"+bindEvent.finished+">");
+		    if(bindEvent.finished == true) {
+			this.finishedTask.setValue(true);
+		    }
+		    if(bindEvent.finished == undefined) {
+			this.finishedTask.setValue(false);
+		    }
 			if (bindEvent.alertFlag) {
 				this.alertCB.setValue(true);
 			} else {

@@ -151,6 +151,15 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 					}
 				}, this);
 
+	    this.finishedTask = this.finishedTask 
+		|| Ext.create('Ext.form.field.Checkbox', {
+		    style : 'margin-left:5px;',
+		    hideLabel : true,
+		    labelSeparator : '',
+		    boxLabel : 'Tâche terminée'
+		});
+		
+
 		this.wholeField = this.wholeField
 				|| Ext.create('Ext.form.field.Checkbox', {
 							style : 'margin-left:5px;',
@@ -459,6 +468,7 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 							labelWidth : 80,
 							items : [this.timepanel, this.subjectField,
 									this.contentField, 
+								 this.finishedTask,
 								 this.usertodoLabel,
 								 this.usertodoCombo,
 								 // this.userdoneLabel,
@@ -1090,6 +1100,9 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 					delete(event.alertFlag);
 				    this.alertBtn.setDisabled(true);
 				}
+			    if(this.finishedTask.checked) {
+				event.finished = true;
+			    }
 			    event.locked = false; // this.lockCB.checked || false;
 				// continue in repeat type
 				event = this.handleRepeatType(event);
@@ -1275,6 +1288,7 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 			this.contentField.setValue(bindEvent.content);
 			this.startDayField.setValue(bindEvent.day);
 			this.endDayField.setValue(bindEvent.eday);
+		    this.finishedTask.setValue(bindEvent.finished);
 
 		    // alert("bind usertodo " + bindEvent.usertodo);
 		    // alert("bind userdone " + bindEvent.userdone);

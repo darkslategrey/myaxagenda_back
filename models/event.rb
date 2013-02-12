@@ -28,6 +28,7 @@ module Event
       "repeatType"  =>  "no",
       "class"       =>  "CalendarEventUIModel",
       "endTime"     =>  endTime,
+      "finished"    =>  self.percent == 100 ? "true" : "false",
       "id"          =>  id,
       "startTime"   =>  startTime, 
       "alertFlag"   =>  alertFlag.size == 0 ? false : alertFlag.to_json,
@@ -59,6 +60,7 @@ module Event
     
     
     fulldayevent = json_obj['allday'] == "true" ? 1 : 0
+    percent = json_obj['finished'] == "true" ? 100 : nil
     # json_obj['startDay'] == json_obj['endDay'] and json_obj['startHMTime'] == '00:00' and json_obj['endHHTime'] == '24:00' and fulldayevent = 1
 
     self.logger.info("to_doli <" + json_obj.to_s + ">")
@@ -92,12 +94,15 @@ module Event
       "label" =>  json_obj['subject'], # "Societe PEOPLE AND BABY ajoutee dans Dolibarr",
       "location" =>  "", 
       "note" =>  json_obj['description'], 
-      "percent" =>  0,
       "priority" =>  0,
       "punctual" =>  1,
       "ref_ext" =>  nil,
       "tms" =>  Date.current 
     }
+    if not percent.nil?
+      doli_json['percent'] = percent
+    end
+
     self.logger.info("apres conversion <"+ doli_json.to_s + ">")
     doli_json
   end
