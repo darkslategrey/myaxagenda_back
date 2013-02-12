@@ -42,7 +42,7 @@ def build_send_mail(events)
     dests = event['emails']
     body  = event['label'] + "\n" + event['description']
     filename =  event['file']
-    puts EventMailer.send_regie_alert(dests, body, filename)
+    EventMailer.send_regie_alert(dests, body, filename).deliver
   }
 end
 

@@ -36,7 +36,7 @@ def build_send_mail(events)
       end
       body += " : " + a.label
     }
-    puts EventMailer.send_weekly(e, body).display
+    EventMailer.send_weekly(e, body).deliver
   }
 end
 
