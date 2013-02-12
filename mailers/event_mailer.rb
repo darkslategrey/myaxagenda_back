@@ -57,11 +57,11 @@ class EventMailer < ActionMailer::Base
     end
   end
 
-  def send_regie_alert(dests, body, filename)
+  def send_regie_alert(dests, subject, body, filename)
     if not filename.nil?
       attachments.inline[File.basename(filename)] = File.read(filename)
     end
-    mail(:to => dests, :subject => "Bannière") do |format|
+    mail(:to => dests, :subject => subject) do |format|
       format.text { render :text => body }
     end
   end
