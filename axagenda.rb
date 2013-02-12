@@ -96,6 +96,22 @@ class AxAgenda < Sinatra::Base
     send_file 'public/init_load.json'
   end
 
+
+  post '/deleteEvent' do
+    @@logger.info("Delete event #{params.to_s}")
+    begin
+      Calendar.delete_event(params)
+    rescue Exception => e
+      error_msg = e.backtrace.join("\n")
+      @@logger.error(error_msg)
+      data = { 'success' => false, 'errorInfo' => error_msg }
+    else
+      data = { 'success' => true }
+    end
+    haml data.to_json, :layout => false
+  end
+
+
   post '/loadEvent' do
     Calendar.set_all_visible
     events = Calendar.get_events(params)

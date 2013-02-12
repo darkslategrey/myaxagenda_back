@@ -726,13 +726,15 @@ Ext.define('Ext.ux.calendar.DataSource', {
      * @param {obj} scope: the scope of sucessFn function
      */
     deleteEvent:function(event, sucessFn, scope){
+	console.log("event calendar id <"+event.calendarId+">");
         Ext.Ajax.request({
             url:Ext.ux.calendar.CONST.deleteEventURL,
             /*
              * pass the id of event to delete
              */
             params:{
-                'id':event.eventId
+                'id':event.eventId,
+		'cal_id': event.calendarId
             },
             success:function(response, options){
                  var backObj = Ext.decode(response.responseText);
@@ -747,6 +749,20 @@ Ext.define('Ext.ux.calendar.DataSource', {
                         icon: Ext.MessageBox.ERROR
                     });
                 } else {
+		    Ext.create('widget.uxNotification', {
+			position: 'r',
+			useXAxis: true,
+			cls: 'ux-notification-light',
+			iconCls: 'ux-notification-icon-information',
+			closable: false,
+			title: '',
+			html: 'Suppression réussie',
+			slideInDuration: 800,
+			slideBackDuration: 1000,
+			autoCloseDelay: 2000,
+			slideInAnimation: 'elasticIn',
+			slideBackAnimation: 'elasticIn'
+		    }).show();
                     sucessFn.call(scope, backObj);
                 }
             },

@@ -84,6 +84,16 @@ class Calendar < CalDB # ActiveRecord::Base
 
   end
 
+  def self.delete_event(params)
+    cal_id = params['cal_id'].to_i
+    klass = Utils.cal_to_class(cal_id)
+    begin 
+      klass.delete(params['id'].to_i)
+    rescue Exception => e
+      raise e
+    end
+  end
+
   def self.updateCreate(params)
     params.delete('userId')
     calendar = Calendar.find(params['id'])
