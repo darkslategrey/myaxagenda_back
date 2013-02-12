@@ -255,7 +255,7 @@ class Calendar < CalDB # ActiveRecord::Base
       raise
     end
     Calendar.set_alert(event, params['alertFlag'])
-    @@loger.info("into Calendar.set_alert")
+    @@logger.info("into Calendar.set_alert")
     params['repeatFlag'] &&  Calendar.set_repeat(event, params['repeatType'])
     event.update_attributes!(event.to_doli(params))
   end
