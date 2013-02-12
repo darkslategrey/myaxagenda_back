@@ -172,11 +172,11 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 							anchor : '100%'
 						});
 
-	    this.uploadedFilesField = this.uploadedFileField
+	    this.uploadedFileList = this.uploadedFileList
 		|| Ext.create('Ext.form.Label', {
-		    text: 'uploadedFiles',
-		    id: 'uploadedFilesFiles',
-		    hidden: true
+		    text: 'Fichiers associés :',
+		    id: 'uploadedFileList',
+		    hidden: false
 		});
 	    
 	    this.uploadFileBtn = this.uploadFileBtn
@@ -209,7 +209,7 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 		    bodyPadding: 0,
 		    frame: false,
 		    renderTo: Ext.getBody(),
-		    items: [this.uploadFileField, this.uploadedFilesFiles]
+		    items: [this.uploadFileField, this.uploadedFileList]
 		    // buttons: [this.uploadFileBtn]
 		});
 
@@ -1049,6 +1049,7 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 			    // alert("calendarfield.getvalue " + event.calendarId);
 			    // alert("bindEvent.calendarId " + bindEvent.calendarId);
 
+
 			    store = this.calendarField.store;
 			    value = this.calendarField.getValue();
 			    // index = store.find('id', value);
@@ -1071,7 +1072,7 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 			    event.locked = false; // this.lockCB.checked || false;
 				// continue in repeat type
 				event = this.handleRepeatType(event);
-
+			    event.uploads = this.uploadFileField.getValue();
 				if ('add' == this.action) {
 					if ('string' == Ext.ux.calendar.Mask
 							.typeOf(event.repeatType)) {
@@ -1245,12 +1246,14 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 				}
 			}
 			this.repeatStartField.setValue(bindEvent.day);
-			this.startTimeField.setValue(bindEvent.startRow);
-			this.endTimeField.setValue(bindEvent.endRow);
 			this.subjectField.setValue(bindEvent.subject);
+		    console.log("setup uploaded files <"+bindEvent.uploads+">");
+		    // this.uploadedFileList.text = bindEvent.uploads;
+		    this.uploadedFileList.setText("Fichiers associés : "+bindEvent.uploads);
 			this.contentField.setValue(bindEvent.content);
 			this.startDayField.setValue(bindEvent.day);
 			this.endDayField.setValue(bindEvent.eday);
+
 		    // alert("bind usertodo " + bindEvent.usertodo);
 		    // alert("bind userdone " + bindEvent.userdone);
 
@@ -1284,8 +1287,20 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 		
 		    if(bindEvent.subject == undefined) { // new event
 			this.calendarField.setValue("");
+			this.startTimeField.setValue(bindEvent.startRow);
+			this.endTimeField.setValue(bindEvent.endRow);
 		    } else {
 			this.calendarField.select(eh.calendarSet[bindEvent.calendarId].name);
+			console.log("setup: calendarId " + bindEvent.calendarId);
+			if(bindEvent.calendarId == 3 || bindEvent.calendarId == 4) {
+			    this.startTimeField.hide();
+			    this.endTimeField.hide();
+			    this.wholeField.hide();
+			} else {
+			    this.startTimeField.setValue(bindEvent.startRow);
+			    this.endTimeField.setValue(bindEvent.endRow);
+			}
+
 			// this.calendarField.setValue(eh.calendarSet[bindEvent.calendarId].name);
 		    }
 		    // this.calendarField.setValue(bindEvent.calendarId);

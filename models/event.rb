@@ -3,7 +3,9 @@ module Event
   def to_mycalendar(cal_id=1)
     self_json = self.to_json
 
-    alerts = EventAlert.where("dol_ev_id = #{self.id} and event_class_name = '#{self.class.name}'")
+    alerts  = EventAlert.where("dol_ev_id = #{self.id} and event_class_name = '#{self.class.name}'")
+    uploads = Upload.where("ev_id = 904 and classname = '#{self.class.name}'")
+    
     alertFlag = []
     alerts.each { |af|
       alert = {}
@@ -14,6 +16,10 @@ module Event
       alert['id_alert_flag'] = af.id
       alertFlag.push(alert)
     }
+    
+    uploadedFiles = []
+    uploads.each { |u| uploadedFiles.push(u.filepath) }
+
     endTime   = Utils.end_hour(self) + ':' + Utils.end_minute(self)
     startTime = Utils.start_hour(self) + ':' + Utils.start_minute(self)
     self.logger.info("StartTime : <"+startTime+"> endTime <"+endTime+">")
@@ -28,6 +34,7 @@ module Event
       "color"       =>  Calendar.find(cal_id).color,
       "ymd"         =>  Utils.start_date(self),
       "description" =>  self.note.nil? ? '' : self.note.gsub(/\n/, ' '),
+      "uploads"     => uploadedFiles.size == 0 ? false : uploadedFiles,
       "eymd"        => Utils.end_date(self).to_s,
       "societe"     => Utils.societe_url(self.societe),
       "contact"     => Utils.contact_url(self.contact),

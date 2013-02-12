@@ -427,7 +427,8 @@ Ext.define('Ext.ux.calendar.DataSource', {
 				contact: data.contact,
 				societe: data.societe,
                                 eday:eday,
-                                alertFlag:Ext.decode(data.alertFlag),                                
+                                alertFlag:Ext.decode(data.alertFlag),
+				uploads: data.uploads,
                                 locked:data.locked,
                                 repeatType:data.repeatType
                             };
@@ -616,6 +617,8 @@ Ext.define('Ext.ux.calendar.DataSource', {
 			}).show();
 		    }
 		    console.log("filename " + action.result.filename);
+		    // uploadedFileList = uploadFilePanel.queryById('uploadedFileList');
+		    // uploadedFileList.text = action.result.filename;
 		},
 		failure: function(form, action) {
 		    Ext.Msg.show({

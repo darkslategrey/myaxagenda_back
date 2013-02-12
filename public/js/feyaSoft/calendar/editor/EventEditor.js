@@ -124,8 +124,8 @@ Ext.define('Ext.ux.calendar.editor.EventEditor', {
 											items : [this.calendarField]
 										}, {
 											xtype : 'container',
-											columnWidth : .4,
-											items : [this.alertCB]
+											columnWidth : .4
+										    // items : [this.alertCB]
 										}]
 							}],
 					buttonAlign : 'center',
