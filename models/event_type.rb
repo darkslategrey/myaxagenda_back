@@ -80,12 +80,12 @@ module EventType
     return [] if Calendar.find(cal_id).hide
     klass = eval(self.class.name)
     date = DateTime.current
-    prev_month = date - 1.month
-    next_month = date + 3.month
+    prev_month = params['startDay'].nil? ? date - 1.month : DateTime.parse(params['startDay'])
+    next_month = params['endDay'].nil? ? date + 3.month : DateTime.parse(params['endDay'])
     actions = [] 
     ev_types = klass.where("code not in (?, ?)", 'AC_OTH_AUTO', 'AC_REGIE')
     klass.logger.debug("#{self.class.name}: get actions EVENT TYPE <#{ev_types.to_s}>")
-    conditions = "datep < '" + next_month.to_s + "' and datep > '" + prev_month.to_s + "' and label not regexp '^Bon de commande|^Facture FA|^Facture AV|^Proposition valid|^Société'"
+    conditions = "datep <= '" + next_month.to_s + "' and datep >= '" + prev_month.to_s + "' and label not regexp '^Bon de commande|^Facture FA|^Facture AV|^Proposition valid|^Société'"
     if not ev_types.nil?
       actions = ev_types.to_a.map { |et|
         events = et.events.where(conditions) || []
@@ -103,8 +103,8 @@ module EventType
     klass = eval(self.class.name)
     regies = []
     date = DateTime.current
-    prev_month = date - 1.month
-    next_month = date + 3.month
+    prev_month = params['startDay'].nil? ? date - 1.month : DateTime.parse(params['startDay'])
+    next_month = params['endDay'].nil? ? date + 3.month : DateTime.parse(params['endDay'])
     
     ev_type = klass.where('code = "AC_REGIE"').first
     klass.logger.debug("#{self.class.name}: get regies EVENT TYPE <#{ev_type.to_s}>")
@@ -112,7 +112,7 @@ module EventType
       events = ev_type.events
     end
     if not events.nil?
-      regies = events.where("datep < '" + next_month.to_s + "' and datep > '" + prev_month.to_s + "'").to_a.flatten || []
+      regies = events.where("datep <= '" + next_month.to_s + "' and datep >= '" + prev_month.to_s + "'").to_a.flatten || []
     end
     regies.map { |e| e.cal_id = cal_id } 
     klass.logger.debug("#{self.class.name}: nbr de regies: #{regies.size}")

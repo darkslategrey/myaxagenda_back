@@ -108,11 +108,11 @@ class Calendar < CalDB # ActiveRecord::Base
 
   def self.get_events(params={})
     events = []
-    events += EventTypeJd.first.get_regies(Calendar::REGIE_JOBDEPENDANCE)
-    events += EventTypeJd.first.get_actions(Calendar::ACTIONS_JOBDEPENDANCE)
+    events += EventTypeJd.first.get_regies(Calendar::REGIE_JOBDEPENDANCE, params)
+    events += EventTypeJd.first.get_actions(Calendar::ACTIONS_JOBDEPENDANCE, params)
 
-    events += EventTypeJe.first.get_regies(Calendar::REGIE_JOBENFANCE)
-    events += EventTypeJe.first.get_actions(Calendar::ACTIONS_JOBENFANCE)
+    events += EventTypeJe.first.get_regies(Calendar::REGIE_JOBENFANCE, params)
+    events += EventTypeJe.first.get_actions(Calendar::ACTIONS_JOBENFANCE, params)
     events.flatten
   end
 
