@@ -81,7 +81,7 @@ module EventType
     klass = eval(self.class.name)
     date = DateTime.current
     prev_month = date - 1.month
-    next_month = date + 1.month
+    next_month = date + 3.month
     actions = [] 
     ev_types = klass.where("code not in (?, ?)", 'AC_OTH_AUTO', 'AC_REGIE')
     klass.logger.debug("#{self.class.name}: get actions EVENT TYPE <#{ev_types.to_s}>")
@@ -104,7 +104,7 @@ module EventType
     regies = []
     date = DateTime.current
     prev_month = date - 1.month
-    next_month = date + 1.month
+    next_month = date + 3.month
     
     ev_type = klass.where('code = "AC_REGIE"').first
     klass.logger.debug("#{self.class.name}: get regies EVENT TYPE <#{ev_type.to_s}>")
