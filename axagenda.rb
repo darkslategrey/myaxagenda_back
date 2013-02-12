@@ -74,7 +74,7 @@ class AxAgenda < Sinatra::Base
 
 
   get '/' do
-    protected!
+    # protected!
     haml :index
   end
 
