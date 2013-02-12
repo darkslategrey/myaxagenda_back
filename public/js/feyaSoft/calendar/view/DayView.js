@@ -1296,7 +1296,7 @@
 	      		
                 var glayout = eh.calendarLayout;
                 var wlist = eventSet['whole'];
-                glayout.updateWholeList(wlist, 'add');   
+                glayout.updateWholeList(wlist, 'update');   
 
 		        this.showEvents(eventSet, refresh);
                 eh.pushDayCache(startDate, endDate);
