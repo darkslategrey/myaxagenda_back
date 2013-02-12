@@ -13,6 +13,8 @@ require './models/je_db'
 require './models/cal_db'
 
 require './models/event_alert'
+
+require './models/cal_db'
 require './models/calendar'
 
 require './models/event_type'

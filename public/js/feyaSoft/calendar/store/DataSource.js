@@ -511,9 +511,10 @@ Ext.define('Ext.ux.calendar.DataSource', {
      * @param {function} sucessFn: the callback function when request completed successfully
      * @param {obj} scope: the scope of sucessFn function
      */
-	createEvent:function(event, sucessFn, scope){
+    createEvent:function(event, uploadFilePanel, calendarId, sucessFn, scope){
         var day = event.day || Ext.Date.format((new Date()),'Y-m-d');
-        var eday = event.eday || day;        
+        var eday = event.eday || day; 
+
         Ext.Ajax.request({
             url:Ext.ux.calendar.CONST.createEventURL,
             /*
@@ -579,7 +580,55 @@ Ext.define('Ext.ux.calendar.DataSource', {
             },
             failure:function(response, options){
 
-            }
+            },
+	    callback: function(opt, sucess, response) {
+                backObj = Ext.decode(response.responseText);
+	form = uploadFilePanel.getForm();
+	    console.log("apres createion de event <"+backObj.eventId+">");
+	if(form.isValid()){
+	    form.submit({
+		params: { event_id: backObj.eventId, cal_id2: calendarId },
+		url: Ext.ux.calendar.CONST.uploadFileURL,
+		waitMsg: 'Transmission du fichier ...',
+		success: function(form, action) {
+
+		    if(action.result.success == false) {
+			Ext.Msg.show({
+			    title:'Error',
+			    msg: action.result.errorInfo,
+			    buttons: Ext.Msg.OK,
+			    icon: Ext.MessageBox.ERROR
+			});
+		    } else {
+			Ext.create('widget.uxNotification', {
+			    position: 'r',
+			    useXAxis: true,
+			    cls: 'ux-notification-light',
+			    iconCls: 'ux-notification-icon-information',
+			    closable: false,
+			    title: 'Bonne nouvelle',
+			    html: 'Fichier transmis!',
+			    slideInDuration: 800,
+			    slideBackDuration: 500,
+			    autoCloseDelay: 1000,
+			    slideInAnimation: 'elasticIn',
+			    slideBackAnimation: 'elasticIn'
+			}).show();
+		    }
+		    console.log("filename " + action.result.filename);
+		},
+		failure: function(form, action) {
+		    Ext.Msg.show({
+                        title:'Error',
+                        msg: action.result.errorInfo,
+                        buttons: Ext.Msg.OK,
+                        icon: Ext.MessageBox.ERROR
+		    });
+		}
+	    });
+	}
+
+	    }
         });
     },
     /*

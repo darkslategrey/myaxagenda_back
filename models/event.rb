@@ -3,6 +3,17 @@ module Event
   def to_mycalendar(cal_id=1)
     self_json = self.to_json
 
+    alerts = EventAlert.where("dol_ev_id = #{self.id} and event_class_name = '#{self.class.name}'")
+    alertFlag = []
+    alerts.each { |af|
+      alert = {}
+      alert['type'] = af.type_alert
+      alert['early'] = af.early
+      alert['unit'] = af.unit
+      alert['emails'] = af.emails
+      alert['id_alert_flag'] = af.id
+      alertFlag.push(alert)
+    }
     endTime   = Utils.end_hour(self) + ':' + Utils.end_minute(self)
     startTime = Utils.start_hour(self) + ':' + Utils.start_minute(self)
     self.logger.info("StartTime : <"+startTime+"> endTime <"+endTime+">")
@@ -13,7 +24,7 @@ module Event
       "endTime"     =>  endTime,
       "id"          =>  id,
       "startTime"   =>  startTime, 
-      "alertFlag"   =>  false,
+      "alertFlag"   =>  alertFlag.size == 0 ? false : alertFlag.to_json,
       "color"       =>  Calendar.find(cal_id).color,
       "ymd"         =>  Utils.start_date(self),
       "description" =>  self.note.nil? ? '' : self.note.gsub(/\n/, ' '),
@@ -29,6 +40,8 @@ module Event
 
   def to_doli(json)
     json_obj = JSON.parse(json.to_json)
+
+    self.logger.info("json obj <"+ json_obj.to_s + ">")
     datep = json_obj['startDay'].nil? ? json_obj['ymd'] : json_obj['startDay']
     datep += ' '
     datep += json_obj['startHMTime'].nil? ? json_obj['startTime'] : json_obj['startHMTime']
@@ -41,6 +54,7 @@ module Event
     fulldayevent = 0
     json_obj['startDay'] == json_obj['endDay'] and json_obj['startHMTime'] == '00:00' and json_obj['endHHTime'] == '24:00' and fulldayevent = 1
 
+    self.logger.info("to_doli <" + json_obj.to_s + ">")
     fk_action = nil
 
     case json_obj['calendarId'].to_i
@@ -53,7 +67,7 @@ module Event
     when Calendar::ACTIONS_JOBDEPENDANCE
       fk_action = EventTypeJd.where('code = "AC_OTH"').first.id
     else
-      @@logger.error("Calendrier inconnu : <#{json_obj['calendarId']}>")
+      self.logger.error("Calendrier inconnu : <#{json_obj['calendarId']}>")
       e = Exception.new("Calendrier inconnu : <#{json_obj['calendarId']}>")
       raise e
     end
@@ -77,6 +91,7 @@ module Event
       "ref_ext" =>  nil,
       "tms" =>  Date.current 
     }
+    self.logger.info("apres conversion <"+ doli_json.to_s + ">")
     doli_json
   end
 

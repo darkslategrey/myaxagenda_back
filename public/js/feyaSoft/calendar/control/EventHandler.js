@@ -1228,11 +1228,12 @@ Ext.extend(Ext.ux.calendar.EventHandler, Ext.util.Observable, {
      * @param {int} col: the index of column in cview to render the events,
      * for DayView, it's always 0, for WeekView, it's from 0 to 6, for MonthView, it's from 0 to 27
      */
-    createEvent:function(event, cview, col){     
-        this.ds.createEvent(event, function(backObj){
+    createEvent:function(event, uploadFilePanel, calendarId, cview, col){     
+        this.ds.createEvent(event, uploadFilePanel, calendarId, function(backObj){
             event.eventId = backObj.id;
             this.createEventToLayout(event, cview, col);
             this.fireEvent('changeEventCache', this);
+
         }, this);
     },
 

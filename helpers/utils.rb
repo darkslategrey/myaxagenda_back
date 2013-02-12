@@ -27,15 +27,14 @@ class Utils
     class_name = nil
     case cal_nbr.to_i
     when Calendar::REGIE_JOBDEPENDANCE, Calendar::ACTIONS_JOBDEPENDANCE
-      @@mylogger.debug("jobdependance event")
+      @@mylogger.info("jobdependance event")
       class_name = "EventJd"
     when Calendar::REGIE_JOBENFANCE, Calendar::ACTIONS_JOBENFANCE
-      @@mylogger.debug("jobenfance event")
+      @@mylogger.info("jobenfance event")
       class_name = "EventJe"
     else
-      @@mylogger.debug("Calendar type not found <#{id}>")
+      @@mylogger.info("Calendar type not found <#{id}>")
     end
-
     return eval(class_name) if not class_name.nil?
     nil
   end

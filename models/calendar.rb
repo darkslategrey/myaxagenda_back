@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-require './models/cal_db'
 
 class Calendar < CalDB # ActiveRecord::Base
   # db_config = YAML.load_file(File.join(File.dirname(__FILE__), '../config/databases.yml'))
@@ -44,9 +43,14 @@ class Calendar < CalDB # ActiveRecord::Base
     alert_flags = params['alertFlag']
     @@logger.info("Création d'un event #{klass.to_s}")
     begin
+      @@logger.info("Avant conversion !!!!!!!!  ")
+      @@logger.info("klass first <"+ klass.to_s + ">")
       event = klass.new(klass.first.to_doli(params))
+      @@logger.info("après conversion")
       event.save!
-      self.set_alert(klass, alert_flags)
+      @@logger.info("aprs sauvegarde")
+      self.set_alert(event, alert_flags)
+      @@logger.info("apres set alert")
     rescue Exception => e
       @@logger.error("Oups! " + e.message)
       raise e
@@ -251,22 +255,23 @@ class Calendar < CalDB # ActiveRecord::Base
       raise
     end
     Calendar.set_alert(event, params['alertFlag'])
+    @@loger.info("into Calendar.set_alert")
     params['repeatFlag'] &&  Calendar.set_repeat(event, params['repeatType'])
     event.update_attributes!(event.to_doli(params))
   end
 
   # [{"type":"email","early":30,"unit":"minute","emails":"dfd, fdfds"}]
   def self.set_alert(event, alerts)
-    return if alerts.nil? or alerts != /null|true|false/ 
+    return if alerts.nil? or alerts.size == 0 # or alerts == /null|true|false/ 
 
     alerts = JSON.parse(alerts)
-    alerts.each { |alert| n
+    alerts.each { |alert| 
       ea = EventAlert.find_or_create_by_dol_ev_id(:dol_ev_id => event.id)
       ea.update_attributes!(:type_alert => alert['type'],
-                            :event_class_name => event.to_s,
+                            :event_class_name => event.class.name,
                             :early => alert['early'].to_i,
                             :unit => alert['unit'],
-                            :emails => alert['emails'])
+                            :emails => alert['emails'].gsub(/\s/, ''))
       @@logger.info("Creation alerte: #{ea.to_s}")
     }
   end
