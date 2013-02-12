@@ -129,7 +129,9 @@ class AxAgenda < Sinatra::Base
     begin
       event = Calendar.createEvent(params)
     rescue Exception => e
-      data = { 'success' => false, 'errorInfo' => e.message }
+      error_msg = e.backtrace.join("\n")
+      @@logger.error(error_msg)
+      data = { 'success' => false, 'errorInfo' => error_msg }
     else
       data = { 'success' => true, 'eventId' => event.id  }
     end
@@ -175,8 +177,9 @@ class AxAgenda < Sinatra::Base
                                      params['banniere'][:tempfile], 
                                      params['banniere'][:filename])
     rescue Exception => e
-      @@logger.error("Oups! #{e.message}")
-      data = { 'success' => false, 'errorInfo' => "Oups! Problème : " + e.message }
+      error_msg = e.backtrace.join("\n")
+      @@logger.error("Oups! " + error_msg)
+      data = { 'success' => false, 'errorInfo' => "Oups! Problème : " + error_msg }
     else
       data = { 'success' => true, 'filename' => filename }
     end

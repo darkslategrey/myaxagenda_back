@@ -191,6 +191,7 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 		    name: 'banniere', //  + this.bindEl.bindEvent.id,
 		    fieldLabel: '',
 		    border: false,
+		    id: "uploadFileField",
 		    bodyPadding: false,
 		    labelWidth: 50,
 		    msgTarget: 'side',
@@ -229,6 +230,11 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 						}
 					}
 				});
+	    this.alertBtn = this.alertBtn || Ext.create("Ext.button.Button", {
+		text: "Ajouter une alerte",
+		scope: this,
+		handler: this.onAlertBtn
+	    });
 
 		this.alertCB = this.alertCB || Ext.create('Ext.form.field.Checkbox', {
 					labelSeparator : '',
@@ -459,7 +465,8 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 								 // this.userdoneCombo,
 								 this.uploadFilePanel,
 								 this.calendarField,
-								 this.alertCB, this.alertContainer]
+								 this.alertCB, this.alertBtn, 
+								 this.alertContainer]
 				    // this.lockCB]
 						});
 
@@ -917,6 +924,8 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 			console.log("value <"+value+">");
 			this.startTimeField.hide();
 			this.endTimeField.hide();
+			this.wholeField.fireEvent('check');
+			// this.wholeField.setValue(true);
 			this.wholeField.hide();
 			// this.startTimeField.setDisabled(true);
 			// this.endTimeField.setDisabled(true);
@@ -988,7 +997,7 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 			}
 			this.startDayField.setValue(event.day);
 			this.endDayField.setValue(event.eday);
-		    this.usertodoCombo.setValue(event.usertodo);
+		    // this.usertodoCombo.setValue(event.usertodo);
 		    // this.userdoneCombo.setValue(event.userdone);
 		}
 	},
@@ -1066,14 +1075,20 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 				    event.calendarId = ele.get("id");
 				}
 			    });
-			    
-			    // alert("calendarId " + event.calendarId);
-			    
+
+			    if(event.calendarId == 3 || event.calendarId == 4) {
+			     	console.log("calendarId " + event.calendarId);
+				event.allDay = true;
+				event.startRow = 0;
+				// this.wholeField.fireEvent("check");
+			    }
 			    event.color = eh.calendarSet[event.calendarId].color;
 				if (this.alertCB.checked) {
 					event.alertFlag = this.getAlertSetting();
+				    this.alertBtn.setDisabled(false);
 				} else {
 					delete(event.alertFlag);
+				    this.alertBtn.setDisabled(true);
 				}
 			    event.locked = false; // this.lockCB.checked || false;
 				// continue in repeat type
@@ -1336,9 +1351,16 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 		}
 	},
 
+    onAlertBtn: function() {
+	this.alertContainer.add(new Ext.ux.calendar.AlertSetting({
+	    onRemoveAlertFn: this.onRemoveAlertFn
+	}));
+	this.alertContainer.doLayout();
+    },
 	onAlertCheckFn : function(cb, checked) {
 		if (Ext.ux.calendar.CONST.VERSION >= '2.0.5') {
 			if (checked) {
+			    this.alertBtn.setDisabled(false);
 				this.alertContainer.show();
 				if (!this.alertContainer.items
 						|| 0 == this.alertContainer.items.getCount()) {
@@ -1350,6 +1372,7 @@ Ext.define('Ext.ux.calendar.editor.DetailEditor', {
 			} else {
 				this.alertContainer.hide();
 				this.resetAlertSetting()
+			    this.alertBtn.setDisabled(true);
 			}
 		}
 	},

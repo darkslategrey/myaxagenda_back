@@ -515,6 +515,10 @@ Ext.define('Ext.ux.calendar.DataSource', {
     createEvent:function(event, uploadFilePanel, calendarId, sucessFn, scope){
         var day = event.day || Ext.Date.format((new Date()),'Y-m-d');
         var eday = event.eday || day; 
+	var allday = false;
+	if(event.calendarId == 3 || event.calendarId == 4) {
+	    allday = true;
+	}
 
         Ext.Ajax.request({
             url:Ext.ux.calendar.CONST.createEventURL,
@@ -542,6 +546,7 @@ Ext.define('Ext.ux.calendar.DataSource', {
                 'locked':event.locked,
                 'subject':event.subject,
                 'description':event.content,
+		'allday': allday,
 		'usertodo': event.usertodo,
 		'userdone': event.userdone,
 		'uploadfile': event.uploadfile,
@@ -586,7 +591,8 @@ Ext.define('Ext.ux.calendar.DataSource', {
                 backObj = Ext.decode(response.responseText);
 	form = uploadFilePanel.getForm();
 	    console.log("apres createion de event <"+backObj.eventId+">");
-	if(form.isValid()){
+		console.log("filename <"+uploadFilePanel.getChildByElement("uploadFileField").getValue()+">");
+		if(form.isValid() && uploadFilePanel.getChildByElement("uploadFileField").getValue() != ""){
 	    form.submit({
 		params: { event_id: backObj.eventId, cal_id2: calendarId },
 		url: Ext.ux.calendar.CONST.uploadFileURL,

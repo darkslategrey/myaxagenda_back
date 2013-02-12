@@ -49,10 +49,13 @@ class Calendar < CalDB # ActiveRecord::Base
       @@logger.info("après conversion")
       event.save!
       @@logger.info("aprs sauvegarde")
-      self.set_alert(event, alert_flags)
+      if(alert_flags != "null")
+        self.set_alert(event, alert_flags)
+      end
       @@logger.info("apres set alert")
     rescue Exception => e
-      @@logger.error("Oups! " + e.message)
+      error_msg = e.backtrace.join("\n")
+      @@logger.error("Oups! " + error_msg)
       raise e
     end
     event
@@ -262,7 +265,7 @@ class Calendar < CalDB # ActiveRecord::Base
 
   # [{"type":"email","early":30,"unit":"minute","emails":"dfd, fdfds"}]
   def self.set_alert(event, alerts)
-    return if alerts.nil? or alerts.size == 0 # or alerts == /null|true|false/ 
+    return if alerts.nil? or alerts == "null" or alerts.size == 0 # or alerts == /null|true|false/ 
 
     alerts = JSON.parse(alerts)
     alerts.each { |alert| 

@@ -58,8 +58,8 @@ module Event
     datep2 += json_obj['endHMTime'].nil? ? json_obj['endTime'] : json_obj['endHMTime']
     
     
-    fulldayevent = 0
-    json_obj['startDay'] == json_obj['endDay'] and json_obj['startHMTime'] == '00:00' and json_obj['endHHTime'] == '24:00' and fulldayevent = 1
+    fulldayevent = json_obj['allday'] == "true" ? 1 : 0
+    # json_obj['startDay'] == json_obj['endDay'] and json_obj['startHMTime'] == '00:00' and json_obj['endHHTime'] == '24:00' and fulldayevent = 1
 
     self.logger.info("to_doli <" + json_obj.to_s + ">")
     fk_action = nil
