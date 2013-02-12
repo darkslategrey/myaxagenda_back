@@ -8,9 +8,11 @@ def get_weekly_events(class_name)
   actions = {}
   current_time = DateTime.current
   end_week = current_time + 5.days
-  events = klass.where("datep >= '" + current_time.to_s + "' and datep <= '" + end_week.to_s + "'")
+  conditions = "datep >= '" + current_time.to_s + "' and datep <= '" + end_week.to_s + "' and percent != 100"
+  events = klass.where(conditions)
   events.each { |e| 
     next if e.user_todo.nil? or e.label.nil? or e.label.length == 0
+    next if e.event_type.code == 'AC_REGIE'
     if actions[e.user_todo.email].nil?
       actions[e.user_todo.email] = []
     end
