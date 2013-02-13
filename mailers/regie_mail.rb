@@ -6,6 +6,8 @@ require File.join('.', File.dirname(__FILE__), 'event_mailer.rb')
 
 class RegieMailer
 
+  attr_accessor :logger
+
   def initialize
     @logger = Logger.new("log/mailer.log")
     original_formatter = Logger::Formatter.new
