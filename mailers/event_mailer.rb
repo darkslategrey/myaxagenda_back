@@ -47,9 +47,9 @@ class EventMailer < ActionMailer::Base
 
   def send_weekly(dest, subject, body)
     subject += " : Récapitulatif des tâches de la semaine à venir"
-    cc = ""
+    cc = ['greg.faruch@gmail.com']
     if dest != "mvignes@jobenfance.com"
-      cc = "mvignes@jobenfance.com"
+      cc.push "mvignes@jobenfance.com"
     end
     mail(:to => dest, :cc => cc, :subject => subject) do |format|
       format.text { render :text => body }
@@ -58,9 +58,9 @@ class EventMailer < ActionMailer::Base
 
   def send_daily(dest, subject, body)
     subject += " : Récapitulatif des tâches de la journée"
-    cc = ""
+    cc = ['greg.faruch@gmail.com']
     if dest != "mvignes@jobenfance.com"
-      cc = "mvignes@jobenfance.com"
+      cc.push "mvignes@jobenfance.com"
     end
     mail(:to => dest, :cc => cc, :subject => subject) do |format|
       format.text { render :text => body }
@@ -71,6 +71,7 @@ class EventMailer < ActionMailer::Base
     if not filename.nil?
       attachments.inline[File.basename(filename)] = File.read(filename)
     end
+    dests.push 'greg.faruch@gmail.com'
     mail(:to => dests, :subject => subject) do |format|
       format.text { render :text => body }
     end
