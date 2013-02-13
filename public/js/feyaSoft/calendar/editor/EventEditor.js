@@ -468,7 +468,16 @@ Ext.define('Ext.ux.calendar.editor.EventEditor', {
 			}
 			this.reloadCalendar(eh);
 		    if(bindEvent.subject == undefined) { // new event
-			this.calendarField.setValue("");
+			cpt = 0;
+			data = [];
+			for(p in eh.calendarSet) {
+			    if(eh.calendarSet[p]['hide'] == false) {
+				data[cpt++] = eh.calendarSet[p]['id'];
+			    }
+			}
+			if(cpt == 1) {
+			    this.calendarField.select(eh.calendarSet[data[0]].name);
+			}
 		    } else {
 			this.calendarField.select(eh.calendarSet[bindEvent.calendarId].name);
 			// this.calendarField.setValue(eh.calendarSet[bindEvent.calendarId].name);
