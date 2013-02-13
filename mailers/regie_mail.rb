@@ -54,7 +54,7 @@ class RegieMailer
     if events.size == 0
       EventMailer.send_regie_alert(['mvignes@jobenfance.com'], 
                                    subject,
-                                   'Aucune action de prévue, bonne journée', nil).display
+                                   'Aucune action de prévue, bonne journée', nil).deliver
       return
     end
     events.each { |event|
@@ -63,7 +63,7 @@ class RegieMailer
       filename =  event['file']
       dests.map! { |e| e.gsub(/\s/, '') }
       @logger.info("regies : <"+dests.to_s+">")
-      EventMailer.send_regie_alert(dests, subject, body, filename).display
+      EventMailer.send_regie_alert(dests, subject, body, filename).deliver
     }
   end
 

@@ -64,7 +64,7 @@ class DailyMailer
       if events[e].size == 0
         body = "Aucune action de prévue.\n"
         body += "Bonne journée"
-        EventMailer.send_daily(e, subject, body).display
+        EventMailer.send_daily(e, subject, body).deliver
         next
       end
       events[e].each { |a|
@@ -80,7 +80,7 @@ class DailyMailer
         body += "Description : " + a.note + "\n\n"
         body += "========================\n\n"
       }
-      EventMailer.send_daily(e, subject, body).display
+      EventMailer.send_daily(e, subject, body).deliver
     }
   end
 
