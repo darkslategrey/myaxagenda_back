@@ -1022,7 +1022,7 @@ Ext.define('Ext.ux.calendar.view.MonthView', {
 	showEvents : function(eventSet, refresh) {
 		var eh = this.ehandler;
 		var glayout = eh.calendarLayout;
-		glayout.updateWholeList(eventSet['whole'], 'add');
+		glayout.updateWholeList(eventSet['whole'], 'update');
 		for (var i = 0; i < this.weekNum; i++) {
 			var tbody = Ext.get(this.id + '-x-monthview-ct-' + i).dom.firstChild;
 			glayout.showWeek(this, tbody, i, eventSet);
@@ -1160,7 +1160,7 @@ Ext.define('Ext.ux.calendar.view.MonthView', {
 						/*
 						 * add new wlist to glayout
 						 */
-						gLayout.updateWholeList(wlist, 'add');
+						gLayout.updateWholeList(wlist, 'update');
 						for (var i = 0, len = olist.length; i < len; i++) {
 							var e = olist[i];
 							e.day = tday;
