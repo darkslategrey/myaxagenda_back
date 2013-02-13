@@ -40,7 +40,7 @@ class RegieMailer
         alert['class_name'] = 'EventJd'
       end
       alert['ev_id']       = event.id.to_s
-      alert['emails']      = emails
+      alert['emails']      = emails.map { |e| e.gsub(/s/, '') }
       alert['file']        = file
       alert['label']       = event.label
       alert['description'] = event.note
@@ -51,11 +51,19 @@ class RegieMailer
 
 
   def build_send_mail(events, subject)
+    if events.size == 0
+      EventMailer.send_regie_alert(['mvignes@jobenfance.com'], 
+                                   subject,
+                                   'Aucune action de prévue, bonne journée', nil).display
+      return
+    end
     events.each { |event|
       dests = event['emails']
       body  = event['label'] + "\n" + event['description']
       filename =  event['file']
-      EventMailer.send_regie_alert(dests, subject, body, filename).deliver
+      dests.map! { |e| e.gsub(/\s/, '') }
+      @logger.info("regies : <"+dests.to_s+">")
+      EventMailer.send_regie_alert(dests, subject, body, filename).display
     }
   end
 
@@ -80,16 +88,19 @@ class RegieMailer
     @logger.info "Nbr RegieJd à 3 jrs  #{re_jd_3.size} ids <" + get_ids(re_jd_3) + ">"
     @logger.info "Nbr RegieJd à 1 jrs  #{re_jd_1.size} ids <" + get_ids(re_jd_1) + ">"
 
-    build_send_mail(re_je_3, "Bannières Jobenfance à 3 jours")
-    build_send_mail(re_je_1, "Bannières Jobenfance à 1 jours")
+    build_send_mail(re_je_3, "Message auto: Bannières Jobenfance à 3 jours")
+    build_send_mail(re_je_1, "Message auto: Bannières Jobenfance à 1 jours")
 
-    build_send_mail(re_jd_3, "Bannières Jobdependance à 3 jours")
-    build_send_mail(re_jd_1, "Bannières Jobdependance à 1 jours")
+    build_send_mail(re_jd_3, "Message auto: Bannières Jobdependance à 3 jours")
+    build_send_mail(re_jd_1, "Message auto: Bannières Jobdependance à 1 jours")
   end
 
 end
 
 
-RegieMailer.new.run
+regie_mailer = RegieMailer.new
+regie_mailer.run
+regie_mailer.logger.close
+
 
 
