@@ -17,9 +17,9 @@ class WeeklyMailer
   def get_weekly_events(class_name)
     klass = eval(class_name)
     if class_name == "EventJe"
-      users = JeUser.all.map { |u| u.email if not u.email == "" }.compact
+      users = JeUser.where("login != 'Mathilde'").map { |u| u.email if not u.email == "" }.compact
     else
-      users = JdUser.all.map { |u| u.email if not u.email == "" }.compact
+      users = JdUser.where("login != 'Mathilde'").map { |u| u.email if not u.email == "" }.compact
     end
     actions = {}
     current_time = DateTime.current
