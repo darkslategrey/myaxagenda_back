@@ -157,6 +157,90 @@ Ext.ux.calendar.EventHandler = function(config){
         }
     );
     this.eventTpl.compile();
+
+    /*
+     * The XTemplate for an event render in Ext.ux.calendar.view.DayView
+     */
+    this.myEventTpl = new Ext.XTemplate(
+        ['<div eid="{id}" name="x-event-{day}-{eday}-{id}" ',
+            'class="',this.id,'-x-calendar-{calendarId}-event x-event-cover ',this.id,'-x-calendar-{calendarId} x-calendar-event x-unselectable" ',
+            'style="{cover-style}">',
+            '<div style="height:18px;">',
+                '<table width="100%" cellspacing="0" cellpadding="0" border="0"><tbody><tr>',
+                    '<td style="{left-style}">',
+                        '<div class="x-calendar-{color}-event-ltcorner-clear  x-event-lt-default">&nbsp;</div>',
+                    '</td>',
+                    '<td>',
+                        '<div class="x-calendar-{color}-event-top-clear x-event-inner x-event-title-default" ',
+                        	'data-qtip="{time}<br><b><u>{subject}</u></b><br>{content}" style="{title-style}">',
+                        	'<tpl if="this.hasEventTypeColor(eventTypeColor)">',
+                        		'<img class="x-event-type" style="background-color:{eventTypeColor};" src="',Ext.BLANK_IMAGE_URL,'"></img> ',
+                        	'</tpl>',
+                            '{title}',
+                        '</div>',
+                    '</td>',
+                    '<td style="{right-style}">',
+                        '<div class="x-calendar-{color}-event-rtcorner-clear  x-event-rt-default">&nbsp;</div>',
+                    '</td>',
+                '</tr></tbody></table>',
+            '</div>',
+
+            '<div class="x-calendar-{color}-event-lr x-event-content-default" style="{content-style}">',
+                '<img class="x-calendar-event-pin-off x-event-pin" src="',Ext.BLANK_IMAGE_URL,'"></img>',
+                '<tpl if="this.isRepeat(repeatType)">',
+                    '<img class="x-repeat-event" src="',Ext.BLANK_IMAGE_URL,'"></img> ',
+                '</tpl>',
+                '<tpl if="this.isException(repeatType)">',
+                    '<img class="x-exception-event" src="',Ext.BLANK_IMAGE_URL,'"></img> ' +
+                '</tpl>',
+                '<tpl if="this.isAlert(alertFlag)">',
+                    '<img class="x-alert-event" src="',Ext.BLANK_IMAGE_URL,'"></img> ',
+                '</tpl>',
+                '<tpl if="this.isReadOnly(calendarId)">',
+                    '<img class="x-readonly-event" src="',Ext.BLANK_IMAGE_URL,'"></img> ',
+                '</tpl>',
+                '<tpl if="this.isLocked(locked)">',
+                    '<img class="x-locked-event" src="',Ext.BLANK_IMAGE_URL,'"></img> ',
+                '</tpl>',
+                '<u class="x-event-content-link" data-qtip="{time}<br><b><u>{subject}</u></b><br>{content}">{subject}</u><br>{content}',
+            '</div>',
+
+            '<div>',
+                '<table width="100%" cellspacing="0" cellpadding="0" border="0"><tbody><tr>',
+                    '<td style="{left-style}">',
+                        '<div class="x-calendar-{color}-event-lbcorner">&nbsp;</div>',
+                    '</td>',
+                    '<td>',
+                        '<div style="{bottom-style}" class="x-calendar-{color}-event-bottom x-event-bottom-default">&nbsp;</div>',
+                    '</td>',
+                    '<td style="{right-style}">',
+                        '<div class="x-calendar-{color}-event-rbcorner">&nbsp;</div>',
+                    '</td>',
+                '</tr></tbody></table>',
+            '</div>',
+        '</div>'].join(''), {
+        	hasEventTypeColor : function(eventTypeColor){
+        		return eventTypeColor!=undefined &&false != Ext.ux.calendar.Mask.typeOf(eventTypeColor) && '' !== eventTypeColor;
+        	},
+            isRepeat:function(repeatType){
+                return ('string' != Ext.ux.calendar.Mask.typeOf(repeatType));
+            },
+            isException:function(repeatType){
+                return ('exception' == repeatType);
+            },
+            isAlert:function(alertFlag){
+                return alertFlag;
+            },
+            isLocked:function(locked){
+                return locked;
+            },
+            isReadOnly:function(calendarId){
+                return 2 == me.calendarSet[calendarId].permit;
+            }
+        }
+    );
+    this.myEventTpl.compile();
+
     /*
      * The XTemplate for an event render in Ext.ux.calendar.view.MonthView
      */
@@ -1160,6 +1244,7 @@ Ext.extend(Ext.ux.calendar.EventHandler, Ext.util.Observable, {
 	            if(this.calendarSet){
 	                color = this.calendarSet[e.calendarId].color;
 	            }
+		if(e.tlj) { contentStyle += ";border: 2px solid black"; }
 	            var html = this.eventTpl.apply({
 	                'id':e.eventId,
 	                'calendarId':e.calendarId,
