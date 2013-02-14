@@ -1152,7 +1152,9 @@ Ext.extend(Ext.ux.calendar.EventHandler, Ext.util.Observable, {
 	    return hm;
             // return Ext.ux.calendar.Mask.EventHandler['wholeDay'];
         }else{
-            var hm = event.societe + " " + event.contact;
+	    ev_societe = event.societe || '';
+	    ev_contact = event.contact || '';
+            var hm = ev_societe + " " + ev_contact; //event.societe + " " + event.contact;
             // var hm = Ext.ux.calendar.Mask.getIntervalFromRow(this.intervalSlot, startRow, this.hourFormat)+'-'+
             //     Ext.ux.calendar.Mask.getIntervalFromRow(this.intervalSlot, endRow, this.hourFormat);
             return hm;
@@ -1255,8 +1257,8 @@ Ext.extend(Ext.ux.calendar.EventHandler, Ext.util.Observable, {
 	                'bottom-style':bottomStyle,
 	                'left-style':'width:'+leftStyle+'px;',
 	                'right-style':'width:'+rightStyle+'px;',                
-	                'title':this.generateTitle(e),
-	                'time':this.generateTitle(e),
+	                'title':this.generateTitle(e) || '',
+	                'time':this.generateTitle(e) || '',
 	                'subject':subject,
 	                'content':e.content || '',
 	                'day':e.day,
