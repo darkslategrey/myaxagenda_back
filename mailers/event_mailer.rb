@@ -48,10 +48,10 @@ class EventMailer < ActionMailer::Base
   def send_weekly(dest, subject, body)
     subject += " : Récapitulatif des tâches de la semaine à venir"
     cc = ['greg.faruch@gmail.com']
-    if dest != "mvignes@jobenfance.com"
+    if dest.email != "mvignes@jobenfance.com"
       cc.push "mvignes@jobenfance.com"
     end
-    mail(:to => dest, :cc => cc, :subject => subject) do |format|
+    mail(:to => dest.email, :cc => cc, :subject => subject) do |format|
       format.text { render :text => body }
     end
   end
@@ -59,10 +59,10 @@ class EventMailer < ActionMailer::Base
   def send_daily(dest, subject, body)
     subject += " : Récapitulatif des tâches de la journée"
     cc = ['greg.faruch@gmail.com']
-    if dest != "mvignes@jobenfance.com"
+    if dest.email != "mvignes@jobenfance.com"
       cc.push "mvignes@jobenfance.com"
     end
-    mail(:to => dest, :cc => cc, :subject => subject) do |format|
+    mail(:to => dest.email, :cc => cc, :subject => subject) do |format|
       format.text { render :text => body }
     end
   end
