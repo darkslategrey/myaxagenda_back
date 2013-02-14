@@ -436,7 +436,15 @@ Ext.define('Ext.ux.calendar.DataSource', {
                                 repeatType:data.repeatType
                             };
                             if(day != eday || (0 == startRow) && (this.rowCount == endRow)){
-                                eventSet['whole'].push(e);
+				if(e.calendarId == 1 || e.calendarId == 2) {
+				    e.startRow = getRowFromHM("09:00", this.intervalSlot);
+				    e.endRow = getRowFromHM("19:00", this.intervalSlot);
+                                    eventSet[day] = eventSet[day] || [];
+                                    eventSet[day].push(e);
+				    console.log("loadEvent : <" + e.subject + ">");
+				} else {
+                                    eventSet['whole'].push(e);
+				}
                             }else{
                                 eventSet[day] = eventSet[day] || [];
                                 eventSet[day].push(e);
