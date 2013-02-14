@@ -1586,7 +1586,7 @@ Ext.extend(Ext.ux.calendar.EventHandler, Ext.util.Observable, {
                 'id':e.eventId,
                 'calendarId':e.calendarId,
                 'color':color,
-                'title':this.generateTitle(e) + "GREGO 2",
+                'title':this.generateTitle(e),
                 'time':this.generateInfo(e),
                 'subject':subject,
                 'content':e.content || '',
