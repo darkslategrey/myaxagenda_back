@@ -17,9 +17,9 @@ class DailyMailer
   def get_daily_events(class_name)
     klass = eval(class_name)
     if class_name == "EventJe"
-      users = JeUser.all.map { |u| u.email if not u.email == "" }.compact
+      users = JeUser.where("login != 'Mathilde'").map { |u| u.email if not u.email == "" }.compact
     else
-      users = JdUser.all.map { |u| u.email if not u.email == "" }.compact
+      users = JdUser.where("login != 'Mathilde'").map { |u| u.email if not u.email == "" }.compact
     end
     actions = {}
     current_time = DateTime.current 
@@ -33,10 +33,10 @@ class DailyMailer
     events.each { |e| 
       next if e.user_todo.nil?
       next if e.event_type.code == 'AC_REGIE'
-      if actions[e.user_todo.email].nil?
-        actions[e.user_todo.email] = []
+      if actions[e.user_todo].nil?
+        actions[e.user_todo] = []
       end
-      actions[e.user_todo.email].push(e)
+      actions[e.user_todo].push(e)
     }
     # les users sans actions
     (Set.new(users) ^ Set.new(actions.keys)).each { |u|
@@ -48,21 +48,20 @@ class DailyMailer
 
   def get_ids(actions)
     ids = ''
-    actions.each_key { |email| 
-      actions[email].each { |event|
+    actions.each_key { |user| 
+      ids += "\n" + user.email + " : "
+      actions[user].each { |event|
         ids += ", " + event.id.to_s
       }
     }
-    ids.sub(/^../, '')
   end
-
 
   def build_send_mail(events, subject)
 
     events.each_key { |e|
       body = ''
       if events[e].size == 0
-        body = "Aucune action de prévue.\n"
+        body = "Bonjour #{e.login},\nAucune action de prévue.\n"
         body += "Bonne journée"
         EventMailer.send_daily(e, subject, body).deliver
         next
@@ -72,10 +71,14 @@ class DailyMailer
         name = a.contact.nil? ? '' : a.contact.name
         firstname = a.contact.nil? ? '' : a.contact.firstname
         nom_societe = a.societe.nil? ? '' : a.societe.nom
+        mobile_contact = a.contact.phone_mobile.nil? ? '' : a.contact.phone_mobile
+        tel_contact = a.contact.phone.nil? ? '' : a.contact.phone
+        body += "Bonjour #{e.login},\n"
         body += "\nSociété : " + nom_societe
         if name.length != 0
           body += " / contact : " + firstname + " " + name + "\n"
         end
+        body += "\nmobile : #{mobile_contact} / tel : #{tel_contact}\n"
         body += "Sujet : " + a.label + "\n"
         body += "Description : " + a.note + "\n\n"
         body += "========================\n\n"

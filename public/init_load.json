@@ -98,9 +98,9 @@
 	    "id": "3",
 	    "hide": true,
 	    "color": "red",
-	    "description": 'Bannières Jobenfance',
+	    "description": 'Régie Jobenfance',
 	    "permit": "all",
-	    "name": "Bannières Jobenfance",
+	    "name": "Régie Jobenfance",
 	    "class": "CalendarTypeUIModel",
 	    "isShared": true
 	},
@@ -108,9 +108,9 @@
 	    "id": "4",
 	    "hide": true,
 	    "color": "blue",
-	    "description": 'Bannières Jobdépendance',
+	    "description": 'Régie Jobdépendance',
 	    "permit": "all",
-	    "name": "Bannières Jobdépendance",
+	    "name": "Régie Jobdépendance",
 	    "class": "CalendarTypeUIModel",
 	    "isShared": true
 	}

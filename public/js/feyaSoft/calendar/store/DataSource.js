@@ -398,7 +398,9 @@ Ext.define('Ext.ux.calendar.DataSource', {
                     var eventSet = {};
                     eventSet['whole'] = [];
                     var getRowFromHM = Ext.ux.calendar.Mask.getRowFromHM;
+		    whole_hour = 9;
                     for(var i = 0, len = rs.length; i < len; i++){
+
                         var data = rs[i];
                         var startRow = getRowFromHM(data.startTime, this.intervalSlot);
                         var endRow = getRowFromHM(data.endTime, this.intervalSlot);
@@ -433,15 +435,23 @@ Ext.define('Ext.ux.calendar.DataSource', {
                                 alertFlag:Ext.decode(data.alertFlag),
 				uploads: data.uploads,
                                 locked:data.locked,
-                                repeatType:data.repeatType
+                                repeatType:data.repeatType,
+				tlj: false
                             };
                             if(day != eday || (0 == startRow) && (this.rowCount == endRow)){
 				if(e.calendarId == 1 || e.calendarId == 2) {
-				    e.startRow = getRowFromHM("09:00", this.intervalSlot);
-				    e.endRow = getRowFromHM("19:00", this.intervalSlot);
+				    hour_start = whole_hour;
+				    hour_end   = whole_hour + 1;
+				    if(whole_hour < 10) { hour_start = "0" + whole_hour; }
+				    if((whole_hour + 1) < 10) { hour_end = "0" + whole_hour + 1; }
+				    e.startRow = getRowFromHM(hour_start+":00", this.intervalSlot);
+				    e.endRow = getRowFromHM(hour_end+":00", this.intervalSlot);
                                     eventSet[day] = eventSet[day] || [];
                                     eventSet[day].push(e);
+				    console.log("hour_start <"+hour_start+"> hour_end <"+hour_end+">");
+				    whole_hour++;
 				    console.log("loadEvent : <" + e.subject + ">");
+				    e.tlj = true; // toute la journée
 				} else {
                                     eventSet['whole'].push(e);
 				}

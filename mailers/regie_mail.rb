@@ -53,12 +53,7 @@ class RegieMailer
 
 
   def build_send_mail(events, subject)
-    if events.size == 0
-      EventMailer.send_regie_alert(['mvignes@jobenfance.com'], 
-                                   subject,
-                                   'Aucune action de prévue, bonne journée', nil).deliver
-      return
-    end
+    return if events.size == 0
     events.each { |event|
       dests = event['emails']
       body  = event['label'] + "\n" + event['description']
