@@ -398,7 +398,8 @@ Ext.define('Ext.ux.calendar.DataSource', {
                     var eventSet = {};
                     eventSet['whole'] = [];
                     var getRowFromHM = Ext.ux.calendar.Mask.getRowFromHM;
-		    whole_hour = 9;
+		    var whole_hour = 9;
+		    var current_day = '';
                     for(var i = 0, len = rs.length; i < len; i++){
 
                         var data = rs[i];
@@ -440,6 +441,8 @@ Ext.define('Ext.ux.calendar.DataSource', {
                             };
                             if(day != eday || (0 == startRow) && (this.rowCount == endRow)){
 				if(e.calendarId == 1 || e.calendarId == 2) {
+				    if(current_day != day) { whole_hour = 9; current_day = day; }
+
 				    hour_start = whole_hour;
 				    hour_end   = whole_hour + 1;
 				    if(whole_hour < 10) { hour_start = "0" + whole_hour; }
