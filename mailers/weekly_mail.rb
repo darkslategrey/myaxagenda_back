@@ -17,9 +17,9 @@ class WeeklyMailer
   def get_weekly_events(class_name)
     klass = eval(class_name)
     if class_name == "EventJe"
-      users = JeUser.where("login != 'Mathilde'").map { |u| u if not u.email == "" }.compact
+      users = JeUser.where("login != 'Mathilde'").map { |u| u if not u == "" }.compact
     else
-      users = JdUser.where("login != 'Mathilde'").map { |u| u if not u.email == "" }.compact
+      users = JdUser.where("login != 'Mathilde'").map { |u| u if not u == "" }.compact
     end
     actions = {}
     current_time = DateTime.current
@@ -60,6 +60,7 @@ class WeeklyMailer
         EventMailer.send_weekly(e, subject, body).deliver
         next
       end
+      body += "Bonjour #{e.login},\n"
       events[e].each { |a|
         # next if a.societe.nil? and a.contact.nil?
         name = a.contact.nil? ? '' : a.contact.name
@@ -67,18 +68,30 @@ class WeeklyMailer
         nom_societe = a.societe.nil? ? '' : a.societe.nom
         mobile_contact = a.contact.phone_mobile.nil? ? '' : a.contact.phone_mobile
         tel_contact = a.contact.phone.nil? ? '' : a.contact.phone
-        body += "Bonjour #{e.login},\n"
+
         body += "\nSociété : " + nom_societe
         if name.length != 0
           body += " / contact : " + firstname + " " + name + "\n"
         end
-        body += "\nmobile : #{mobile_contact} / tel : #{tel_contact}\n"
+        body += "mobile : #{mobile_contact} / tel : #{tel_contact}\n"
         body += "Sujet : " + a.label + "\n"
         body += "Description : " + a.note + "\n\n"
         body += "========================\n\n"
       }
+      body += "Bon courage et bonne semaine"
       EventMailer.send_weekly(e, subject, body).deliver
     }
+  end
+
+
+  def actions_to_s(actions) 
+    s = ''
+    actions.each_key { |u|
+      s += "#{u.email} <"
+      actions[u].each { |a| s += a.id.to_s + "," }
+      s += ">"
+    }
+    s
   end
 
   def run
@@ -89,8 +102,8 @@ class WeeklyMailer
     build_send_mail(weekly_events_jd, "Actions Jobdependance")
 
 
-    @logger.info "Nbr actions JE semaine #{weekly_events_je.size} ids <" + get_ids(weekly_events_je) + ">"
-    @logger.info "Nbr actions JD semaine #{weekly_events_jd.size} ids <" + get_ids(weekly_events_jd) + ">"
+    @logger.info "Nbr actions JE semaine #{weekly_events_je.size} ids <" + actions_to_s(weekly_events_je) + ">"
+    @logger.info "Nbr actions JD semaine #{weekly_events_jd.size} ids <" + actions_to_s(weekly_events_jd) + ">"
 
   end
 end
