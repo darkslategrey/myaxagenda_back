@@ -166,7 +166,7 @@ class AxAgenda < Sinatra::Base
     begin
       Calendar.update_event(params)
     rescue Exception => e
-      @@logger.error("Update error : " + e.message)
+      @@logger.error("Update error : " + e.backtrace.join("\n"))
       data = { 'success' => false, 'errorInfo' => "Oups! (appel le dev!) : " + e.message }
     else
       @@logger.info("Update ok")
