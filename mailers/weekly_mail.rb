@@ -83,6 +83,17 @@ class WeeklyMailer
     }
   end
 
+
+  def actions_to_s(actions) 
+    s = ''
+    actions.each_key { |u|
+      s += "#{u.email} <"
+      actions[u].each { |a| s += a.id.to_s + "," }
+      s += ">"
+    }
+    s
+  end
+
   def run
     weekly_events_je = get_weekly_events("EventJe")
     weekly_events_jd = get_weekly_events("EventJd")
@@ -91,8 +102,8 @@ class WeeklyMailer
     build_send_mail(weekly_events_jd, "Actions Jobdependance")
 
 
-    @logger.info "Nbr actions JE semaine #{weekly_events_je.size} ids <" + get_ids(weekly_events_je).to_s + ">"
-    @logger.info "Nbr actions JD semaine #{weekly_events_jd.size} ids <" + get_ids(weekly_events_jd).to_s + ">"
+    @logger.info "Nbr actions JE semaine #{weekly_events_je.size} ids <" + actions_to_s(weekly_events_je) + ">"
+    @logger.info "Nbr actions JD semaine #{weekly_events_jd.size} ids <" + actions_to_s(weekly_events_jd) + ">"
 
   end
 end

@@ -89,12 +89,22 @@ class DailyMailer
   end
 
 
+  def actions_to_s(actions) 
+    s = ''
+    actions.each_key { |u|
+      s += "#{u.email} <"
+      actions[u].each { |a| s += a.id.to_s + "," }
+      s += ">"
+    }
+    s
+  end
+
   def run
     daily_events_je = get_daily_events("EventJe")
     daily_events_jd = get_daily_events("EventJd")
 
-    @logger.info "Nbr actions JE quot. #{daily_events_je.size} ids <" + get_ids(daily_events_je).to_s + ">"
-    @logger.info "Nbr actions JD quot. #{daily_events_jd.size} ids <" + get_ids(daily_events_jd).to_s + ">"
+    @logger.info "Nbr actions JE quot. #{daily_events_je.size} ids <" + actions_to_s(daily_events_je) + ">"
+    @logger.info "Nbr actions JD quot. #{daily_events_jd.size} ids <" + actions_to_s(daily_events_jd) + ">"
 
     build_send_mail(daily_events_je, "Actions Jobenfance")
     build_send_mail(daily_events_jd, "Actions Jobdependance")
