@@ -17,14 +17,13 @@ class DailyMailer
   def get_daily_events(class_name)
     klass = eval(class_name)
     if class_name == "EventJe"
-      users = JeUser.where("login != 'Mathilde'").map { |u| u.email if not u.email == "" }.compact
+      users = JeUser.where("login != 'Mathilde'").map { |u| u if not u.email == "" }.compact
     else
-      users = JdUser.where("login != 'Mathilde'").map { |u| u.email if not u.email == "" }.compact
+      users = JdUser.where("login != 'Mathilde'").map { |u| u if not u.email == "" }.compact
     end
     actions = {}
     current_time = DateTime.current 
     start_day = DateTime.new(DateTime.current.year, DateTime.current.month, DateTime.current.day)
-    start_day = start_day
     end_day = start_day + 24.hours
 
     conditions = "datep >= '" + start_day.to_s + "' and datep <= '" + end_day.to_s + "' and percent != 100"
@@ -66,6 +65,7 @@ class DailyMailer
         EventMailer.send_daily(e, subject, body).deliver
         next
       end
+      body += "Bonjour #{e.login},\n"
       events[e].each { |a|
         # next if a.societe.nil? and a.contact.nil?
         name = a.contact.nil? ? '' : a.contact.name
@@ -73,16 +73,17 @@ class DailyMailer
         nom_societe = a.societe.nil? ? '' : a.societe.nom
         mobile_contact = a.contact.phone_mobile.nil? ? '' : a.contact.phone_mobile
         tel_contact = a.contact.phone.nil? ? '' : a.contact.phone
-        body += "Bonjour #{e.login},\n"
+
         body += "\nSociété : " + nom_societe
         if name.length != 0
           body += " / contact : " + firstname + " " + name + "\n"
         end
-        body += "\nmobile : #{mobile_contact} / tel : #{tel_contact}\n"
+        body += "mobile : #{mobile_contact} / tel : #{tel_contact}\n"
         body += "Sujet : " + a.label + "\n"
         body += "Description : " + a.note + "\n\n"
         body += "========================\n\n"
       }
+      body += "Bon courage et bonne journée\n"
       EventMailer.send_daily(e, subject, body).deliver
     }
   end
@@ -92,8 +93,8 @@ class DailyMailer
     daily_events_je = get_daily_events("EventJe")
     daily_events_jd = get_daily_events("EventJd")
 
-    @logger.info "Nbr actions JE quot. #{daily_events_je.size} ids <" + get_ids(daily_events_je) + ">"
-    @logger.info "Nbr actions JD quot. #{daily_events_jd.size} ids <" + get_ids(daily_events_jd) + ">"
+    @logger.info "Nbr actions JE quot. #{daily_events_je.size} ids <" + get_ids(daily_events_je).to_s + ">"
+    @logger.info "Nbr actions JD quot. #{daily_events_jd.size} ids <" + get_ids(daily_events_jd).to_s + ">"
 
     build_send_mail(daily_events_je, "Actions Jobenfance")
     build_send_mail(daily_events_jd, "Actions Jobdependance")
