@@ -275,7 +275,7 @@ class Calendar < CalDB # ActiveRecord::Base
 
   # [{"type":"email","early":30,"unit":"minute","emails":"dfd, fdfds"}]
   def self.set_alert(event, alerts)
-    return if alerts.nil? or alerts == "null" or alerts.size == 0 # or alerts == /null|true|false/ 
+    return if alerts.nil? or alerts == "null" or alerts == false or alerts == "false" or alerts.size == 0 # or alerts == /null|true|false/ 
 
     alerts = JSON.parse(alerts)
     alerts.each { |alert| 
