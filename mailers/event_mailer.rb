@@ -42,11 +42,11 @@ class EventMailer < ActionMailer::Base
 
   @@logger = Logger.new(STDOUT)
 
-  default :from => mailer_config['default']['from']
-
+  default :from => 'contact@jobenfance.com'
 
   ActionMailer::Base.smtp_settings = mailer_config['smtp_settings']
 
+  
   def send_weekly(dest, subject, body)
     subject += " : Récapitulatif des tâches de la semaine à venir"
     cc = ['greg.faruch@gmail.com']
